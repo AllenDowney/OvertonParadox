@@ -96,9 +96,10 @@ def finish(fig, ax, name, subject, figure_type, xlabel, labels="right"):
 
 
 def group_runs(prefix, name):
+    """All respondents and the polviews3 groups, for the runs that were fit."""
     runs = {"All": f"{prefix}_{name}"}
     runs.update({g: f"{prefix}_{name}_polviews3-{g}" for g in ["Liberal", "Moderate", "Conservative"]})
-    return runs
+    return {g: run for g, run in runs.items() if (RESULTS_DIR / f"{run}_summary.json").exists()}
 
 
 def time_series(name):
@@ -156,6 +157,7 @@ def age_series(name):
     finish(fig, ax, f"age_series_{name}", "Conservatism by age", "age series", "Age", labels="legend:upper left:4")
 
 
+FIGURE_SETS = ["p48", "social", "econA"]
 DECADES = [(f"{d}s", f"{d}-{d + 9}") for d in range(1900, 2001, 10)]
 GENERATIONS = [("Greatest", "1883-1927"), ("Silent", "1928-1945"), ("Boomers", "1946-1964"),
                ("Gen X", "1965-1980"), ("Millennials", "1981-1996"), ("Gen Z", "1997-2012")]
@@ -212,11 +214,12 @@ def split_ends(groups, n_early, early, late):
     return {label: (early if i < n_early else late) for i, (label, _) in enumerate(groups)}
 
 
-def by_n_table(difficulties="heuristic"):
+def by_n_table(difficulties="em", sample="interviewer"):
     """Within-cohort slope and Overton gap for each set size, both specifications.
 
-    difficulties: which version of the fits to read (see overton/apc.py);
+    difficulties, sample: which version of the fits to read (see overton/apc.py);
     other versions' results, with a suffix on the set name, are skipped.
+    Summaries from before 2026-11-01 have neither field: heuristic, all modes.
 
     Within-cohort slope: straight-line slope of the standardized period
     component (national period-cohort model). Overton gap: the period
@@ -225,11 +228,14 @@ def by_n_table(difficulties="heuristic"):
     """
     rows = []
     for spec, prefix in [("primary", "p"), ("sensitivity", "s")]:
-        for path in sorted(RESULTS_DIR.glob(f"period_cohort_{prefix}*_summary.json")) + [
-                RESULTS_DIR / "period_cohort_v2_summary.json"]:
+        for path in sorted(RESULTS_DIR.glob(f"period_cohort_{prefix}*_summary.json")) + sorted(
+                RESULTS_DIR.glob("period_cohort_v2*_summary.json")):
             summary = json.load(open(path))
             name = summary["set"]
-            if summary.get("difficulties", "heuristic") != difficulties:
+            if (summary.get("difficulties", "heuristic"), summary.get("sample", "all")) != (difficulties, sample):
+                continue
+            # national fits only, not by alignment or birth group
+            if summary.get("by") or summary.get("cohorts"):
                 continue
             base = name.split("-")[0]
             # p{N} or s{N}, or v2 (the same questions as p15); not the domain sets (e.g. social)
@@ -249,6 +255,8 @@ def by_n_table(difficulties="heuristic"):
                              slope=summary["period_slope_per_decade"],
                              slope_lo90=summary["period_slope_lo90"], slope_hi90=summary["period_slope_hi90"],
                              gap=gap, gap_lo90=gap - 1.645 * sd, gap_hi90=gap + 1.645 * sd))
+    if not rows:
+        return pd.DataFrame(rows)
     return pd.DataFrame(rows).sort_values(["spec", "n"])
 
 
@@ -280,13 +288,15 @@ def by_n_figures():
 
 def main():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    # the figures by set are for v1 and v2; the larger sets go in the by-N figures
-    sets = sorted({json.load(open(p))["set"] for p in RESULTS_DIR.glob("*_summary.json")} & {"v1", "v2"})
+    # the reported sets of the decided specification (docs/plan.md); the others go in the by-N figures
+    sets = [name for name in FIGURE_SETS if (RESULTS_DIR / f"period_{name}_summary.json").exists()]
     for name in sets:
         time_series(name)
-        time_series7(name)
+        if (RESULTS_DIR / f"period_{name}_polviews-1_series.csv").exists():
+            time_series7(name)
         components(name)
-        age_series(name)
+        if any(RESULTS_DIR.glob(f"age_{name}_window-*_series.csv")):
+            age_series(name)
         if (RESULTS_DIR / f"age_{name}_cohorts-1900-1909_series.csv").exists():
             # by age: early groups labeled where they start, late groups where they end
             ends = split_ends(DECADES, 4, "start", "end")
@@ -311,7 +321,8 @@ def main():
             by_birth_group(name, GENERATIONS, "pc", ends, f"pc_by_generation_{name}",
                            "Conservatism within cohorts, by generation", overall=True)
         print("figures for", name)
-    if any(RESULTS_DIR.glob("period_cohort_p*_summary.json")):
+    # by N needs fits for several set sizes (a variation, not part of the decided run)
+    if len(by_n_table()) > 2:
         by_n_figures()
 
 

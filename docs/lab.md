@@ -839,6 +839,56 @@ The new questions are classified by the reviewed definitions; `trust` is "neithe
 
 **Approach from here** (Allen). Make each design decision, run the complete analysis with the decided choices, then come back for a small number of variations per step. The specification is in `docs/plan.md` (Decisions). Results from before this point used the heuristic difficulties and all modes. They're kept locally in `results/apc_exploratory/`, and their summaries are in the entries above.
 
+## 2026-11-01: Results of the decided specification
+
+The complete analysis with the decided choices (`docs/plan.md`, Decisions):
+- primary sample: interviewer-administered responses, 2021 dropped;
+- `wtssps` weights;
+- the 48-question pool selected on the primary sample;
+- EM difficulties calibrated on the 48;
+- 82 fits (`unity/overton_apc_primary_jobs.txt`), at 6000 draws and target accept 0.99.
+
+Tables: `figs/apc_results.csv`, `apc_birth_groups.csv`, `apc_age_slopes.csv` (`overton/apc_report.py`). Figures: `figs/apc/*_p48`, `*_social`, `*_econA`.
+
+**Diagnostics.**
+- **Fits other than the birth groups:** at most 17 divergences in 24,000 draws, R-hat ≤ 1.004, ESS ≥ 1,113.
+- **Birth groups:** 12 of the period–cohort fits within birth groups had 30–329 divergences, so they were rerun with longer tuning (8000) and a higher target accept (0.995). The divergences fell (at most 154, 0.6%, for the 1990s) but didn't go away; R-hat ≤ 1.004, ESS ≥ 1,113.
+- **Open item:** more tuning isn't converging on zero, which suggests the geometry of the cohort random walk in narrow birth ranges. Diagnose (`plan.md`). The narrowest groups (1990s, 2000s, Gen Z) also have the fewest respondents and the widest intervals.
+
+**Headline quantities** (out of 15 conservative answers; 90% intervals; first year 1974, 1975 for core economic):
+
+| | Full pool (p48) | Social | Core economic |
+|---|---|---|---|
+| Within-cohort slope, per decade | −0.13 [−0.15, −0.10] | −0.17 [−0.20, −0.15] | +0.24 [+0.17, +0.31] |
+| Total change, first to last survey | −2.55 | −3.17 | −0.77 |
+| Generational replacement | −1.81 | −2.21 | −1.32 |
+| Changing minds (within cohorts) | −0.74 | −0.96 | +0.54 |
+| Change, liberal / moderate / conservative | −3.07 / −2.93 / −1.54 | −3.33 / −3.45 / −2.10 | −1.52 / −1.43 / +0.60 |
+| Overton gap, 2024 endpoint | 0.85 | 0.49 | 3.30 |
+| Overton gap, 2018 endpoint | 0.94 | 0.46 | 3.76 |
+
+```{figure} ../figs/apc/time_series_p48.png
+:align: left
+Full pool (48 questions) by alignment. Dotted: the 1974 liberal level.
+```
+
+**Age, within each decade of surveys** (full pool, slope per decade of age): +0.59 in the 1970s; +0.43–0.44 in the 1980s and 1990s; +0.32–0.36 since 2000. In every decade of surveys, older respondents are more conservative.
+
+**Within each birth group** (period–cohort fit within the group, within-cohort slope per decade):
+- **Negative in every group:** −0.16 to −0.40 for those born before 1940; −0.09 for the 1940s; about 0 for the 1950s (−0.03 [−0.07, +0.01]) and the Boomers (−0.02 [−0.05, +0.01]); −0.07 to −0.13 for the 1960s and 1970s and Gen X.
+- **Youngest groups:** large negative estimates with wide intervals (1980s −0.46; Millennials −0.62; 1990s −0.99; Gen Z and the 2000s with intervals spanning zero). These groups are observed only at young ages and over few surveys.
+
+```{figure} ../figs/apc/pc_by_decade_p48.png
+:align: left
+The period component within each decade of birth (standardized to the group's birth years). Dotted: all respondents.
+```
+
+**What this shows** (the decided specification only; how much each decision matters comes with the variations):
+- **The Overton pattern holds for the full pool and the social questions.** Within cohorts, conservatism declines (−0.13 and −0.17 per decade), and generational replacement accounts for most of the total change (71% and 70%). The average conservative in 2024 is less than one conservative answer (of 15) more conservative than the average liberal of 1974.
+- **The core economic questions differ.** Within cohorts, people move toward the conservative answers (+0.24 per decade); conservatives move right (+0.60) while liberals and moderates move left; and the 2024 conservative is 3.3 answers more conservative than the 1975 liberal. As decided, this claim is about the four core questions on government economic responsibility.
+- **Every birth group's within-cohort change is negative or about zero;** none moves toward conservative answers on the full pool.
+- **The two endpoints differ by 0.1 or less, except core economic** (3.30 with 2024, 3.76 with 2018).
+
 ## Next
 
 - **Headline framing.** Decide how the article and appendix present the domain split: on social questions (and the full pool), people don't get more conservative within cohorts; on core economic questions, they do (+0.24 per decade), and opinion polarizes.
