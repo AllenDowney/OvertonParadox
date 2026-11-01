@@ -186,7 +186,7 @@ Goal (Allen, 2026-10-31): treat each respondent's estimated conservatism as the 
 - [x] Calibration check (em vs em66 vs emset) on the period and period–cohort fits: Unity array 66468744, 65 fits, all pass. Full pool with EM: within-cohort −0.14, Overton gap 1.31; core economic unchanged (+0.24); broad and inclusive economic lose their positive slope (+0.01 to +0.02, intervals include 0). Lab notebook 2026-11-01.
 - [ ] Redo the by-N results, the birth-group fits, and the figures with `--difficulties em` (first job in this repo, 2026-11-01). Include the mode sensitivity runs for the final set (below), so they use the same difficulties.
 - [ ] Future work from the second difficulties review (`docs/difficulties_design.md`), in priority order:
-  - [ ] EM with a flexible latent distribution (empirical, or by survey period); does the "who was asked" adjustment survive?
+  - [x] EM with a flexible latent distribution (empirical, and by survey decade): the "who was asked" adjustment survives; the scale is about 7% narrower (lab notebook, 2026-11-01). Can join the variations array as a difficulties variation.
   - [ ] Item trends for core vs broad economic questions: what makes broad economic flat?
   - [ ] Residual associations within domains (e.g., the four core economic questions after conditioning on conservatism).
   - [ ] Inspect the divergences in `period_s50-em`.

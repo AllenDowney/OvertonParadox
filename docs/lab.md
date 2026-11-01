@@ -889,6 +889,26 @@ The period component within each decade of birth (standardized to the group's bi
 - **Every birth group's within-cohort change is negative or about zero;** none moves toward conservative answers on the full pool.
 - **The two endpoints differ by 0.1 or less, except core economic** (3.30 with 2024, 3.76 with 2018).
 
+## 2026-11-01: Variation: the latent distribution in the EM calibration
+
+The second review of the difficulties asked whether a fixed latent distribution (the scoring prior, Normal(0, 4)) could push changes over time into the difficulties, and in particular whether the "who was asked" adjustment survives a more flexible distribution. Run as a variation (Allen), on the decided specification's sample and 48 questions (`overton/latent_check.py`; `overton/em.py`, option `groups`):
+- **empirical:** one latent distribution on the grid, estimated (Bock and Aitkin);
+- **by decade:** one estimated distribution per decade of surveys, with common difficulties.
+
+A free distribution leaves the location of the scale unidentified, so the mean difficulty is held at the decided value. Scoring still uses the Normal(0, 4) prior; only the difficulties differ.
+
+| Latent distribution | Corr. with decided | RMS difference | Slope on heuristic | Leftover vs mean year (corr.) | Overton gap* | Change, conservatives* | Change, liberals* |
+|---|---|---|---|---|---|---|---|
+| Fixed Normal(0, 4) (decided) | – | – | 1.22 | −0.97 | 1.20 | −1.36 | −2.71 |
+| Empirical | 1.00 | 0.08 | 1.12 | −0.97 | 1.30 | −1.25 | −2.63 |
+| By decade | 1.00 | 0.07 | 1.13 | −0.98 | 1.24 | −1.31 | −2.68 |
+
+\* Weighted yearly means at the endpoints (1974 and 2024), for comparing the versions with each other. These aren't the model-based estimates in the results entry above (Overton gap 0.85), which come from smoothed period models.
+
+- **The "who was asked" adjustment survives:** in every version, the part of the difficulties not explained by the heuristic tracks the average survey year of the people asked (correlation −0.97 to −0.98).
+- **What the free distribution changes is mostly the scale:** a stretch of 1.12–1.13 relative to the heuristic instead of 1.22, so the estimated distributions are narrower than the fixed prior implies. The ordering of the difficulties is the same (correlation 1.00).
+- **The size of the effect:** the descriptive numbers move by 0.04–0.10.
+
 ## Next
 
 - **Headline framing.** Decide how the article and appendix present the domain split: on social questions (and the full pool), people don't get more conservative within cohorts; on core economic questions, they do (+0.24 per decade), and opinion polarizes.
