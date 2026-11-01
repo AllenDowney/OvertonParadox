@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# data and fit outputs: rebuilt by scripts/build_data.sh and the Unity jobs
+data/*
+!data/README.md
+results/
+
+# figs: commit the summary tables and PNGs; not intermediate data or PDFs
+figs/**/*.hdf
+figs/**/*.pdf
+
+# Unity
+unity/logs/
+unity/UNITY_SYNC_STAMP
+unity/config.sh
+
+# editors
+.vscode/
+.cursor/

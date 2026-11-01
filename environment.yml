@@ -1,0 +1,27 @@
+# One environment for everything: the grid pipeline, the PyMC models, and the
+# figures. Versions are the ones the analysis was run with (the CultureWar env,
+# 2026-11-01), which is also the env used on Unity.
+name: OvertonParadox
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - numpy=2.4
+  - pandas=3.0
+  - scipy=1.18
+  - statsmodels=0.14
+  - matplotlib=3.11
+  - seaborn=0.13
+  - pyyaml=6.0
+  - pytables=3.11
+  - pyarrow=25
+  - xarray
+  - pymc=6.0
+  - pytensor=3.0
+  - nutpie=0.16
+  - arviz=1.2
+  - jupytext=1.19
+  - jupyterlab
+  - pip
+  - pip:
+      - empiricaldist

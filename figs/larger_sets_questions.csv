@@ -1,0 +1,118 @@
+,variable,description,param,n,waves,first,last,conservative,separation,in_person_only,in_book_15,rank,topic
+all,homosex,homosexual sex relations,0.4547628885649181,41070,29,1974.0,2024.0,1 2 3,31.64342165442235,False,True,1,homosex
+all,helppoor,should govt improve standard of living?,0.4368612252549476,36984,26,1975.0,2024.0,4 5,26.397329328253303,False,False,2,welfare and the poor
+all,helpnot,should govt do more or less?,0.4205995202559352,36364,26,1975.0,2024.0,4 5,29.107710296091582,False,False,3,size of government
+all,sexeduc,sex education in public schools,0.3929238532039399,39992,28,1974.0,2024.0,2,12.560072959709546,False,True,4,sexeduc
+all,helpsick,should govt help pay for medical care?,0.377396986345898,37069,26,1975.0,2024.0,3 4 5,32.280206800114144,False,False,7,health care
+all,eqwlth,should govt reduce income differences,0.3668066547233715,38167,27,1978.0,2024.0,4 5 6 7,31.12642956582405,False,False,10,income inequality
+all,abany,abortion if woman wants for any reason,0.3640168336126677,38681,29,1977.0,2024.0,2,29.130946615108662,False,True,11,abortion
+all,pillok,birth control to teenagers 14-16,0.3609664099843924,31238,22,1986.0,2024.0,3 4,28.747581227114296,False,False,13,teen sexuality
+all,helpblk,Should govt aid Black people?,0.3596979515919618,37224,26,1975.0,2024.0,4 5,29.207281656747924,False,False,15,government help for Black Americans
+all,natarms,"military, armaments, and defense",0.3359759958722704,35236,33,1974.0,2024.0,1 2,25.02072193739772,False,False,18,natarms
+all,racdif1,differences due to discrimination,0.3310595704285115,32313,24,1977.0,2024.0,2,27.32278289266532,False,False,21,causes of racial inequality
+all,premarsx,sex before marriage,0.3302598721573018,41162,29,1974.0,2024.0,1 2 3,27.11639050671885,False,True,23,premarsx
+all,grass,should marijuana be made legal,0.3275652884197985,35428,28,1975.0,2024.0,2,23.03952155258851,True,True,26,grass
+all,natenvir,improving & protecting environment,0.3240363409226768,35435,33,1974.0,2024.0,2 3,25.95570081200475,False,True,28,natenvir
+all,cappun,favor or oppose death penalty for murder,0.3163004180918837,59114,33,1974.0,2024.0,1,22.20073360041457,False,True,30,cappun
+all,xmarsex,sex with person other than spouse,0.3155554770133035,42410,29,1974.0,2024.0,1,20.0245522097196,False,False,31,xmarsex
+all,spanking,favor spanking to discipline child,0.2842567188180238,32199,22,1986.0,2024.0,1 2,19.579741849726567,False,False,36,spanking
+all,fefam,"better for man to work, woman tend home",0.2838608109250839,35352,24,1977.0,2024.0,1 2,20.77660721617166,False,False,37,fefam
+all,discaff,whites hurt by aff. action,0.2671890202986919,27940,17,1990.0,2024.0,1 2,22.21573954447025,False,False,42,affirmative action
+all,conpress,confidence in press,0.2660396707437771,45594,32,1974.0,2024.0,3,17.932047723933827,False,False,44,conpress
+all,prayer,bible prayer in public schools,0.2594782998238107,33351,27,1974.0,2024.0,2,22.71538351815574,True,True,46,prayer
+all,gunlaw,favor or oppose gun permits,0.257631449628269,44939,30,1974.0,2024.0,2,16.575034843134425,False,True,48,gunlaw
+all,pornlaw,feelings about pornography laws,0.250633824531243,41743,29,1975.0,2024.0,1,20.373013055824924,False,True,51,pornlaw
+all,divlaw,divorce laws,0.2503969335617341,36949,29,1974.0,2024.0,2,20.05019034459772,True,True,52,divlaw
+all,suicide4,suicide if tired of living,0.2412662834687059,35439,27,1977.0,2024.0,2,11.287035042132382,False,False,57,suicide
+all,letdie1,allow incurable patients to die,0.2372275914208232,34134,27,1977.0,2024.0,2,15.877945428196428,False,True,59,end of life
+all,popular,to be well liked or popular,0.2269938377034434,32096,23,1986.0,2024.0,5,14.40871083650335,False,False,62,child-rearing values
+all,conlabor,confidence in organized labor,0.2261682328485096,43227,32,1974.0,2024.0,3,16.205719298245075,False,False,63,conlabor
+all,colhomo,allow homosexual to teach,0.2212456346261181,37701,27,1974.0,2021.0,5,13.726342363378368,False,False,66,civil liberties: homosexual
+all,courts,courts dealing with criminals,0.2138539753048813,50939,32,1974.0,2024.0,2,12.275401276998378,True,False,67,courts
+all,fepol,women not suited for politics,0.2091181063737009,34200,28,1974.0,2024.0,1,13.059768420771192,True,True,68,women in politics
+all,nateduc,improving nations education system,0.202829620358593,35948,33,1974.0,2024.0,2 3,15.608077792143284,False,False,70,nateduc
+all,fepresch,preschool kids suffer if mother works,0.1982900617133003,35321,24,1977.0,2024.0,1 2,15.998074945984426,False,False,73,working mothers
+all,conclerg,confidence in organized religion,0.1981218748905897,44954,32,1974.0,2024.0,1 2,12.030332693799243,False,False,74,conclerg
+all,natmass,mass transportation,0.1869493679427742,45438,24,1984.0,2022.0,2 3,14.01191695790999,False,False,83,natmass
+all,racopen,vote on open housing law,0.1831302985460113,31769,25,1975.0,2024.0,1,14.134659783741272,True,True,85,racopen
+all,colcom,should communist teacher be fired,0.1797205652325932,37631,29,1974.0,2024.0,4,15.952113038508225,False,False,88,civil liberties: communist
+all,colath,allow anti-religionist to teach,0.1792106362262395,41716,29,1974.0,2024.0,5,16.814844521312786,False,False,90,civil liberties: anti-religionist
+all,coneduc,confidence in education,0.1646205283391438,45775,32,1974.0,2024.0,3,6.70560838728122,False,False,96,coneduc
+all,workblks,hard working - lazy,0.1574714593433677,25960,17,1990.0,2024.0,5 6 7,11.143133656878332,False,False,99,racial stereotypes
+all,nataid,foreign aid,0.1544740928645966,35100,33,1974.0,2024.0,3,13.080353913814726,False,False,100,nataid
+all,conbus,confidence in major companies,0.1511424931705335,44970,32,1974.0,2024.0,1,8.691279320661495,False,False,102,conbus
+all,conarmy,confidence in military,0.1504169630027251,45383,32,1974.0,2024.0,1,12.68678692647159,False,False,104,conarmy
+all,natpark,parks and recreation,0.1376321614573281,47617,24,1984.0,2022.0,2 3,11.157094347607256,False,False,107,natpark
+all,polescap,citizen attempting to escape custody,0.1323748463537047,40103,29,1975.0,2024.0,1,8.898782602567422,False,False,109,police use of force
+all,consci,confidence in scientific community,0.1289937849214743,43746,32,1974.0,2024.0,2 3,11.040518340724027,False,False,111,consci
+all,tax,r's federal income tax,0.1285779349086638,40364,28,1976.0,2024.0,1,9.850116444855418,False,False,112,tax
+all,contv,confidence in television,0.1282079637869437,45670,32,1974.0,2024.0,3,8.85681770805592,False,False,113,contv
+all,getahead,opinion of how people get ahead,0.126067906209527,38728,28,1974.0,2024.0,1,8.374716038214233,True,False,114,getahead
+all,racmar,favor law against racial intermarriage,0.1237500311952549,24904,19,1974.0,2002.0,1,8.03557385518509,False,False,116,racmar
+all,confinan,confid in banks & financial institutions,0.1169511626265463,44266,31,1975.0,2024.0,1 2,5.7791952967425,False,False,118,confinan
+all,racpres,would vote for black president,0.1131048980801637,20246,17,1974.0,2010.0,2,4.148467764388899,False,False,120,racpres
+all,colmil,allow militarist to teach,0.1089051613421201,36185,26,1976.0,2021.0,5,11.987333408554658,False,False,122,civil liberties: militarist
+all,natdrug,dealing with drug addiction,0.0817617579218121,35122,33,1974.0,2024.0,2 3,5.172276021482302,False,False,136,natdrug
+all,natsoc,social security,0.0804613188259129,49956,25,1984.0,2024.0,2 3,6.24164115658717,False,False,137,natsoc
+all,librac,allow racists book in library,0.0683815318103116,37314,28,1976.0,2024.0,1,5.639263723974153,False,False,141,civil liberties: racist
+all,confed,confid. in exec branch of fed govt,0.0601247815075692,45343,32,1974.0,2024.0,3,4.858038390051608,False,False,144,confed
+all,trust,can people be trusted,0.0540448686852649,38235,28,1975.0,2024.0,2,1.7234143545187912,True,False,147,social trust
+all,conlegis,confidence in congress,0.0452933376502793,45345,32,1974.0,2024.0,3,4.769356555432022,False,False,149,conlegis
+all,aged,should aged live with their children,0.0421942387089102,36253,27,1975.0,2022.0,2,5.067579285592284,True,False,153,aged
+all,natspac,space exploration program,0.0402327750984854,34652,33,1974.0,2024.0,1 2,1.9044098891389727,False,False,154,natspac
+all,conjudge,confid. in united states supreme court,0.0342079175729861,44892,32,1974.0,2024.0,1 2,1.2993293754749506,False,False,159,conjudge
+all,natcrime,halting rising crime rate,0.028137492402024,35449,33,1974.0,2024.0,1,3.2706998963715623,False,False,162,natcrime
+all,conmedic,confidence in medicine,0.0216924720594916,45848,32,1974.0,2024.0,2 3,2.641819817566859,False,False,165,conmedic
+all,natroad,highways and bridges,-0.0147950542269578,50393,25,1984.0,2024.0,1 2,0.5547866008060521,False,False,169,natroad
+no confidence,homosex,homosexual sex relations,0.4547628885649181,41070,29,1974.0,2024.0,1 2 3,31.64342165442235,False,True,1,homosex
+no confidence,helppoor,should govt improve standard of living?,0.4368612252549476,36984,26,1975.0,2024.0,4 5,26.397329328253303,False,False,2,welfare and the poor
+no confidence,helpnot,should govt do more or less?,0.4205995202559352,36364,26,1975.0,2024.0,4 5,29.107710296091582,False,False,3,size of government
+no confidence,sexeduc,sex education in public schools,0.3929238532039399,39992,28,1974.0,2024.0,2,12.560072959709546,False,True,4,sexeduc
+no confidence,helpsick,should govt help pay for medical care?,0.377396986345898,37069,26,1975.0,2024.0,3 4 5,32.280206800114144,False,False,7,health care
+no confidence,eqwlth,should govt reduce income differences,0.3668066547233715,38167,27,1978.0,2024.0,4 5 6 7,31.12642956582405,False,False,10,income inequality
+no confidence,abany,abortion if woman wants for any reason,0.3640168336126677,38681,29,1977.0,2024.0,2,29.130946615108662,False,True,11,abortion
+no confidence,pillok,birth control to teenagers 14-16,0.3609664099843924,31238,22,1986.0,2024.0,3 4,28.747581227114296,False,False,13,teen sexuality
+no confidence,helpblk,Should govt aid Black people?,0.3596979515919618,37224,26,1975.0,2024.0,4 5,29.207281656747924,False,False,15,government help for Black Americans
+no confidence,natarms,"military, armaments, and defense",0.3359759958722704,35236,33,1974.0,2024.0,1 2,25.02072193739772,False,False,18,natarms
+no confidence,racdif1,differences due to discrimination,0.3310595704285115,32313,24,1977.0,2024.0,2,27.32278289266532,False,False,21,causes of racial inequality
+no confidence,premarsx,sex before marriage,0.3302598721573018,41162,29,1974.0,2024.0,1 2 3,27.11639050671885,False,True,23,premarsx
+no confidence,grass,should marijuana be made legal,0.3275652884197985,35428,28,1975.0,2024.0,2,23.03952155258851,True,True,26,grass
+no confidence,natenvir,improving & protecting environment,0.3240363409226768,35435,33,1974.0,2024.0,2 3,25.95570081200475,False,True,28,natenvir
+no confidence,cappun,favor or oppose death penalty for murder,0.3163004180918837,59114,33,1974.0,2024.0,1,22.20073360041457,False,True,30,cappun
+no confidence,xmarsex,sex with person other than spouse,0.3155554770133035,42410,29,1974.0,2024.0,1,20.0245522097196,False,False,31,xmarsex
+no confidence,spanking,favor spanking to discipline child,0.2842567188180238,32199,22,1986.0,2024.0,1 2,19.579741849726567,False,False,36,spanking
+no confidence,fefam,"better for man to work, woman tend home",0.2838608109250839,35352,24,1977.0,2024.0,1 2,20.77660721617166,False,False,37,fefam
+no confidence,discaff,whites hurt by aff. action,0.2671890202986919,27940,17,1990.0,2024.0,1 2,22.21573954447025,False,False,42,affirmative action
+no confidence,prayer,bible prayer in public schools,0.2594782998238107,33351,27,1974.0,2024.0,2,22.71538351815574,True,True,46,prayer
+no confidence,gunlaw,favor or oppose gun permits,0.257631449628269,44939,30,1974.0,2024.0,2,16.575034843134425,False,True,48,gunlaw
+no confidence,pornlaw,feelings about pornography laws,0.250633824531243,41743,29,1975.0,2024.0,1,20.373013055824924,False,True,51,pornlaw
+no confidence,divlaw,divorce laws,0.2503969335617341,36949,29,1974.0,2024.0,2,20.05019034459772,True,True,52,divlaw
+no confidence,suicide4,suicide if tired of living,0.2412662834687059,35439,27,1977.0,2024.0,2,11.287035042132382,False,False,57,suicide
+no confidence,letdie1,allow incurable patients to die,0.2372275914208232,34134,27,1977.0,2024.0,2,15.877945428196428,False,True,59,end of life
+no confidence,popular,to be well liked or popular,0.2269938377034434,32096,23,1986.0,2024.0,5,14.40871083650335,False,False,62,child-rearing values
+no confidence,colhomo,allow homosexual to teach,0.2212456346261181,37701,27,1974.0,2021.0,5,13.726342363378368,False,False,66,civil liberties: homosexual
+no confidence,courts,courts dealing with criminals,0.2138539753048813,50939,32,1974.0,2024.0,2,12.275401276998378,True,False,67,courts
+no confidence,fepol,women not suited for politics,0.2091181063737009,34200,28,1974.0,2024.0,1,13.059768420771192,True,True,68,women in politics
+no confidence,nateduc,improving nations education system,0.202829620358593,35948,33,1974.0,2024.0,2 3,15.608077792143284,False,False,70,nateduc
+no confidence,fepresch,preschool kids suffer if mother works,0.1982900617133003,35321,24,1977.0,2024.0,1 2,15.998074945984426,False,False,73,working mothers
+no confidence,natmass,mass transportation,0.1869493679427742,45438,24,1984.0,2022.0,2 3,14.01191695790999,False,False,83,natmass
+no confidence,racopen,vote on open housing law,0.1831302985460113,31769,25,1975.0,2024.0,1,14.134659783741272,True,True,85,racopen
+no confidence,colcom,should communist teacher be fired,0.1797205652325932,37631,29,1974.0,2024.0,4,15.952113038508225,False,False,88,civil liberties: communist
+no confidence,colath,allow anti-religionist to teach,0.1792106362262395,41716,29,1974.0,2024.0,5,16.814844521312786,False,False,90,civil liberties: anti-religionist
+no confidence,workblks,hard working - lazy,0.1574714593433677,25960,17,1990.0,2024.0,5 6 7,11.143133656878332,False,False,99,racial stereotypes
+no confidence,nataid,foreign aid,0.1544740928645966,35100,33,1974.0,2024.0,3,13.080353913814726,False,False,100,nataid
+no confidence,natpark,parks and recreation,0.1376321614573281,47617,24,1984.0,2022.0,2 3,11.157094347607256,False,False,107,natpark
+no confidence,polescap,citizen attempting to escape custody,0.1323748463537047,40103,29,1975.0,2024.0,1,8.898782602567422,False,False,109,police use of force
+no confidence,tax,r's federal income tax,0.1285779349086638,40364,28,1976.0,2024.0,1,9.850116444855418,False,False,112,tax
+no confidence,getahead,opinion of how people get ahead,0.126067906209527,38728,28,1974.0,2024.0,1,8.374716038214233,True,False,114,getahead
+no confidence,racmar,favor law against racial intermarriage,0.1237500311952549,24904,19,1974.0,2002.0,1,8.03557385518509,False,False,116,racmar
+no confidence,racpres,would vote for black president,0.1131048980801637,20246,17,1974.0,2010.0,2,4.148467764388899,False,False,120,racpres
+no confidence,colmil,allow militarist to teach,0.1089051613421201,36185,26,1976.0,2021.0,5,11.987333408554658,False,False,122,civil liberties: militarist
+no confidence,natdrug,dealing with drug addiction,0.0817617579218121,35122,33,1974.0,2024.0,2 3,5.172276021482302,False,False,136,natdrug
+no confidence,natsoc,social security,0.0804613188259129,49956,25,1984.0,2024.0,2 3,6.24164115658717,False,False,137,natsoc
+no confidence,librac,allow racists book in library,0.0683815318103116,37314,28,1976.0,2024.0,1,5.639263723974153,False,False,141,civil liberties: racist
+no confidence,trust,can people be trusted,0.0540448686852649,38235,28,1975.0,2024.0,2,1.7234143545187912,True,False,147,social trust
+no confidence,aged,should aged live with their children,0.0421942387089102,36253,27,1975.0,2022.0,2,5.067579285592284,True,False,153,aged
+no confidence,natspac,space exploration program,0.0402327750984854,34652,33,1974.0,2024.0,1 2,1.9044098891389727,False,False,154,natspac
+no confidence,natcrime,halting rising crime rate,0.028137492402024,35449,33,1974.0,2024.0,1,3.2706998963715623,False,False,162,natcrime
+no confidence,natroad,highways and bridges,-0.0147950542269578,50393,25,1984.0,2024.0,1 2,0.5547866008060521,False,False,169,natroad
