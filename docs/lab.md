@@ -835,6 +835,8 @@ Details: `docs/difficulties_design.md`, "Outcome of the second round".
 
 The new questions are classified by the reviewed definitions; `trust` is "neither" (`docs/question_domains.md`, addendum).
 
+**Weights** (Allen). `wtssps` for every year, as in CultureWar and following NORC's guidance, instead of `wtssall` filled with `wtssps`. The selection was rerun with it: the same 48 questions and codings, in a slightly different order. The 82 fits already run with the old weights were discarded.
+
 **Approach from here** (Allen). Make each design decision, run the complete analysis with the decided choices, then come back for a small number of variations per step. The specification is in `docs/plan.md` (Decisions). Results from before this point used the heuristic difficulties and all modes. They're kept locally in `results/apc_exploratory/`, and their summaries are in the entries above.
 
 ## Next

@@ -44,6 +44,12 @@ MIXED_MODE_YEARS = (2022, 2024)
 INTERVIEWER_MODES = (1, 2)  # in person, phone
 RAKED_WEIGHTS = ("wtssps", "wtssnrps")
 
+# The analysis weight (decided 2026-11-01, consistent with CultureWar and NORC's
+# guidance): NORC's post-stratification weight for every year, "recommended above
+# all other previous GSS weights". In the primary sample, raked in 2022 and 2024.
+# Before 2026-11-01: wtssall, or wtssps where it's missing.
+WEIGHT_COL = "wtssps"
+
 WEIGHT = "wtsmerge"
 KEYS = ["gss0", "gss1", "gss2"]
 

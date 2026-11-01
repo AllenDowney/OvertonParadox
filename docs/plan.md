@@ -219,7 +219,7 @@ Goal (Allen, 2026-10-31): treat each respondent's estimated conservatism as the 
 | Step | Decision | Where it's documented |
 |---|---|---|
 | Data | GSS 1972–2024 (R3a). Primary sample: 2021 dropped; in 2022 and 2024, interviewer-administered respondents only (in person, phone), with weights raked to the full sample's margins, the same as CultureWar | `docs/mode_design.md` |
-| Weights | `wtssall`, or `wtssps` where it's missing (the same as CultureWar) | `docs/mode_design.md` (open item E) |
+| Weights | `wtssps` (NORC's post-stratification weight) for every year, raked in 2022 and 2024. The same as CultureWar's default and NORC's guidance (Allen, 2026-11-01); before that, `wtssall` filled with `wtssps` | `docs/mode_design.md` (item E) |
 | Questions | Rule-based pool, rerun on the primary sample: scope, best contiguous coding, ranking by association with `polviews`, coverage (at least half the survey years, 16 of 32), one per topic, no confidence questions, stability rule. 48 questions (`p48`) | `docs/confidence_review.md`, `docs/question_domains.md` (addendum) |
 | Difficulties | Weighted EM, calibrated on the 48, on the primary sample | `docs/difficulties_design.md` |
 | Score | Rasch grid, N(0, 4) prior, at least 5 answers (2 for the domain sets), reported out of 15 | |

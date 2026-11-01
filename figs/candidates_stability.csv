@@ -1,171 +1,171 @@
 variable,rank,description,decades,gaps,min_gap,max_gap,sign_change,fades_last,fades_any
-homosex,1,homosexual sex relations,6,1970s:+16 1980s:+13 1990s:+29 2000s:+33 2010s:+37 2020s:+45,13.345537525396589,45.1322800430299,False,False,False
-helppoor,2,should govt improve standard of living?,6,1970s:+25 1980s:+17 1990s:+22 2000s:+25 2010s:+33 2020s:+27,16.94470888623561,32.59180403022338,False,False,False
-helpnot,3,should govt do more or less?,6,1970s:+17 1980s:+20 1990s:+24 2000s:+22 2010s:+37 2020s:+38,16.63204011310853,37.546122120356316,False,False,False
-sexeduc,4,sex education in public schools,6,1970s:+11 1980s:+7 1990s:+13 2000s:+13 2010s:+12 2020s:+17,6.65357142688781,16.84421401133062,False,False,False
-pillok,5,birth control to teenagers 14-16,5,1980s:+23 1990s:+28 2000s:+28 2010s:+30 2020s:+34,22.520933809309145,33.78079267148827,False,False,False
-helpsick,6,should govt help pay for medical care?,6,1970s:+29 1980s:+21 1990s:+24 2000s:+30 2010s:+39 2020s:+40,21.070247357132693,39.650211218102996,False,False,False
-wrkwayup,7,Black people overcome prejudice without favors,4,1990s:+19 2000s:+22 2010s:+28 2020s:+37,19.444513960732568,36.99787057540709,False,False,False
-abany,8,abortion if woman wants for any reason,6,1970s:+12 1980s:+16 1990s:+27 2000s:+30 2010s:+38 2020s:+55,12.21338665876318,55.21794027091696,False,False,False
-natarmsy,9,national defense:version y,5,1980s:+23 1990s:+19 2000s:+25 2010s:+30 2020s:+33,19.384701939508798,32.62450000265146,False,False,False
-grass,10,should marijuana be made legal,6,1970s:+28 1980s:+16 1990s:+21 2000s:+25 2010s:+29 2020s:+27,15.59242254376213,28.991508156073248,False,False,False
-abdefect,11,strong chance of serious defect,6,1970s:+4 1980s:+8 1990s:+19 2000s:+21 2010s:+26 2020s:+28,4.096437015392943,28.10793552484727,False,False,False
-teensex,12,sex before marriage:teens 14-16,5,1980s:+20 1990s:+23 2000s:+23 2010s:+27 2020s:+35,20.40732251859363,35.36441375078521,False,False,False
-goveqinc,13,govmnt should reduce inc differentials,4,1980s:+15 1990s:+21 2000s:+31 2010s:+38,14.668341199698338,37.814719604746436,False,False,False
-natenviy,14,the environment:version y,5,1980s:+10 1990s:+19 2000s:+27 2010s:+32 2020s:+45,10.326924520729536,44.79699239318538,False,False,False
-eqwlth,15,should govt reduce income differences,6,1970s:+17 1980s:+19 1990s:+23 2000s:+27 2010s:+39 2020s:+43,16.709452469274982,43.24790006163932,False,False,False
-premarsx,16,sex before marriage,6,1970s:+22 1980s:+23 1990s:+25 2000s:+27 2010s:+27 2020s:+40,22.12596333320581,40.29127013042394,False,False,False
-abnomore,17,married--wants no more children,6,1970s:+14 1980s:+17 1990s:+27 2000s:+30 2010s:+37 2020s:+61,13.825720446280082,60.945965608809125,False,False,False
-helpblk,18,Should govt aid Black people?,6,1970s:+17 1980s:+18 1990s:+22 2000s:+28 2010s:+34 2020s:+42,16.996950183331844,42.100526359348976,False,False,False
-abrape,19,pregnant as result of rape,6,1970s:+3 1980s:+8 1990s:+15 2000s:+19 2010s:+24 2020s:+23,3.4570762928647083,23.963820910984655,False,False,False
-abpoor,20,low income--cant afford more children,6,1970s:+13 1980s:+16 1990s:+28 2000s:+31 2010s:+36 2020s:+59,12.674017033863077,59.41294724070255,False,False,False
-absingle,21,not married,6,1970s:+12 1980s:+15 1990s:+28 2000s:+29 2010s:+37 2020s:+55,11.907236919675041,55.15640051792617,False,False,False
-abhlth,22,woman's health seriously endangered,6,1970s:+3 1980s:+5 1990s:+10 2000s:+10 2010s:+15 2020s:+12,2.676446115368383,14.896273860559514,False,False,False
-natracey,23,Assistance to Black people: version y,5,1980s:+16 1990s:+20 2000s:+22 2010s:+24 2020s:+45,16.46828248121901,44.768235913665,False,False,False
-letin1a,24,number of immigrants nowadays should be,3,2000s:+19 2010s:+25 2020s:+37,19.346197289117907,36.80584779113894,False,False,False
-natarms,25,"military, armaments, and defense",6,1970s:+18 1980s:+17 1990s:+21 2000s:+27 2010s:+30 2020s:+32,17.206910289485787,31.92522217330973,False,False,False
-natfarey,26,assistance to the poor:version y,5,1980s:+24 1990s:+20 2000s:+21 2010s:+22 2020s:+21,19.63257681917337,23.6772033398877,False,False,False
-xmarsex,27,sex with person other than spouse,6,1970s:+22 1980s:+14 1990s:+15 2000s:+17 2010s:+22 2020s:+32,13.817346178726353,31.714531779692777,False,False,False
-cappun,28,favor or oppose death penalty for murder,6,1970s:+21 1980s:+15 1990s:+15 2000s:+21 2010s:+26 2020s:+37,15.089871454034764,36.61818990509425,False,False,False
-natrace,29,Improving the conditions of Black people,6,1970s:+18 1980s:+19 1990s:+22 2000s:+25 2010s:+29 2020s:+33,17.933850744518676,32.74029950123368,False,False,False
-natfare,30,welfare,6,1970s:+19 1980s:+17 1990s:+22 2000s:+24 2010s:+32 2020s:+35,16.69654949158246,35.11396031167787,False,False,False
-natenvir,31,improving & protecting environment,6,1970s:+19 1980s:+19 1990s:+19 2000s:+27 2010s:+30 2020s:+40,18.57325380439341,40.410612599178776,False,False,False
-racdif1,32,differences due to discrimination,6,1970s:+26 1980s:+16 1990s:+20 2000s:+20 2010s:+29 2020s:+45,16.101044500543914,44.920957656172064,False,False,False
-marblk,33,close relative marry Black person,4,1990s:+20 2000s:+19 2010s:+13 2020s:+7,6.600174934810543,20.321926507228156,False,False,False
-fehelp,34,wife should help husbands career first,3,1970s:+6 1980s:+14 1990s:+16,6.435620790941787,16.16022763433752,False,False,False
-jobsall,35,govts resp: provide jobs for all,4,1980s:+14 1990s:+18 2000s:+17 2010s:+23,14.060729646681198,22.776203744739608,False,False,False
-fefam,36,"better for man to work, woman tend home",6,1970s:+19 1980s:+19 1990s:+21 2000s:+22 2010s:+16 2020s:+27,16.465659838435297,26.9193404115807,False,False,False
-prayer,37,bible prayer in public schools,6,1970s:+19 1980s:+14 1990s:+23 2000s:+20 2010s:+30 2020s:+42,14.083710512031889,41.64403392456626,False,False,False
-affrmact,38,Favor preference in hiring Black people,4,1990s:+19 2000s:+20 2010s:+23 2020s:+37,18.780196338641563,36.76454986627126,False,False,False
-advfront,39,sci rsch is necessary and should be supported by federal govt,3,2000s:+12 2010s:+20 2020s:+37,11.85801108032557,37.18395268852899,False,False,False
-pornmorl,40,materials lead to breakdown in morals,3,1970s:+24 1980s:+19 1990s:+19,19.101266774272542,24.224137049791146,False,False,False
-divlaw,41,divorce laws,6,1970s:+17 1980s:+16 1990s:+18 2000s:+25 2010s:+25 2020s:+22,15.877092363796342,25.02794203071343,False,False,False
-spanking,42,favor spanking to discipline child,5,1980s:+9 1990s:+13 2000s:+13 2010s:+22 2020s:+34,8.934828414705997,34.17777749426423,False,False,False
-busing,43,attitude toward racial busing,3,1970s:+13 1980s:+18 1990s:+19,13.293064924536635,19.227074840088964,False,False,False
-natheal,44,improving & protecting nations health,6,1970s:+15 1980s:+15 1990s:+18 2000s:+14 2010s:+24 2020s:+19,14.318767120724802,24.038636747564958,False,False,False
-pornlaw,45,feelings about pornography laws,6,1970s:+19 1980s:+17 1990s:+20 2000s:+23 2010s:+21 2020s:+23,17.046025528340408,22.968898731686714,False,False,False
-suicide4,46,suicide if tired of living,6,1970s:+9 1980s:+6 1990s:+11 2000s:+12 2010s:+13 2020s:+20,6.129533318139346,20.397401474252074,False,False,False
-natcityy,47,assistance to big cities:version y,5,1980s:+13 1990s:+15 2000s:+15 2010s:+25 2020s:+33,13.106421756119602,32.519656199218765,False,False,False
-marhisp,48,close relative marry hispanic,4,1990s:+17 2000s:+11 2010s:+7 2020s:+3,2.851931473189652,17.075607721420393,False,False,False
-suicide2,49,suicide if bankrupt,6,1970s:+6 1980s:+4 1990s:+7 2000s:+8 2010s:+7 2020s:+14,4.295878343261384,13.953214209017673,False,False,False
-nathealy,50,health:version y,5,1980s:+15 1990s:+13 2000s:+16 2010s:+20 2020s:+17,13.06659361958234,20.494713163651195,False,False,False
-letdie1,51,allow incurable patients to die,6,1970s:+7 1980s:+7 1990s:+17 2000s:+21 2010s:+19 2020s:+20,6.680806726790261,20.822237548261857,False,False,False
-suicide3,52,suicide if dishonored family,6,1970s:+6 1980s:+5 1990s:+6 2000s:+9 2010s:+7 2020s:+10,4.811540431864958,10.148525903933802,False,False,False
-fejobaff,53,for or against preferential hiring of women,4,1990s:+28 2000s:+17 2010s:+15 2020s:+28,14.538313102290207,28.019821378382137,False,False,False
-fehire,54,should hire and promote women,4,1990s:+16 2000s:+12 2010s:+15 2020s:+20,12.188472571313792,20.057490923673697,False,False,False
-natchld,55,assistance for childcare,3,2000s:+17 2010s:+21 2020s:+22,17.048617070314226,22.12920147602547,False,False,False
-conpress,56,confidence in press,6,1970s:+7 1980s:+11 1990s:+9 2000s:+18 2010s:+21 2020s:+44,7.280664698887077,43.52354199243952,False,False,False
-suicide1,57,suicide if incurable disease,6,1970s:+13 1980s:+11 1990s:+19 2000s:+21 2010s:+20 2020s:+23,11.330794499058532,23.039663712140417,False,False,False
-nateducy,58,education:version y,5,1980s:+10 1990s:+11 2000s:+15 2010s:+17 2020s:+23,10.349041969785672,22.85702468996212,False,False,False
-gunlaw,59,favor or oppose gun permits,6,1970s:+9 1980s:+10 1990s:+10 2000s:+13 2010s:+19 2020s:+34,9.105822069196007,34.03370089831203,False,False,False
-marasian,60,close relative marry asian,4,1990s:+16 2000s:+12 2010s:+7 2020s:+2,2.2883105796406533,16.315205250785198,False,True,True
-colhomo,61,allow homosexual to teach,5,1970s:+21 1980s:+15 1990s:+16 2000s:+14 2010s:+7,7.3899554585651215,21.17343860634986,False,False,False
-courts,62,courts dealing with criminals,6,1970s:+8 1980s:+6 1990s:+8 2000s:+15 2010s:+22 2020s:+23,5.824706585291106,23.27343515393323,False,False,False
-conlabor,63,confidence in organized labor,6,1970s:+13 1980s:+14 1990s:+12 2000s:+18 2010s:+21 2020s:+20,12.185573833636825,20.8094222613221,False,False,False
-fepol,64,women not suited for politics,6,1970s:+14 1980s:+14 1990s:+11 2000s:+14 2010s:+12 2020s:+14,11.142826260539124,14.493576262022717,False,False,False
-commun,65,feelings about communism,3,1970s:+21 1980s:+18 1990s:+16,15.630016168893773,21.3153097440857,False,False,False
-racdif3,66,differences due to lack of education,6,1970s:+15 1980s:+9 1990s:+16 2000s:+16 2010s:+23 2020s:+36,8.783634096680764,35.72093518514477,False,False,False
-popular,67,to be well liked or popular,5,1980s:+9 1990s:+11 2000s:+13 2010s:+15 2020s:+21,9.31086896616613,21.124929493842405,False,False,False
-racdif4,68,differences due to lack of will,6,1970s:+24 1980s:+13 1990s:+15 2000s:+16 2010s:+24 2020s:+22,13.332363883090787,24.286587760425455,False,False,False
-discaffw,69,a woman won't get a job or promotion,4,1990s:-0 2000s:+10 2010s:+13 2020s:+27,-0.491128193379875,27.024275454387325,False,False,False
-discaff,70,whites hurt by aff. action,4,1990s:+14 2000s:+9 2010s:+21 2020s:+21,9.374606689895392,21.21670143337586,False,False,False
-pornrape,71,materials lead to rape,3,1970s:+19 1980s:+16 1990s:+18,16.330918734914786,19.314760406446734,False,False,False
-fechld,72,mother working doesn't hurt children,6,1970s:+20 1980s:+14 1990s:+17 2000s:+15 2010s:+9 2020s:+12,9.203488909852986,19.949380094832275,False,False,False
-fepresch,73,preschool kids suffer if mother works,6,1970s:+15 1980s:+15 1990s:+18 2000s:+15 2010s:+14 2020s:+18,13.621901681811256,18.447379993434986,False,False,False
-obey,74,to obey,5,1980s:+10 1990s:+15 2000s:+15 2010s:+18 2020s:+16,10.088080672336986,17.843891902462044,False,False,False
-racpush,75,blacks shouldn't push,4,1970s:+21 1980s:+17 1990s:+15 2000s:+14,13.622046274517247,20.616283147308533,False,False,False
-racopen,76,vote on open housing law,6,1970s:+21 1980s:+14 1990s:+16 2000s:+13 2010s:+13 2020s:+6,6.075864020437946,21.407313077384867,False,False,False
-nateduc,77,improving nations education system,6,1970s:+13 1980s:+13 1990s:+15 2000s:+13 2010s:+18 2020s:+11,11.362823410572156,17.86593935892124,False,False,False
-natcity,78,solving problems of big cities,6,1970s:+20 1980s:+16 1990s:+14 2000s:+16 2010s:+12 2020s:+13,11.67386839058583,19.974014016361096,False,False,False
-fepres,79,vote for woman president,5,1970s:+9 1980s:+6 1990s:+5 2000s:+4 2010s:+2,2.271385940156136,8.907466172991072,False,False,False
-usun,80,remain in u.n. or pull out,3,1970s:+8 1980s:+9 1990s:+4,3.5386964447647857,8.820604772979806,False,False,False
-spkhomo,81,allow homosexual to speak,5,1970s:+14 1980s:+10 1990s:+10 2000s:+10 2010s:+7,7.285374193741669,13.988920181707396,False,False,False
-wirtap,82,wiretapping,3,1970s:+11 1980s:+9 1990s:+10,8.679923484503382,10.67740558864316,False,False,False
-colcom,83,should communist teacher be fired,6,1970s:+25 1980s:+16 1990s:+11 2000s:+13 2010s:+17 2020s:+24,11.039289808382764,24.771096388657515,False,False,False
-libhomo,84,allow homosexuals book in library,5,1970s:+14 1980s:+11 1990s:+14 2000s:+12 2010s:+12,11.342801788536816,14.235284149357918,False,False,False
-colmslm,85,allow anti-american muslim clergymen teaching in college,3,2000s:+15 2010s:+12 2020s:+15,11.741477017402534,15.24263101989768,False,False,False
-libmslm,86,allow anti-american muslim clergymen's books in library,3,2000s:+15 2010s:+14 2020s:+20,14.162266989857974,20.396691570113283,False,False,False
-conclerg,87,confidence in organized religion,6,1970s:+3 1980s:+6 1990s:+10 2000s:+9 2010s:+18 2020s:+19,2.7720438489317156,19.324457404038686,False,False,False
-natdrugy,88,drug rehabilitation:version y,5,1980s:+10 1990s:+9 2000s:+17 2010s:+15 2020s:+17,8.752868613259857,17.43617528058597,False,False,False
-colath,89,allow anti-religionist to teach,6,1970s:+22 1980s:+16 1990s:+14 2000s:+15 2010s:+13 2020s:+22,12.882382115549504,22.261082387641007,False,False,False
-fehome,90,women take care of home not country,3,1970s:+12 1980s:+8 1990s:+8,7.639222997878226,12.408069120329317,False,False,False
-discaffm,91,a man won't get a job or promotion,4,1990s:+13 2000s:+10 2010s:+11 2020s:+22,10.056801004176446,21.530300434036615,False,False,False
-natmass,92,mass transportation,5,1980s:+7 1990s:+6 2000s:+11 2010s:+18 2020s:+23,5.606377214110669,22.936656139137355,False,False,False
-libath,93,allow anti-religious book in library,6,1970s:+14 1980s:+11 1990s:+11 2000s:+9 2010s:+12 2020s:+13,9.282370829474146,14.111533224991707,False,False,False
-liveblks,94,neighborhood half black,4,1990s:+11 2000s:+8 2010s:+10 2020s:+8,7.91251976029345,11.113183755772255,False,False,False
-spkmslm,95,allow muslim clergymen preaching hatred of the us,3,2000s:+16 2010s:+13 2020s:+10,9.744214868335288,15.988356840665318,False,True,True
-racseg,96,whites have right to seg. neighborhood,3,1970s:+19 1980s:+13 1990s:+15,12.639255780425811,19.178995339448857,False,False,False
-conbus,97,confidence in major companies,6,1970s:+12 1980s:+10 1990s:+7 2000s:+7 2010s:+9 2020s:+2,1.9604269703720671,12.117952227667114,False,True,True
-conarmy,98,confidence in military,6,1970s:+8 1980s:+6 1990s:+11 2000s:+19 2010s:+18 2020s:+10,6.088912425597604,18.637937325806668,False,False,False
-natsci,99,supporting scientific research,3,2000s:+11 2010s:+11 2020s:+10,10.286045674506795,11.350497116211644,False,False,False
-racchng,100,try to integrate social club,3,1970s:+21 1980s:+12 1990s:+14,11.81110661792496,20.83150217555535,False,False,False
-nataidy,101,assistance to other countries:ver y,5,1980s:+2 1990s:+7 2000s:+12 2010s:+19 2020s:+32,2.178869125895355,32.07325462157801,False,False,False
-workblks,102,hard working - lazy,4,1990s:+9 2000s:+9 2010s:+12 2020s:+16,8.879310166260352,15.526050951320977,False,False,False
-natcrimy,103,law enforcement:version y,5,1980s:+5 1990s:+10 2000s:+10 2010s:+17 2020s:+37,4.839299547595832,36.61410830278776,False,False,False
-libcom,104,allow communists book in library,6,1970s:+14 1980s:+11 1990s:+9 2000s:+10 2010s:+12 2020s:+19,9.4246617604588,19.399961623739348,False,False,False
-thnkself,105,to think for ones self,5,1980s:+6 1990s:+12 2000s:+9 2010s:+14 2020s:+7,6.0584889539259335,13.50475004504661,False,True,True
-natpark,106,parks and recreation,5,1980s:+11 1990s:+8 2000s:+10 2010s:+13 2020s:+12,8.45500857824889,13.291490002397577,False,False,False
-coneduc,107,confidence in education,6,1970s:+4 1980s:+1 1990s:+6 2000s:+4 2010s:+7 2020s:+16,0.5829195194316252,16.14437329502632,False,False,True
-getahead,108,opinion of how people get ahead,6,1970s:+7 1980s:+4 1990s:+6 2000s:+8 2010s:+16 2020s:+16,4.402032064226846,16.38719900651826,False,False,False
-spkcom,109,allow communist to speak,6,1970s:+15 1980s:+11 1990s:+10 2000s:+10 2010s:+10 2020s:+10,9.616914011580185,15.48290207105058,False,True,True
-colmil,110,allow militarist to teach,5,1970s:+19 1980s:+15 1990s:+11 2000s:+13 2010s:+10,9.578203645044942,19.434236780135382,False,False,False
-marwht,111,r favor close relative marrying white person,3,2000s:+12 2010s:+11 2020s:+9,9.178020766177974,12.439545240855088,False,False,False
-racmar,112,favor law against racial intermarriage,4,1970s:+13 1980s:+8 1990s:+6 2000s:+6,5.512431158174952,13.05085476220032,False,False,False
-nataid,113,foreign aid,6,1970s:+5 1980s:+4 1990s:+8 2000s:+12 2010s:+19 2020s:+35,4.217603557438254,35.40297919545843,False,False,False
-polescap,114,citizen attempting to escape custody,6,1970s:+3 1980s:+6 1990s:+6 2000s:+10 2010s:+9 2020s:+13,2.8982980463107877,12.781143577570209,False,False,False
-confinan,115,confid in banks & financial institutions,6,1970s:+4 1980s:+5 1990s:+3 2000s:+2 2010s:+13 2020s:+7,1.9377984394076342,12.843634634162715,False,False,True
-world1,116,world image:much evil vs. much good,3,1980s:-2 1990s:+6 2000s:+6,-1.612498768786097,6.369618176612055,False,False,False
-polabuse,117,citizen said vulgar or obscene things,6,1970s:+8 1980s:+4 1990s:+2 2000s:+2 2010s:+5 2020s:+5,2.2447838802818505,7.940056740935747,False,False,False
-racpres,118,would vote for black president,5,1970s:+7 1980s:+4 1990s:+3 2000s:+2 2010s:+2,1.6194315352244666,6.6232066762281665,False,True,True
-polhitok,119,ever approve of police striking citizen,6,1970s:+6 1980s:+6 1990s:+7 2000s:+7 2010s:+6 2020s:+12,6.248340635661798,11.584830358435273,False,False,False
-libmil,120,allow militarists book in library,5,1970s:+13 1980s:+9 1990s:+10 2000s:+8 2010s:+10,8.36615942153211,13.306972176046894,False,False,False
-tax,121,r's federal income tax,6,1970s:+2 1980s:+0 1990s:+9 2000s:+11 2010s:+15 2020s:+13,0.47483317459857677,15.316751293208775,False,False,False
-contv,122,confidence in television,6,1970s:+4 1980s:+5 1990s:+9 2000s:+11 2010s:+4 2020s:+20,3.840979298352709,19.609560969896496,False,False,False
-spkath,123,allow anti-religionist to speak,6,1970s:+13 1980s:+8 1990s:+7 2000s:+8 2010s:+7 2020s:+6,5.979771309515081,12.563688838475645,False,True,True
-polattak,124,citizen attacking policeman with fists,6,1970s:+1 1980s:+2 1990s:+3 2000s:+4 2010s:+3 2020s:+2,0.6611296166871949,3.929616599516328,False,True,True
-natsoc,125,social security,5,1980s:+11 1990s:+5 2000s:+11 2010s:+6 2020s:-1,-0.5625494250337593,11.47599999001957,False,True,True
-hitrobbr,126,stranger had broken into mans house,3,1970s:+3 1980s:+4 1990s:+2,1.547865265231374,3.6964238777639102,False,True,True
-hitbeatr,127,stranger was beating up a woman,3,1970s:+1 1980s:+3 1990s:+3,1.4176155260046563,3.451599517637538,False,False,False
-porninf,128,materials provide info about sex,3,1970s:+9 1980s:+8 1990s:+5,5.219742896938934,9.484419234591096,False,False,False
-consci,129,confidence in scientific community,6,1970s:-0 1980s:+2 1990s:+5 2000s:+10 2010s:+14 2020s:+31,-0.36630679881488604,30.774619088096777,False,False,False
-pornout,130,materials provide outlet,3,1970s:+6 1980s:+7 1990s:+5,5.203421693320181,6.637290670078744,False,False,False
-wlthwhts,131,rich - poor,4,1990s:+8 2000s:+10 2010s:+7 2020s:+23,7.243216502306538,23.129998902393993,False,False,False
-spkmil,132,allow militarist to speak,5,1970s:+12 1980s:+8 1990s:+9 2000s:+9 2010s:+6,6.246866376335977,12.379731692798895,False,False,False
-fework,133,should women work,3,1970s:+9 1980s:+6 1990s:+3,3.1347354602653947,8.747099659977732,False,False,False
-natdrug,134,dealing with drug addiction,6,1970s:+0 1980s:+2 1990s:+7 2000s:+7 2010s:+8 2020s:+9,0.0924171281340258,8.79845020089097,False,False,False
-librac,135,allow racists book in library,6,1970s:+10 1980s:+6 1990s:+8 2000s:+8 2010s:+3 2020s:+8,2.6078772335837663,9.585610968040637,False,True,True
-workhard,136,to work hard,5,1980s:+2 1990s:+5 2000s:+3 2010s:+5 2020s:+18,2.280825218984428,17.598177724931702,False,False,False
-intlwhts,137,unintelligent -intelligent,4,1990s:+6 2000s:+8 2010s:+6 2020s:+10,5.692736791300063,9.636531419910217,False,True,True
-toofast,138,science makes our way of life change too fast,3,2000s:+6 2010s:+5 2020s:+36,4.76062964164351,35.82869880500171,False,False,False
-anomia5,139,lot of the average man getting worse,3,1970s:+1 1980s:+9 1990s:+4,0.6057249387323382,8.641982275073696,False,False,False
-livewhts,140,r favors living in half white neighborhood,2,2000s:+7 2010s:+4,4.162240363354119,6.55640282477779,False,False,False
-colrac,141,allow racist to teach,6,1970s:+13 1980s:+8 1990s:+8 2000s:+6 2010s:+0 2020s:+5,0.1282736772321602,13.235428455909931,False,True,True
-trust,142,can people be trusted,6,1970s:+1 1980s:-2 1990s:+1 2000s:+2 2010s:+9 2020s:+7,-2.1177720212185114,8.532074828239312,False,False,False
-wlthblks,143,rich - poor,4,1990s:+3 2000s:+1 2010s:+2 2020s:+10,0.9399103344196136,10.14866004944267,False,False,False
-helpoth,144,to help others,5,1980s:+2 1990s:+4 2000s:+4 2010s:+4 2020s:+13,1.6912275937746246,12.722329948072014,False,False,False
-meovrwrk,145,men hurt family when focus on work too much,4,1990s:+2 2000s:+6 2010s:+4 2020s:+6,2.084087377671373,6.2658373864039385,False,True,True
-nextgen,146,science & tech. give more opportunities to next generation,3,2000s:+2 2010s:+6 2020s:+8,2.381835775163277,8.40072976236309,False,True,True
-natspac,147,space exploration program,6,1970s:+6 1980s:+5 1990s:+4 2000s:-4 2010s:-2 2020s:+3,-3.522318382893197,6.210685128163024,True,True,True
-spkrac,148,allow racist to speak,6,1970s:+8 1980s:+7 1990s:+5 2000s:+6 2010s:+0 2020s:-5,-5.462149213167056,7.683097139526956,False,True,True
-usintl,149,take active part in world affairs,4,1970s:+1 1980s:+4 1990s:+5 2000s:+6,0.7585436405296742,6.457206810644955,False,False,False
-hitok,150,ever approve of man punching adult male,3,1970s:+2 1980s:+1 1990s:+2,1.36920110692762,1.767316465034574,False,False,False
-anomia6,151,not fair to bring child into world,3,1970s:-3 1980s:+5 1990s:+2,-3.242661684198045,4.982513032722036,False,True,True
-racdif2,152,differences due to in-born learning ability,6,1970s:+9 1980s:+4 1990s:+3 2000s:+1 2010s:+1 2020s:+4,0.9254583911068828,8.661128436023983,False,True,True
-aged,153,should aged live with their children,6,1970s:+5 1980s:+6 1990s:+7 2000s:+4 2010s:+5 2020s:+4,3.9800512897703255,6.5239738468136075,False,True,True
-intlblks,154,unintelligent - intelligent,4,1990s:+2 2000s:+2 2010s:+2 2020s:+2,1.5602032220798798,2.4692342700168233,False,True,True
-natspacy,155,space exploration:version y,5,1980s:+2 1990s:+2 2000s:+2 2010s:+2 2020s:-2,-1.567966434841428,2.3586069734263915,False,True,True
-workwhts,156,hard working - lazy,4,1990s:+1 2000s:+5 2010s:+5 2020s:+0,0.19710733364298738,4.769116660512318,False,True,True
-hitdrunk,157,drunk bumped into man & wife,3,1970s:+3 1980s:-0 1990s:+3,-0.0459259408401233,3.4846365798837993,False,False,True
-conlegis,158,confidence in congress,6,1970s:+4 1980s:+2 1990s:+4 2000s:-0 2010s:+1 2020s:+13,-0.4929098114093311,13.056946521413526,False,False,True
-polmurdr,159,citizen questioned as murder suspect,6,1970s:-0 1980s:+1 1990s:+1 2000s:+0 2010s:+2 2020s:+6,-0.4494721354107348,6.271384311258194,False,False,False
-hitmarch,160,stranger in protest march,3,1970s:+1 1980s:-0 1990s:-0,-0.17079057465402037,1.1699122339879537,False,False,False
-confed,161,confid. in exec branch of fed govt,6,1970s:-4 1980s:-10 1990s:+10 2000s:-11 2010s:+15 2020s:+34,-10.657829960993626,33.619175785264964,True,False,False
-anomia7,162,officials not interested in average man,4,1970s:-6 1980s:+2 1990s:-1 2000s:+10,-5.603917240570117,9.716087999998274,True,False,True
-racfew,163,children to school with opposite race,3,1970s:-0 1980s:+1 1990s:-0,-0.28158641138968443,0.7695799705760752,False,False,False
-natcrime,164,halting rising crime rate,6,1970s:+3 1980s:-1 1990s:-1 2000s:+1 2010s:+5 2020s:+9,-1.2564546958133471,8.645294385168956,False,False,True
-conjudge,165,confid. in united states supreme court,6,1970s:+5 1980s:+2 1990s:+4 2000s:-5 2010s:+2 2020s:-15,-15.145489822015001,4.809361305442506,True,False,True
-natroad,166,highways and bridges,5,1980s:+2 1990s:+0 2000s:+3 2010s:-1 2020s:+0,-1.1160881744635698,2.8164990624653274,False,True,True
-conmedic,167,confidence in medicine,6,1970s:-1 1980s:-3 1990s:-0 2000s:+2 2010s:+2 2020s:+15,-2.5079566079724005,15.355860249358022,True,False,False
-fair,168,people fair or try to take advantage,6,1970s:+4 1980s:+5 1990s:+1 2000s:+4 2010s:+0 2020s:-4,-3.7463320120914467,5.436277449576943,False,True,True
-helpful,169,people helpful or looking out for selves,6,1970s:+4 1980s:+4 1990s:+0 2000s:+2 2010s:-0 2020s:-5,-4.792561537476398,4.176270882182914,False,True,True
-hitchild,170,stranger had hit mans child,3,1970s:+2 1980s:+1 1990s:+3,0.6993910608557086,3.4081556793613133,False,False,False
+homosex,1,homosexual sex relations,6,1970s:+15 1980s:+15 1990s:+28 2000s:+33 2010s:+37 2020s:+45,14.793855360212426,45.1322800430299,False,False,False
+helppoor,2,should govt improve standard of living?,6,1970s:+25 1980s:+16 1990s:+21 2000s:+24 2010s:+32 2020s:+27,16.39724208659635,32.48332177677707,False,False,False
+helpnot,3,should govt do more or less?,6,1970s:+17 1980s:+20 1990s:+23 2000s:+22 2010s:+37 2020s:+38,17.387218947934098,37.546122120356316,False,False,False
+pillok,4,birth control to teenagers 14-16,5,1980s:+23 1990s:+27 2000s:+28 2010s:+30 2020s:+34,22.72678819027346,33.78079267148827,False,False,False
+sexeduc,5,sex education in public schools,6,1970s:+12 1980s:+6 1990s:+13 2000s:+13 2010s:+12 2020s:+17,5.983768036557118,16.84421401133062,False,False,False
+helpsick,6,should govt help pay for medical care?,6,1970s:+29 1980s:+22 1990s:+24 2000s:+30 2010s:+39 2020s:+40,21.86326344707364,39.650211218102996,False,False,False
+wrkwayup,7,Black people overcome prejudice without favors,4,1990s:+18 2000s:+22 2010s:+29 2020s:+37,18.176725399389127,36.99787057540709,False,False,False
+natarmsy,8,national defense:version y,5,1980s:+23 1990s:+18 2000s:+25 2010s:+32 2020s:+33,18.46722798158894,32.62450000265146,False,False,False
+abany,9,abortion if woman wants for any reason,6,1970s:+10 1980s:+16 1990s:+27 2000s:+30 2010s:+37 2020s:+55,9.953407011063542,55.21794027091696,False,False,False
+goveqinc,10,govmnt should reduce inc differentials,4,1980s:+17 1990s:+21 2000s:+31 2010s:+38,17.35873616156042,37.93786985522451,False,False,False
+grass,11,should marijuana be made legal,6,1970s:+28 1980s:+15 1990s:+21 2000s:+24 2010s:+30 2020s:+27,15.210037090859396,29.580791185184125,False,False,False
+teensex,12,sex before marriage:teens 14-16,5,1980s:+20 1990s:+23 2000s:+23 2010s:+27 2020s:+35,20.447122616857392,35.36441375078521,False,False,False
+abdefect,13,strong chance of serious defect,6,1970s:+5 1980s:+7 1990s:+18 2000s:+20 2010s:+25 2020s:+28,4.883755043383434,28.10793552484727,False,False,False
+eqwlth,14,should govt reduce income differences,6,1970s:+16 1980s:+19 1990s:+22 2000s:+26 2010s:+38 2020s:+43,16.10669284148652,43.24790006163932,False,False,False
+natracey,15,Assistance to Black people: version y,5,1980s:+17 1990s:+20 2000s:+22 2010s:+25 2020s:+45,16.78999677691899,44.768235913665,False,False,False
+abnomore,16,married--wants no more children,6,1970s:+14 1980s:+16 1990s:+27 2000s:+29 2010s:+36 2020s:+61,13.592302155722352,60.945965608809125,False,False,False
+natenviy,17,the environment:version y,5,1980s:+11 1990s:+19 2000s:+26 2010s:+31 2020s:+45,11.355222946470017,44.79699239318538,False,False,False
+premarsx,18,sex before marriage,6,1970s:+22 1980s:+23 1990s:+25 2000s:+27 2010s:+26 2020s:+40,22.052250743139457,40.29127013042394,False,False,False
+helpblk,19,Should govt aid Black people?,6,1970s:+18 1980s:+17 1990s:+22 2000s:+28 2010s:+35 2020s:+42,16.880710658115877,42.100526359348976,False,False,False
+abpoor,20,low income--cant afford more children,6,1970s:+12 1980s:+16 1990s:+27 2000s:+31 2010s:+35 2020s:+59,12.499253763225965,59.41294724070255,False,False,False
+abrape,21,pregnant as result of rape,6,1970s:+4 1980s:+7 1990s:+15 2000s:+18 2010s:+24 2020s:+23,4.399788376983313,24.22794456769141,False,False,False
+natarms,22,"military, armaments, and defense",6,1970s:+18 1980s:+19 1990s:+21 2000s:+27 2010s:+32 2020s:+32,18.301404971183956,31.932425635715646,False,False,False
+absingle,23,not married,6,1970s:+12 1980s:+15 1990s:+27 2000s:+29 2010s:+36 2020s:+55,11.585250218297666,55.15640051792617,False,False,False
+abhlth,24,woman's health seriously endangered,6,1970s:+3 1980s:+5 1990s:+9 2000s:+9 2010s:+15 2020s:+12,3.3010525929274546,14.740975089688257,False,False,False
+letin1a,25,number of immigrants nowadays should be,3,2000s:+19 2010s:+25 2020s:+37,18.547449533508516,36.80584779113894,False,False,False
+xmarsex,26,sex with person other than spouse,6,1970s:+22 1980s:+15 1990s:+15 2000s:+17 2010s:+23 2020s:+32,15.03930669969784,31.714531779692777,False,False,False
+cappun,27,favor or oppose death penalty for murder,6,1970s:+20 1980s:+16 1990s:+14 2000s:+21 2010s:+27 2020s:+37,14.310954450440573,36.61818990509425,False,False,False
+natfarey,28,assistance to the poor:version y,5,1980s:+24 1990s:+19 2000s:+21 2010s:+22 2020s:+21,18.817360776752967,24.20737819540823,False,False,False
+natenvir,29,improving & protecting environment,6,1970s:+20 1980s:+19 1990s:+18 2000s:+27 2010s:+30 2020s:+40,18.055757555053564,40.410612599178776,False,False,False
+natrace,30,Improving the conditions of Black people,6,1970s:+18 1980s:+17 1990s:+21 2000s:+24 2010s:+29 2020s:+33,17.187923841616804,32.74029950123368,False,False,False
+racdif1,31,differences due to discrimination,6,1970s:+24 1980s:+16 1990s:+19 2000s:+20 2010s:+30 2020s:+45,15.86027544247669,44.920957656172064,False,False,False
+natfare,32,welfare,6,1970s:+19 1980s:+16 1990s:+22 2000s:+23 2010s:+33 2020s:+35,15.741104585880533,35.11396031167787,False,False,False
+jobsall,33,govts resp: provide jobs for all,4,1980s:+14 1990s:+18 2000s:+17 2010s:+23,14.365766124959855,22.647420899153772,False,False,False
+marblk,34,close relative marry Black person,4,1990s:+19 2000s:+19 2010s:+13 2020s:+7,6.600174934810543,19.327192847916745,False,False,False
+prayer,35,bible prayer in public schools,6,1970s:+19 1980s:+15 1990s:+22 2000s:+21 2010s:+30 2020s:+42,15.212540362487509,41.64403392456626,False,False,False
+affrmact,36,Favor preference in hiring Black people,4,1990s:+18 2000s:+20 2010s:+25 2020s:+37,18.45069742132936,36.76454986627126,False,False,False
+fefam,37,"better for man to work, woman tend home",6,1970s:+18 1980s:+20 1990s:+20 2000s:+22 2010s:+17 2020s:+27,17.375592648555163,26.9193404115807,False,False,False
+fehelp,38,wife should help husbands career first,3,1970s:+7 1980s:+14 1990s:+15,6.561961569838182,15.43760297957214,False,False,False
+advfront,39,sci rsch is necessary and should be supported by federal govt,3,2000s:+12 2010s:+20 2020s:+37,12.26198646856359,37.18395268852899,False,False,False
+pornmorl,40,materials lead to breakdown in morals,3,1970s:+24 1980s:+19 1990s:+20,19.059929921030793,23.76537671708166,False,False,False
+spanking,41,favor spanking to discipline child,5,1980s:+10 1990s:+13 2000s:+13 2010s:+22 2020s:+34,10.41067003234617,34.17777749426423,False,False,False
+divlaw,42,divorce laws,6,1970s:+17 1980s:+15 1990s:+17 2000s:+24 2010s:+25 2020s:+22,15.116736888892262,24.554474405239578,False,False,False
+natheal,43,improving & protecting nations health,6,1970s:+15 1980s:+16 1990s:+17 2000s:+14 2010s:+24 2020s:+19,13.882549389902504,24.023186488212385,False,False,False
+suicide4,44,suicide if tired of living,6,1970s:+10 1980s:+7 1990s:+11 2000s:+12 2010s:+13 2020s:+20,7.0593471235055105,20.397401474252074,False,False,False
+suicide2,45,suicide if bankrupt,6,1970s:+6 1980s:+5 1990s:+7 2000s:+7 2010s:+8 2020s:+14,5.248490158907881,13.953214209017673,False,False,False
+fejobaff,46,for or against preferential hiring of women,4,1990s:+29 2000s:+16 2010s:+16 2020s:+28,15.927119568362901,28.52797495342608,False,False,False
+natcityy,47,assistance to big cities:version y,5,1980s:+12 1990s:+15 2000s:+15 2010s:+25 2020s:+33,12.034792569763125,32.519656199218765,False,False,False
+pornlaw,48,feelings about pornography laws,6,1970s:+19 1980s:+16 1990s:+20 2000s:+22 2010s:+21 2020s:+23,16.034339621114054,22.968898731686714,False,False,False
+suicide3,49,suicide if dishonored family,6,1970s:+6 1980s:+6 1990s:+6 2000s:+8 2010s:+7 2020s:+10,5.565952439132749,10.148525903933802,False,False,False
+letdie1,50,allow incurable patients to die,6,1970s:+7 1980s:+7 1990s:+16 2000s:+21 2010s:+19 2020s:+20,6.634609154762094,20.845071384376897,False,False,False
+busing,51,attitude toward racial busing,3,1970s:+13 1980s:+16 1990s:+18,13.008803979175987,17.85678216193264,False,False,False
+natchld,52,assistance for childcare,3,2000s:+17 2010s:+21 2020s:+22,16.5779952230873,22.12920147602547,False,False,False
+conpress,53,confidence in press,6,1970s:+8 1980s:+11 1990s:+8 2000s:+17 2010s:+22 2020s:+44,7.583269658942818,43.52354199243952,False,False,False
+gunlaw,54,favor or oppose gun permits,6,1970s:+9 1980s:+10 1990s:+10 2000s:+13 2010s:+19 2020s:+34,9.410265328521545,34.03370089831203,False,False,False
+marhisp,55,close relative marry hispanic,4,1990s:+16 2000s:+11 2010s:+8 2020s:+3,2.851931473189652,15.556553679113861,False,False,False
+fehire,56,should hire and promote women,4,1990s:+15 2000s:+11 2010s:+15 2020s:+20,10.557146354896934,20.057490923673697,False,False,False
+suicide1,57,suicide if incurable disease,6,1970s:+14 1980s:+11 1990s:+18 2000s:+22 2010s:+20 2020s:+23,11.126730660039803,23.039663712140417,False,False,False
+nathealy,58,health:version y,5,1980s:+15 1990s:+13 2000s:+16 2010s:+19 2020s:+17,12.919163702954318,18.596492354827294,False,False,False
+courts,59,courts dealing with criminals,6,1970s:+8 1980s:+6 1990s:+8 2000s:+15 2010s:+22 2020s:+23,6.120169417035726,23.27343515393323,False,False,False
+marasian,60,close relative marry asian,4,1990s:+15 2000s:+12 2010s:+7 2020s:+2,2.2883105796406533,15.020890709924506,False,True,True
+colhomo,61,allow homosexual to teach,5,1970s:+22 1980s:+15 1990s:+16 2000s:+13 2010s:+8,7.555739733890543,21.53327852857266,False,False,False
+conlabor,62,confidence in organized labor,6,1970s:+12 1980s:+14 1990s:+11 2000s:+18 2010s:+21 2020s:+20,11.281686448577254,21.1629241986127,False,False,False
+popular,63,to be well liked or popular,5,1980s:+12 1990s:+11 2000s:+13 2010s:+17 2020s:+21,10.62796123172659,21.124929493842405,False,False,False
+nateducy,64,education:version y,5,1980s:+11 1990s:+10 2000s:+15 2010s:+16 2020s:+23,9.74979327591083,22.85702468996212,False,False,False
+racdif3,65,differences due to lack of education,6,1970s:+13 1980s:+10 1990s:+16 2000s:+16 2010s:+23 2020s:+36,9.740004976902267,35.72093518514477,False,False,False
+discaffw,66,a woman won't get a job or promotion,4,1990s:+0 2000s:+10 2010s:+14 2020s:+27,0.18184296304453174,27.024275454387325,False,False,False
+racdif4,67,differences due to lack of will,6,1970s:+23 1980s:+13 1990s:+14 2000s:+16 2010s:+24 2020s:+22,13.275320931491224,23.974902748511767,False,False,False
+discaff,68,whites hurt by aff. action,4,1990s:+14 2000s:+10 2010s:+20 2020s:+21,9.797608913592482,21.21670143337586,False,False,False
+fepol,69,women not suited for politics,6,1970s:+16 1980s:+12 1990s:+10 2000s:+14 2010s:+13 2020s:+14,9.584100489705435,15.584528235774853,False,False,False
+commun,70,feelings about communism,3,1970s:+22 1980s:+18 1990s:+14,14.105992957498964,21.809934622763166,False,False,False
+obey,71,to obey,5,1980s:+11 1990s:+15 2000s:+15 2010s:+18 2020s:+16,10.980592338356065,17.977982103653968,False,False,False
+fechld,72,mother working doesn't hurt children,6,1970s:+20 1980s:+14 1990s:+16 2000s:+15 2010s:+9 2020s:+12,9.18661814185163,19.687190693516378,False,False,False
+pornrape,73,materials lead to rape,3,1970s:+19 1980s:+16 1990s:+19,15.693343187727283,18.645658442560464,False,False,False
+fepresch,74,preschool kids suffer if mother works,6,1970s:+14 1980s:+15 1990s:+18 2000s:+16 2010s:+13 2020s:+18,13.465942449550223,18.447379993434986,False,False,False
+usun,75,remain in u.n. or pull out,3,1970s:+9 1980s:+9 1990s:+2,1.9804750392830903,9.483650071722796,False,True,True
+racpush,76,blacks shouldn't push,4,1970s:+21 1980s:+18 1990s:+15 2000s:+14,13.732777597978579,21.264593554487522,False,False,False
+nateduc,77,improving nations education system,6,1970s:+15 1980s:+14 1990s:+14 2000s:+12 2010s:+17 2020s:+11,11.362823410572156,17.34594024655617,False,False,False
+racopen,78,vote on open housing law,6,1970s:+22 1980s:+13 1990s:+16 2000s:+13 2010s:+13 2020s:+6,6.075864020437946,22.005482385436142,False,False,False
+natcity,79,solving problems of big cities,6,1970s:+20 1980s:+14 1990s:+14 2000s:+16 2010s:+12 2020s:+13,12.215374638336145,19.67813970385397,False,False,False
+conclerg,80,confidence in organized religion,6,1970s:+2 1980s:+7 1990s:+11 2000s:+10 2010s:+19 2020s:+19,2.1860514627131122,19.324457404038686,False,False,False
+colcom,81,should communist teacher be fired,6,1970s:+25 1980s:+16 1990s:+10 2000s:+13 2010s:+18 2020s:+24,10.184687646141382,25.05411693894219,False,False,False
+spkhomo,82,allow homosexual to speak,5,1970s:+15 1980s:+9 1990s:+10 2000s:+10 2010s:+7,7.429446572135859,14.66854169987683,False,False,False
+libmslm,83,allow anti-american muslim clergymen's books in library,3,2000s:+15 2010s:+15 2020s:+20,14.529481500740799,20.396691570113283,False,False,False
+libhomo,84,allow homosexuals book in library,5,1970s:+14 1980s:+11 1990s:+14 2000s:+12 2010s:+12,10.868422951570778,14.291058325873646,False,False,False
+colmslm,85,allow anti-american muslim clergymen teaching in college,3,2000s:+15 2010s:+12 2020s:+15,11.62838095289792,14.57106556119695,False,False,False
+wirtap,86,wiretapping,3,1970s:+10 1980s:+9 1990s:+11,8.614855986397899,10.659716431924346,False,False,False
+fepres,87,vote for woman president,5,1970s:+9 1980s:+4 1990s:+5 2000s:+3 2010s:+2,2.150366627955239,8.805290675383414,False,True,True
+natdrugy,88,drug rehabilitation:version y,5,1980s:+11 1990s:+8 2000s:+16 2010s:+14 2020s:+17,8.251183259093093,17.43617528058597,False,False,False
+colath,89,allow anti-religionist to teach,6,1970s:+23 1980s:+16 1990s:+13 2000s:+15 2010s:+13 2020s:+22,12.718184197175159,22.979378433114274,False,False,False
+natmass,90,mass transportation,5,1980s:+7 1990s:+6 2000s:+11 2010s:+18 2020s:+23,5.993220874893968,22.936656139137355,False,False,False
+discaffm,91,a man won't get a job or promotion,4,1990s:+15 2000s:+10 2010s:+10 2020s:+22,9.732544801535282,21.530300434036615,False,False,False
+nataidy,92,assistance to other countries:ver y,5,1980s:+3 1990s:+6 2000s:+14 2010s:+21 2020s:+32,3.090730155807142,32.07325462157801,False,False,False
+libath,93,allow anti-religious book in library,6,1970s:+14 1980s:+11 1990s:+11 2000s:+10 2010s:+12 2020s:+13,9.530185130526,14.463542370222227,False,False,False
+fehome,94,women take care of home not country,3,1970s:+14 1980s:+8 1990s:+7,6.661697058867066,13.688169044922342,False,False,False
+conbus,95,confidence in major companies,6,1970s:+12 1980s:+11 1990s:+7 2000s:+7 2010s:+9 2020s:+2,1.9604269703720671,11.7727327940359,False,True,True
+spkmslm,96,allow muslim clergymen preaching hatred of the us,3,2000s:+16 2010s:+13 2020s:+10,9.744214868335288,15.706235262987217,False,True,True
+natcrimy,97,law enforcement:version y,5,1980s:+4 1990s:+9 2000s:+10 2010s:+19 2020s:+37,4.430211838368914,36.61410830278776,False,False,False
+conarmy,98,confidence in military,6,1970s:+8 1980s:+7 1990s:+11 2000s:+18 2010s:+18 2020s:+10,6.7695311405352285,18.421722040087424,False,False,False
+liveblks,99,neighborhood half black,4,1990s:+10 2000s:+8 2010s:+10 2020s:+8,7.91251976029345,9.97685702111664,False,False,False
+racseg,100,whites have right to seg. neighborhood,3,1970s:+19 1980s:+13 1990s:+14,12.907118048852912,18.844854562934955,False,False,False
+workblks,101,hard working - lazy,4,1990s:+9 2000s:+8 2010s:+12 2020s:+16,8.229242332477376,15.526050951320977,False,False,False
+natsci,102,supporting scientific research,3,2000s:+12 2010s:+11 2020s:+10,10.286045674506795,11.651841229543358,False,False,False
+racchng,103,try to integrate social club,3,1970s:+22 1980s:+12 1990s:+13,11.626403006460627,21.9332412956526,False,False,False
+thnkself,104,to think for ones self,5,1980s:+6 1990s:+12 2000s:+9 2010s:+13 2020s:+7,6.047252763925314,13.345639825630363,False,True,True
+libcom,105,allow communists book in library,6,1970s:+15 1980s:+10 1990s:+9 2000s:+10 2010s:+12 2020s:+19,9.234856284988927,19.399961623739348,False,False,False
+natpark,106,parks and recreation,5,1980s:+12 1990s:+9 2000s:+9 2010s:+13 2020s:+12,8.522281874559134,13.056660509849172,False,False,False
+coneduc,107,confidence in education,6,1970s:+4 1980s:+0 1990s:+6 2000s:+4 2010s:+8 2020s:+16,0.22549267081683477,16.14437329502632,False,False,True
+marwht,108,r favor close relative marrying white person,3,2000s:+12 2010s:+11 2020s:+9,9.178020766177974,12.135556977103379,False,False,False
+getahead,109,opinion of how people get ahead,6,1970s:+7 1980s:+3 1990s:+6 2000s:+8 2010s:+17 2020s:+16,3.3457291803585365,16.629173522012586,False,False,False
+colmil,110,allow militarist to teach,5,1970s:+20 1980s:+16 1990s:+11 2000s:+13 2010s:+10,9.791053495735063,20.36648802853413,False,False,False
+nataid,111,foreign aid,6,1970s:+5 1980s:+5 1990s:+9 2000s:+12 2010s:+21 2020s:+35,4.84631294543113,35.40297919545843,False,False,False
+racmar,112,favor law against racial intermarriage,4,1970s:+14 1980s:+9 1990s:+5 2000s:+6,5.40417386736801,13.890608586447373,False,False,False
+spkcom,113,allow communist to speak,6,1970s:+16 1980s:+11 1990s:+9 2000s:+10 2010s:+10 2020s:+10,9.192681001962427,16.054203135645672,False,True,True
+polescap,114,citizen attempting to escape custody,6,1970s:+4 1980s:+6 1990s:+6 2000s:+10 2010s:+9 2020s:+13,4.297135667513475,12.781143577570209,False,False,False
+world1,115,world image:much evil vs. much good,3,1980s:-1 1990s:+6 2000s:+7,-1.429067670583728,6.853055813807049,False,False,False
+tax,116,r's federal income tax,6,1970s:+2 1980s:+2 1990s:+9 2000s:+11 2010s:+15 2020s:+13,1.5170063835500236,15.129670895013575,False,False,False
+confinan,117,confid in banks & financial institutions,6,1970s:+4 1980s:+4 1990s:+3 2000s:+1 2010s:+13 2020s:+7,1.3503341248864875,13.160442140245532,False,False,True
+libmil,118,allow militarists book in library,5,1970s:+13 1980s:+10 1990s:+10 2000s:+8 2010s:+9,8.413442054298637,13.43872283149582,False,False,False
+polhitok,119,ever approve of police striking citizen,6,1970s:+5 1980s:+7 1990s:+6 2000s:+7 2010s:+7 2020s:+12,5.259349410053349,11.584830358435273,False,False,False
+hitrobbr,120,stranger had broken into mans house,3,1970s:+3 1980s:+5 1990s:+2,2.0188658790695313,4.910775113334164,False,True,True
+polabuse,121,citizen said vulgar or obscene things,6,1970s:+8 1980s:+4 1990s:+2 2000s:+2 2010s:+5 2020s:+5,1.9623319860627708,8.41505686985417,False,False,False
+hitbeatr,122,stranger was beating up a woman,3,1970s:+2 1980s:+4 1990s:+4,1.5738104152378085,3.766896783129592,False,False,False
+racpres,123,would vote for black president,5,1970s:+6 1980s:+4 1990s:+2 2000s:+2 2010s:+2,1.7682831946882367,6.327165624990908,False,True,True
+contv,124,confidence in television,6,1970s:+4 1980s:+3 1990s:+9 2000s:+9 2010s:+5 2020s:+20,3.1464096419520637,19.609560969896496,False,False,False
+spkath,125,allow anti-religionist to speak,6,1970s:+13 1980s:+8 1990s:+7 2000s:+8 2010s:+6 2020s:+6,5.979771309515081,12.580168947733291,False,True,True
+polattak,126,citizen attacking policeman with fists,6,1970s:+1 1980s:+2 1990s:+2 2000s:+4 2010s:+4 2020s:+2,1.2403780358743788,4.0371863629017675,False,True,True
+pornout,127,materials provide outlet,3,1970s:+9 1980s:+7 1990s:+4,3.5568874270295927,8.627565964493833,False,True,True
+porninf,128,materials provide info about sex,3,1970s:+11 1980s:+8 1990s:+4,4.201566852048333,11.019983202121136,False,False,False
+wlthwhts,129,rich - poor,4,1990s:+9 2000s:+10 2010s:+8 2020s:+23,8.180288492289822,23.129998902393993,False,False,False
+natsoc,130,social security,5,1980s:+11 1990s:+4 2000s:+11 2010s:+6 2020s:-1,-0.5625494250337593,11.443760910123684,False,True,True
+consci,131,confidence in scientific community,6,1970s:-1 1980s:+3 1990s:+5 2000s:+10 2010s:+15 2020s:+31,-0.6236964448447679,30.774619088096777,False,False,False
+fework,132,should women work,3,1970s:+9 1980s:+6 1990s:+3,2.805854594611032,9.167419018894341,False,False,False
+workhard,133,to work hard,5,1980s:+2 1990s:+4 2000s:+3 2010s:+6 2020s:+18,2.3170537434076266,17.598177724931702,False,False,True
+librac,134,allow racists book in library,6,1970s:+10 1980s:+6 1990s:+8 2000s:+7 2010s:+3 2020s:+8,3.0075714960570323,10.085610331124606,False,True,True
+intlwhts,135,unintelligent -intelligent,4,1990s:+7 2000s:+8 2010s:+6 2020s:+10,6.09203800797406,9.636531419910217,False,True,True
+natdrug,136,dealing with drug addiction,6,1970s:-0 1980s:+1 1990s:+7 2000s:+7 2010s:+8 2020s:+9,-0.07029250523528652,8.79845020089097,False,False,False
+spkmil,137,allow militarist to speak,5,1970s:+12 1980s:+9 1990s:+8 2000s:+9 2010s:+6,5.795983760472234,12.310604507496636,False,False,False
+livewhts,138,r favors living in half white neighborhood,2,2000s:+6 2010s:+5,4.784953175233941,6.221402697649658,False,False,False
+toofast,139,science makes our way of life change too fast,3,2000s:+7 2010s:+3 2020s:+36,2.6124596101742448,35.82869880500171,False,False,True
+helpoth,140,to help others,5,1980s:+3 1990s:+5 2000s:+4 2010s:+5 2020s:+13,3.367183099786897,12.722329948072014,False,False,False
+anomia5,141,lot of the average man getting worse,3,1970s:+1 1980s:+7 1990s:+3,1.0292850644216534,6.864434648836648,False,True,True
+trust,142,can people be trusted,6,1970s:+2 1980s:-2 1990s:+1 2000s:+2 2010s:+8 2020s:+7,-2.019028507498122,8.169692713262954,False,False,False
+colrac,143,allow racist to teach,6,1970s:+14 1980s:+8 1990s:+7 2000s:+6 2010s:-1 2020s:+5,-1.1491742636776547,13.63924188881116,False,True,True
+usintl,144,take active part in world affairs,4,1970s:-1 1980s:+5 1990s:+7 2000s:+9,-0.9092816844502027,8.598500641434171,False,False,False
+wlthblks,145,rich - poor,4,1990s:+2 2000s:+0 2010s:+3 2020s:+10,0.31254857073176323,10.14866004944267,False,False,False
+nextgen,146,science & tech. give more opportunities to next generation,3,2000s:+3 2010s:+6 2020s:+8,3.0332439323974003,8.40072976236309,False,True,True
+hitok,147,ever approve of man punching adult male,3,1970s:+1 1980s:+1 1990s:+2,1.3312332475409083,1.7538312307923465,False,False,False
+natspac,148,space exploration program,6,1970s:+5 1980s:+3 1990s:+4 2000s:-4 2010s:-2 2020s:+3,-4.144582890903614,4.973170536135751,True,True,True
+anomia6,149,not fair to bring child into world,3,1970s:-3 1980s:+3 1990s:+3,-3.2032607923371814,3.438445449156613,False,True,True
+meovrwrk,150,men hurt family when focus on work too much,4,1990s:+1 2000s:+7 2010s:+3 2020s:+6,1.231201435250362,6.738503757366521,False,True,True
+spkrac,151,allow racist to speak,6,1970s:+7 1980s:+7 1990s:+5 2000s:+6 2010s:-0 2020s:-5,-5.462149213167056,7.339705583293066,False,True,True
+natspacy,152,space exploration:version y,5,1980s:+3 1990s:+2 2000s:+3 2010s:+3 2020s:-2,-1.567966434841428,3.075283441079868,False,True,True
+aged,153,should aged live with their children,6,1970s:+6 1980s:+6 1990s:+6 2000s:+4 2010s:+6 2020s:+4,4.023709051725407,6.205018669340173,False,True,True
+racdif2,154,differences due to in-born learning ability,6,1970s:+10 1980s:+5 1990s:+3 2000s:+1 2010s:+1 2020s:+4,0.5558589060676161,10.062929998350317,False,True,True
+intlblks,155,unintelligent - intelligent,4,1990s:+2 2000s:+2 2010s:+2 2020s:+2,1.5602032220798798,2.4275555276593126,False,True,True
+workwhts,156,hard working - lazy,4,1990s:+1 2000s:+5 2010s:+4 2020s:+0,0.19710733364298738,5.055387781900733,False,True,True
+hitmarch,157,stranger in protest march,3,1970s:+1 1980s:-0 1990s:-0,-0.24975219243269647,0.7038861531143328,False,False,False
+conlegis,158,confidence in congress,6,1970s:+4 1980s:+2 1990s:+4 2000s:-0 2010s:+1 2020s:+13,-0.31295507218151997,13.056946521413526,False,False,True
+hitdrunk,159,drunk bumped into man & wife,3,1970s:+3 1980s:-0 1990s:+4,-0.32447026450723865,3.572640108571523,False,False,True
+confed,160,confid. in exec branch of fed govt,6,1970s:-4 1980s:-10 1990s:+9 2000s:-10 2010s:+15 2020s:+34,-10.370064734641257,33.619175785264964,True,False,False
+anomia7,161,officials not interested in average man,4,1970s:-5 1980s:+2 1990s:-1 2000s:+9,-4.614514915822598,9.468167389282822,True,False,False
+polmurdr,162,citizen questioned as murder suspect,6,1970s:+0 1980s:+1 1990s:+1 2000s:-0 2010s:+1 2020s:+6,-0.08654102157648474,6.271384311258194,False,False,False
+natcrime,163,halting rising crime rate,6,1970s:+4 1980s:+1 1990s:-0 2000s:+0 2010s:+5 2020s:+9,-0.24710872014926943,8.645294385168956,False,False,True
+conjudge,164,confid. in united states supreme court,6,1970s:+4 1980s:+2 1990s:+3 2000s:-4 2010s:+3 2020s:-15,-15.145489822015001,4.289595728111917,True,False,True
+racfew,165,children to school with opposite race,3,1970s:+1 1980s:-1 1990s:+1,-1.2671913563105708,0.8393458718019442,False,False,False
+conmedic,166,confidence in medicine,6,1970s:-1 1980s:-2 1990s:-0 2000s:+3 2010s:+2 2020s:+15,-2.0970051676714894,15.355860249358022,False,False,False
+fair,167,people fair or try to take advantage,6,1970s:+3 1980s:+5 1990s:+2 2000s:+4 2010s:-0 2020s:-4,-3.7463320120914467,4.511183696863363,False,True,True
+helpful,168,people helpful or looking out for selves,6,1970s:+3 1980s:+3 1990s:+0 2000s:+2 2010s:+2 2020s:-5,-4.792561537476398,2.95155172639498,False,True,True
+natroad,169,highways and bridges,5,1980s:+0 1990s:+3 2000s:+1 2010s:-3 2020s:+2,-2.7661080315674544,3.283109309149035,True,True,True
+hitchild,170,stranger had hit mans child,3,1970s:+1 1980s:-0 1990s:+3,-0.10169792019699142,2.998321210191346,False,False,False

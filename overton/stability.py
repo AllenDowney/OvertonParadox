@@ -27,6 +27,7 @@ import numpy as np
 import pandas as pd
 
 from overton.candidates import PRIMARY
+from overton.data import WEIGHT_COL
 from overton.pipeline import FIG_DIR, RECODE_POLVIEWS
 
 MIN_RESPONDENTS = 200
@@ -77,7 +78,7 @@ def main():
     ranking = pd.read_csv(FIG_DIR / "candidates_ranking.csv", index_col=0)
     coded = pd.read_hdf(FIG_DIR / "candidates_coded.hdf", "coded")
     gss = pd.read_hdf(PRIMARY, "gss")
-    weight = gss["wtssall"].fillna(gss["wtssps"])
+    weight = gss[WEIGHT_COL]
     alignment = gss["polviews"].replace(RECODE_POLVIEWS)
     decade = (gss["year"] // 10 * 10).astype(int)
 

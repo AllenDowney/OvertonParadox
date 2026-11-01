@@ -1,171 +1,171 @@
 variable,description,conservative,conservative_labels,separation,by_response,contiguous,not_position,differences,close_calls,book_coding,agrees_with_book,cw_selected,agrees_with_cw
-natspac,space exploration program,1 2,1 too little; 2 about right,2.2561943151730848,2,False,,1:-1.1 2:+3.3 3:-2.3,,,,,
-natenvir,improving & protecting environment,2 3,2 about right; 3 too much,22.829118314949906,2 3,True,,1:-22.8 2:+13.3 3:+9.5,,2 3,True,2 3,True
-natheal,improving & protecting nations health,2 3,2 about right; 3 too much,17.168097628766965,2 3,True,,1:-17.2 2:+10.6 3:+6.5,,,,,
-natcity,solving problems of big cities,2 3,2 about right; 3 too much,15.430654544991732,2 3,True,,1:-15.4 2:+3.8 3:+11.6,,,,,
-natcrime,halting rising crime rate,1,1 too little,1.7683575561131368,1 3,False,,1:+1.8 2:-2.5 3:+0.8,3 too much,,,,
-natdrug,dealing with drug addiction,2 3,2 about right; 3 too much,4.441398573494882,2 3,True,,1:-4.4 2:+1.6 3:+2.9,,,,,
-nateduc,improving nations education system,2 3,2 about right; 3 too much,14.253433135970928,2 3,True,,1:-14.3 2:+6.6 3:+7.7,,,,,
-natrace,Improving the conditions of Black people,2 3,2 about right; 3 too much,22.091953592489812,2 3,True,,1:-22.1 2:+10.0 3:+12.1,,,,1,True
-natarms,"military, armaments, and defense",1 2,1 too little; 2 about right,22.362210049923426,1 2,True,,1:+16.6 2:+5.7 3:-22.4,,,,,
-nataid,foreign aid,3,3 too much,10.278316088285177,3,True,,1:-5.0 2:-5.2 3:+10.3,,,,,
-natfare,welfare,3,3 too much,22.586606658775754,3,True,,1:-15.7 2:-6.8 3:+22.6,,3,True,3,True
-natroad,highways and bridges,1 2,1 too little; 2 about right,0.7647024533012239,1 2,True,,1:+0.4 2:+0.4 3:-0.8,1 too little; 2 about right; 3 too much,,,,
-natsoc,social security,2 3,2 about right; 3 too much,7.309342345755748,2 3,True,,1:-7.3 2:+3.5 3:+3.8,,,,,
-natmass,mass transportation,2 3,2 about right; 3 too much,11.039909843174577,2 3,True,,1:-11.0 2:+5.3 3:+5.7,,,,,
-natpark,parks and recreation,2 3,2 about right; 3 too much,10.631218374758738,2 3,True,,1:-10.6 2:+7.4 3:+3.2,,,,,
-natchld,assistance for childcare,2 3,2 about right; 3 too much,19.21763113759209,2 3,True,,1:-19.2 2:+11.3 3:+7.9,,,,,
-natsci,supporting scientific research,2 3,2 about right; 3 too much,11.154112780017114,2 3,True,,1:-11.2 2:+6.8 3:+4.4,,,,,
-natspacy,space exploration:version y,2 3,2 about right; 3 too much,1.862000425196522,2,False,,1:-1.9 2:+2.9 3:-1.0,,,,,
-natenviy,the environment:version y,2 3,2 about right; 3 too much,23.959759950542736,2 3,True,,1:-24.0 2:+14.3 3:+9.6,,,,,
-nathealy,health:version y,2 3,2 about right; 3 too much,15.894866952346943,2 3,True,,1:-15.9 2:+7.4 3:+8.5,,,,,
-natcityy,assistance to big cities:version y,3,3 too much,18.31503610597887,3,True,,1:-13.0 2:-5.3 3:+18.3,,,,,
-natcrimy,law enforcement:version y,1,1 too little,12.306604650845653,1,True,,1:+12.3 2:-7.4 3:-4.9,,,,,
-natdrugy,drug rehabilitation:version y,2 3,2 about right; 3 too much,12.599142862865373,2 3,True,,1:-12.6 2:+6.4 3:+6.2,,,,,
-nateducy,education:version y,2 3,2 about right; 3 too much,13.699213014231344,2 3,True,,1:-13.7 2:+6.8 3:+6.9,,,,,
-natracey,Assistance to Black people: version y,2 3,2 about right; 3 too much,21.9756906106876,2 3,True,,1:-22.0 2:+5.7 3:+16.3,,,,1,True
-natarmsy,national defense:version y,1 2,1 too little; 2 about right,25.046977280516995,1 2,True,,1:+17.6 2:+7.4 3:-25.0,,,,,
-nataidy,assistance to other countries:ver y,3,3 too much,11.71844922520604,3,True,,1:-4.1 2:-7.7 3:+11.7,,,,,
-natfarey,assistance to the poor:version y,2 3,2 about right; 3 too much,21.38189069141075,2 3,True,,1:-21.4 2:+11.2 3:+10.2,,,,3,False
-eqwlth,should govt reduce income differences,4 5 6 7,4 ; 5 ; 6 ; 7 the government should not concern itself with reducing income differences,27.18057614762763,4 5 6 7,True,,1:-12.6 2:-7.6 3:-7.0 4:+0.7 5:+4.9 6:+6.7 7:+14.9,4 ,,,5 6 7,False
-tax,r's federal income tax,1,1 too high,8.201130914833636,1,True,4,1:+8.2 2:-6.4 3:-1.6 4:-0.2,,,,,
-spkath,allow anti-religionist to speak,2,2 not allowed,8.166980548296369,2,True,,1:-8.2 2:+8.2,,,,2,True
-colath,allow anti-religionist to teach,5,5 not allowed,15.743048516322746,5,True,,4:-15.7 5:+15.7,,,,5,True
-libath,allow anti-religious book in library,1,1 remove,11.467156388428895,1,True,,1:+11.5 2:-11.5,,,,1,True
-spkrac,allow racist to speak,2,2 not allowed,4.8789995535765875,2,True,,1:-4.9 2:+4.9,,,,1,True
-colrac,allow racist to teach,5,5 not allowed,6.164972965924691,5,True,,4:-6.2 5:+6.2,,,,4,True
-librac,allow racists book in library,1,1 remove,6.526532963217573,1,True,,1:+6.5 2:-6.5,,,,2,True
-spkcom,allow communist to speak,2,2 not allowed,10.83782030198308,2,True,,1:-10.8 2:+10.8,,,,,
-colcom,should communist teacher be fired,4,"4 yes, fired",15.629270433336428,4,True,,4:+15.6 5:-15.6,,,,,
-libcom,allow communists book in library,1,1 remove,11.243370275219583,1,True,,1:+11.2 2:-11.2,,,,,
-spkmil,allow militarist to speak,2,2 not allowed,8.591078552965305,2,True,,1:-8.6 2:+8.6,,,,,
-colmil,allow militarist to teach,5,5 not allowed,12.946679411993522,5,True,,4:-12.9 5:+12.9,,,,,
-libmil,allow militarists book in library,1,1 remove,9.743497988037147,1,True,,1:+9.7 2:-9.7,,,,,
-spkhomo,allow homosexual to speak,2,2 not allowed,9.916482840405918,2,True,,1:-9.9 2:+9.9,,,,1,True
-colhomo,allow homosexual to teach,5,5 not allowed,14.066076408685507,5,True,,4:-14.1 5:+14.1,,,,4,True
-libhomo,allow homosexuals book in library,1,1 remove,12.361497665189324,1,True,,1:+12.4 2:-12.4,,,,2,True
-spkmslm,allow muslim clergymen preaching hatred of the us,2,2 not allowed,13.409168994118074,2,True,,1:-13.4 2:+13.4,,,,2,True
-colmslm,allow anti-american muslim clergymen teaching in college,5,5 not allowed,12.65727963540586,5,True,,4:-12.7 5:+12.7,,,,5,True
-libmslm,allow anti-american muslim clergymen's books in library,1,1 remove,15.063117721734756,1,True,,1:+15.1 2:-15.1,,,,1,True
-cappun,favor or oppose death penalty for murder,1,1 favor,20.012938494722043,1,True,,1:+20.0 2:-20.0,,1,True,1,True
-gunlaw,favor or oppose gun permits,2,2 oppose,13.222692370164305,2,True,,1:-13.2 2:+13.2,,2,True,1,True
-courts,courts dealing with criminals,2,2 not harshly enough,12.375607132544044,2,True,,1:-7.6 2:+12.4 3:-4.7,,,,,
-wirtap,wiretapping,1,1 approve,9.726198677399523,1,True,,1:+9.7 2:-9.7,,,,,
-grass,should marijuana be made legal,2,2 should not be legal,23.130145075944785,2,True,,1:-23.1 2:+23.1,,2,True,2,True
-prayer,bible prayer in public schools,2,2 disapprove,22.910493711691316,2,True,,1:-22.9 2:+22.9,,2,True,2,True
-world1,world image:much evil vs. much good,1 2 3,1 world is evil; 2 ; 3 ,3.650923964280815,1 2 3,True,,1:+2.1 2:+0.8 3:+0.7 4:-1.1 5:-0.9 6:-1.3 7:-0.4,2 ; 3 ; 5 ; 7 world is good,,,,
-racmar,favor law against racial intermarriage,1,1 yes,8.03557385518509,1,True,,1:+8.0 2:-8.0,,,,1,True
-racpush,blacks shouldn't push,1 2,1 agree strongly; 2 agree slightly,16.710457666220588,1 2,True,,1:+9.3 2:+7.4 3:-1.1 4:-15.6,,,,1 2,True
-racseg,whites have right to seg. neighborhood,1 2 3,1 agree strongly; 2 agree slightly; 3 disagree slightly,14.054817442508908,1 2 3,True,,1:+3.9 2:+2.8 3:+7.4 4:-14.1,,,,1 2,False
-racopen,vote on open housing law,1,1 first law,14.181380651415287,1,True,3,1:+14.2 2:-14.6 3:+0.4,,1,True,2,True
-racfew,children to school with opposite race,1,"1 yes, object",0.11250573529570049,1,True,,1:+0.1 2:-0.1,"1 yes, object; 2 no",,,1,True
-busing,attitude toward racial busing,2,2 oppose,16.628059252197747,2,True,,1:-16.6 2:+16.6,,,,1,True
-racpres,would vote for black president,2,2 no,4.148467764388899,2,True,,1:-4.1 2:+4.1,,,,1,True
-affrmact,Favor preference in hiring Black people,4,4 strongly opposes,22.584189085992588,4,True,,1:-9.9 2:-7.3 3:-5.4 4:+22.6,,,,1 2,False
-wrkwayup,Black people overcome prejudice without favors,1 2,1 agree strongly; 2 agree somewhat,25.20957582911109,1 2,True,,1:+19.6 2:+5.6 3:-2.8 4:-10.6 5:-11.8,,,,1 2,True
-helpful,people helpful or looking out for selves,1,1 try to be helpful,1.3330634406353474,1,True,3,1:+1.3 2:-1.1 3:-0.3,,,,1,True
-fair,people fair or try to take advantage,2,2 would try to be fair,2.535276248469767,2,True,3,1:-2.5 2:+2.6 3:-0.1,,,,2,True
-trust,can people be trusted,2,2 can't be too careful,1.8190657836541706,2,True,3,1:-1.8 2:+2.4 3:-0.5,,,,1,True
-confinan,confid in banks & financial institutions,1 2,1 a great deal; 2 only some,5.4425067250853845,1 2,True,,1:+4.4 2:+1.1 3:-5.4,,,,1 2,True
-conbus,confidence in major companies,1,1 a great deal,8.744605934876503,1,True,,1:+8.7 2:-2.7 3:-6.1,,,,1 2,False
-conclerg,confidence in organized religion,1 2,1 a great deal; 2 only some,9.850843801738677,1 2,True,,1:+8.1 2:+1.7 3:-9.9,,,,1 2,True
-coneduc,confidence in education,3,3 hardly any,4.846415428302038,3,True,,1:-2.4 2:-2.4 3:+4.8,,,,1 2,True
-confed,confid. in exec branch of fed govt,3,3 hardly any,1.6663378311786634,1 3,False,,1:+1.1 2:-2.8 3:+1.7,,,,1 2,True
-conlabor,confidence in organized labor,3,3 hardly any,15.374340950280939,3,True,,1:-4.3 2:-11.0 3:+15.4,,,,1 2,True
-conpress,confidence in press,3,3 hardly any,14.3755649746555,3,True,,1:-7.0 2:-7.4 3:+14.4,,,,1 2,True
-conmedic,confidence in medicine,2 3,2 only some; 3 hardly any,0.8141914497508185,2,False,,1:-0.8 2:+0.8 3:-0.0,1 a great deal; 2 only some; 3 hardly any,,,1 2,False
-contv,confidence in television,3,3 hardly any,6.974206066664479,3,True,,1:-3.6 2:-3.4 3:+7.0,,,,1 2,True
-conjudge,confid. in united states supreme court,2 3,2 only some; 3 hardly any,0.8872787235057934,2 3,True,,1:-0.9 2:+0.1 3:+0.8,1 a great deal; 2 only some; 3 hardly any,,,1 2,False
-consci,confidence in scientific community,2 3,2 only some; 3 hardly any,7.342534864805514,2 3,True,,1:-7.3 2:+5.8 3:+1.5,,,,1 2,False
-conlegis,confidence in congress,3,3 hardly any,2.7797802836076193,3,True,,1:-0.5 2:-2.2 3:+2.8,1 a great deal,,,1 2,True
-conarmy,confidence in military,1,1 a great deal,11.888883498628203,1,True,,1:+11.9 2:-2.5 3:-9.4,,,,1 2,False
-obey,to obey,1 2 3,1 most important; 2 2nd important; 3 3rd important,14.97663452149092,1 2 3,True,,1:+5.9 2:+3.8 3:+5.3 4:-2.8 5:-12.2,,,,,
-popular,to be well liked or popular,5,5 least important,12.71956775708448,5,True,,2:-0.4 3:-0.9 4:-11.0 5:+12.7 1:-0.4,1 most important; 2 2nd important; 3 3rd important,,,,
-thnkself,to think for ones self,2 3 4 5,2 2nd important; 3 3rd important; 4 4th important; 5 least important,10.645320107133315,2 3 4,False,,1:-10.6 2:+0.8 3:+2.8 4:+7.2 5:-0.1,2 2nd important; 5 least important,,,,
-workhard,to work hard,1 2,1 most important; 2 2nd important,5.25813829819975,1 2 4,False,,1:+4.4 2:+0.8 3:-7.7 4:+2.7 5:-0.3,2 2nd important; 5 least important,,,,
-helpoth,to help others,3 4 5,3 3rd important; 4 4th important; 5 least important,4.324771093724812,1 3 4,False,,1:+0.7 2:-5.0 3:+0.4 4:+4.0 5:-0.1,1 most important; 3 3rd important; 5 least important,,,,
-aged,should aged live with their children,2,2 a bad idea,5.113318286494661,2,True,3,1:-5.1 2:+5.3 3:-0.2,,,,,
-anomia5,lot of the average man getting worse,2,2 disagree,5.437405211447832,2,True,,1:-5.4 2:+5.4,,,,,
-anomia6,not fair to bring child into world,2,2 disagree,2.4652750307422218,2,True,,1:-2.5 2:+2.5,,,,,
-anomia7,officials not interested in average man,2,2 disagree,0.2617355596920968,2,True,,1:-0.3 2:+0.3,1 agree; 2 disagree,,,,
-getahead,opinion of how people get ahead,1,1 hard work most important,8.44466796161321,1,True,4,1:+8.4 2:-4.1 3:-4.3 4:-0.0,,,,1,True
-fehome,women take care of home not country,1,1 agree,9.19653615606876,1,True,,1:+9.2 2:-9.2,,,,1,True
-fework,should women work,2,2 disapprove,5.7065043202943055,2,True,,1:-5.7 2:+5.7,,,,1,True
-fepres,vote for woman president,2,2 no,5.987320686125609,2,True,5,1:-6.0 2:+6.0 5:+0.0,,,,1,True
-fepol,women not suited for politics,1,1 agree,13.07841702898395,1,True,,1:+13.1 2:-13.1,,1,True,1,True
-abdefect,strong chance of serious defect,2,2 no,15.485741371654107,2,True,,1:-15.5 2:+15.5,,,,2,True
-abnomore,married--wants no more children,2,2 no,25.613744885486497,2,True,,1:-25.6 2:+25.6,,,,2,True
-abhlth,woman's health seriously endangered,2,2 no,8.324865494361672,2,True,,1:-8.3 2:+8.3,,,,2,True
-abpoor,low income--cant afford more children,2,2 no,25.46839167860684,2,True,,1:-25.5 2:+25.5,,,,2,True
-abrape,pregnant as result of rape,2,2 no,13.841926678514458,2,True,,1:-13.8 2:+13.8,,,,2,True
-absingle,not married,2,2 no,24.58085917925007,2,True,,1:-24.6 2:+24.6,,,,2,True
-abany,abortion if woman wants for any reason,2,2 no,26.83054490478273,2,True,,1:-26.8 2:+26.8,,2,True,2,True
-pillok,birth control to teenagers 14-16,3 4,3 disagree; 4 strongly disagree,28.116322292568285,3 4,True,,1:-19.7 2:-8.5 3:+10.8 4:+17.3,,,,3 4,True
-sexeduc,sex education in public schools,2,2 oppose,11.49665153621804,2,True,3,1:-11.5 2:+11.5 3:+0.0,,2,True,2,True
-divlaw,divorce laws,2,2 more difficult,20.081552799609803,2,True,,1:-15.8 2:+20.1 3:-4.3,,2,True,2,True
-premarsx,sex before marriage,1 2,1 always wrong; 2 almost always wrong,27.20833541216545,1 2,True,,1:+22.3 2:+4.9 3:-1.1 4:-26.1,,1 2 3,False,1 2,True
-teensex,sex before marriage:teens 14-16,1,1 always wrong,24.656065038487274,1,True,,1:+24.7 2:-9.0 3:-10.3 4:-5.4,,,,1 2,False
-xmarsex,sex with person other than spouse,1,1 always wrong,17.999051287261988,1,True,,1:+18.0 2:-8.8 3:-7.0 4:-2.2,,,,1 2,False
-homosex,homosexual sex relations,1,1 always wrong,30.60602832798526,1,True,5,1:+30.6 2:-0.2 3:-3.9 4:-26.5 5:-0.0,2 almost always wrong,1 2 3,False,1 2 3,False
-porninf,materials provide info about sex,2,2 no,7.702531235670726,2,True,,1:-7.7 2:+7.7,,,,,
-pornmorl,materials lead to breakdown in morals,1,1 yes,20.406692667894337,1,True,,1:+20.4 2:-20.4,,,,,
-pornrape,materials lead to rape,1,1 yes,17.373819715690193,1,True,,1:+17.4 2:-17.4,,,,,
-pornout,materials provide outlet,2,2 no,6.17292966204651,2,True,,1:-6.2 2:+6.2,,,,,
-pornlaw,feelings about pornography laws,1,1 there should be laws against the distribution of pornography whatever the age,20.153019712796976,1,True,,1:+20.2 2:-17.6 3:-2.6,,1,True,1,True
-spanking,favor spanking to discipline child,1 2,1 strongly agree; 2 agree,16.472243981702093,1 2,True,,1:+9.6 2:+6.9 3:-9.3 4:-7.2,,,,,
-letdie1,allow incurable patients to die,2,2 no,15.367885750349892,2,True,,1:-15.4 2:+15.4,,2,True,2,True
-suicide1,suicide if incurable disease,2,2 no,17.943408679789997,2,True,,1:-17.9 2:+17.9,,,,2,True
-suicide2,suicide if bankrupt,2,2 no,6.859702000660971,2,True,,1:-6.9 2:+6.9,,,,2,True
-suicide3,suicide if dishonored family,2,2 no,6.656127860950416,2,True,,1:-6.7 2:+6.7,,,,2,True
-suicide4,suicide if tired of living,2,2 no,10.820774808617315,2,True,,1:-10.8 2:+10.8,,,,2,True
-hitok,ever approve of man punching adult male,1,1 yes,1.4306837641871386,1,True,,1:+1.4 2:-1.4,,,,,
-hitmarch,stranger in protest march,1,1 yes,0.17698493755836225,1,True,,1:+0.2 2:-0.2,1 yes; 2 no,,,,
-hitdrunk,drunk bumped into man & wife,1,1 yes,1.4613333904541377,1,True,,1:+1.5 2:-1.5,,,,,
-hitchild,stranger had hit mans child,2,2 no,1.6593509279719765,2,True,,1:-1.7 2:+1.7,,,,,
-hitbeatr,stranger was beating up a woman,1,1 yes,2.520356261974345,1,True,,1:+2.5 2:-2.5,,,,,
-hitrobbr,stranger had broken into mans house,1,1 yes,2.9641996116062828,1,True,,1:+3.0 2:-3.0,,,,,
-polhitok,ever approve of police striking citizen,1,1 yes,6.641966516642418,1,True,,1:+6.6 2:-6.6,,,,,
-polabuse,citizen said vulgar or obscene things,1,1 yes,3.8587976267639856,1,True,,1:+3.9 2:-3.9,,,,,
-polmurdr,citizen questioned as murder suspect,1,1 yes,1.2014401030252464,1,True,,1:+1.2 2:-1.2,,,,,
-polescap,citizen attempting to escape custody,1,1 yes,7.338380681297517,1,True,,1:+7.3 2:-7.3,,,,,
-polattak,citizen attacking policeman with fists,1,1 yes,2.4940763815411504,1,True,,1:+2.5 2:-2.5,,,,,
-fechld,mother working doesn't hurt children,3 4,3 disagree; 4 strongly disagree,13.983859922364426,3 4,True,,1:-10.4 2:-3.6 3:+9.6 4:+4.4,,,,1 2,True
-fehelp,wife should help husbands career first,1 2 3,1 strongly agree; 2 agree; 3 disagree,14.621107209538772,1 2 3,True,,1:+1.8 2:+12.0 3:+0.8 4:-14.6,3 disagree,,,1 2,False
-fepresch,preschool kids suffer if mother works,1 2,1 strongly agree; 2 agree,15.774958570045916,1 2,True,,1:+5.0 2:+10.8 3:-8.9 4:-6.9,,,,1 2,True
-fefam,"better for man to work, woman tend home",1 2,1 strongly agree; 2 agree,19.892740417569993,1 2,True,,1:+5.6 2:+14.3 3:-3.1 4:-16.8,,,,1 2,True
-racchng,try to integrate social club,2,2 no,13.708663878816218,2,True,3,1:-13.7 2:+13.8 3:-0.1,,,,1,True
-racdif1,differences due to discrimination,2,2 no,22.700789403086468,2,True,,1:-22.7 2:+22.7,,,,1,True
-racdif2,differences due to in-born learning ability,1,1 yes,2.5989599139788484,1,True,,1:+2.6 2:-2.6,,,,1,True
-racdif3,differences due to lack of education,2,2 no,17.194964745779103,2,True,,1:-17.2 2:+17.2,,,,1,True
-racdif4,differences due to lack of will,1,1 yes,17.676529782853002,1,True,,1:+17.7 2:-17.7,,,,1,True
-helppoor,should govt improve standard of living?,4 5,4 ; 5 people should care for themselves,24.294091917834034,4 5,True,,1:-10.5 2:-11.3 3:-2.5 4:+13.1 5:+11.2,,,,,
-helpnot,should govt do more or less?,4 5,4 ; 5 government does too much,26.229569069650722,4 5,True,,1:-7.4 2:-10.8 3:-8.1 4:+9.5 5:+16.7,,,,,
-helpsick,should govt help pay for medical care?,3 4 5,3 agree with both; 4 ; 5 people should care for themselves,29.262751814530514,3 4 5,True,,1:-20.9 2:-8.4 3:+10.3 4:+10.1 5:+8.9,,,,,
-helpblk,Should govt aid Black people?,4 5,4 ; 5 no special treatment,25.885374536067708,4 5,True,,1:-9.9 2:-10.3 3:-5.7 4:+6.9 5:+19.0,,,,1 2,False
-wlthwhts,rich - poor,4 5 6 7,4 ; 5 ; 6 ; 7 7 - poor,8.956782362969308,4 5,False,,1:-2.3 2:-2.8 3:-3.9 4:+8.6 5:+0.6 6:-0.1 7:-0.1,5 ; 6 ; 7 7 - poor,,,,
-wlthblks,rich - poor,1 2 3 4 5,1 1 - rich; 2 ; 3 ; 4 ; 5 ,2.278769056674849,2 3 4 5,False,,1:-0.1 2:+0.1 3:+0.0 4:+2.0 5:+0.3 6:-1.6 7:-0.6,1 1 - rich; 2 ; 3 ; 5 ; 7 7 - poor,,,,
-workwhts,hard working - lazy,1 2 3,1 1 - hard-working; 2 ; 3 ,3.362823534441871,2 3 5,False,,1:-0.3 2:+0.3 3:+3.4 4:-3.7 5:+0.6 6:-0.1 7:-0.1,1 1 - hard-working; 2 ; 5 ; 6 ; 7 7 - lazy,,,,
-workblks,hard working - lazy,5 6 7,5 ; 6 ; 7 7 - lazy,10.813108508495446,5 6 7,True,,1:-1.8 2:-2.9 3:-2.5 4:-3.7 5:+6.6 6:+3.0 7:+1.2,,,,,
-intlwhts,unintelligent -intelligent,5 6 7,5 ; 6 ; 7 7-intelligent,6.835856710627128,5 6,False,,1:-0.2 2:-0.2 3:-1.2 4:-5.2 5:+4.2 6:+3.3 7:-0.6,1 1-unintelligent; 2 ; 7 7-intelligent,,,,
-intlblks,unintelligent - intelligent,1 2 3,1 1-unintelligent; 2 ; 3 ,2.0975179136132165,1 2 3 5 6,False,,1:+0.2 2:+0.6 3:+1.3 4:-2.5 5:+0.9 6:+0.7 7:-1.1,1 1-unintelligent; 2 ; 5 ; 6 ,,,,
-liveblks,neighborhood half black,4 5,4 oppose; 5 strongly oppose,9.33015227736322,4 5,True,,1:-5.4 2:-0.9 3:-3.1 4:+5.6 5:+3.8,2 favor,,,1 2,False
-livewhts,r favors living in half white neighborhood,1 2,1 strongly favor; 2 favor,5.530852292027416,1 2 4 5,False,,1:+4.0 2:+1.5 3:-7.2 4:+1.1 5:+0.6,5 strongly oppose,,,,
-marblk,close relative marry Black person,4 5,4 oppose; 5 strongly oppose,15.94764722197706,2 4 5,False,,1:-8.1 2:+0.9 3:-8.8 4:+7.5 5:+8.4,2 favor,,,1 2,False
-marasian,close relative marry asian,4 5,4 oppose; 5 strongly oppose,8.750792868801856,2 4 5,False,,1:-5.6 2:+2.4 3:-5.5 4:+6.1 5:+2.6,,,,1 2,False
-marhisp,close relative marry hispanic,4 5,4 oppose; 5 strongly oppose,8.988670693057529,2 4 5,False,,1:-5.8 2:+2.4 3:-5.6 4:+6.0 5:+3.0,,,,1 2,False
-marwht,r favor close relative marrying white person,1 2,1 strongly favor; 2 favor,11.26398943600814,1 2 4 5,False,,1:+10.4 2:+0.9 3:-12.1 4:+0.7 5:+0.1,2 favor; 4 oppose; 5 strongly oppose,,,1 2,True
-discaff,whites hurt by aff. action,1 2,1 very likely; 2 somewhat likely,15.722387507106028,1 2,True,,1:+7.7 2:+8.0 3:-15.7,,,,1 2,True
-fejobaff,for or against preferential hiring of women,4,4 strongly oppose,18.685299811120096,4,True,,1:-9.8 2:-5.2 3:-3.7 4:+18.7,,,,1 2,False
-discaffm,a man won't get a job or promotion,1 2,1 very likely; 2 somewhat likely,11.877152744021874,1 2,True,,1:+3.6 2:+8.2 3:-4.9 4:-7.0,,,,1 2,True
-discaffw,a woman won't get a job or promotion,3 4,3 not very likely; 4 very unlikely,14.074557114374779,3 4,True,,1:-9.8 2:-4.3 3:+10.7 4:+3.3,,,,1 2,True
-fehire,should hire and promote women,3 4 5,3 neither agree nor disagree; 4 disagree; 5 strongly disagree,15.151870512497144,3 4 5,True,,1:-8.5 2:-6.6 3:+1.9 4:+9.4 5:+3.9,,,,1 2,True
-nextgen,science & tech. give more opportunities to next generation,2 3 4,2 agree; 3 disagree; 4 strongly disagree,4.381618319564964,2,False,,1:-4.4 2:+4.8 3:-0.2 4:-0.3,3 disagree; 4 strongly disagree,,,,
-toofast,science makes our way of life change too fast,1 2,1 strongly agree; 2 agree,7.048425661522663,1 2,True,,1:+0.1 2:+6.9 3:-3.0 4:-4.0,1 strongly agree,,,,
-advfront,sci rsch is necessary and should be supported by federal govt,2 3 4,2 agree; 3 disagree; 4 strongly disagree,17.753398037104276,2 3 4,True,,1:-17.8 2:+9.6 3:+7.3 4:+0.8,4 strongly disagree,,,,
-jobsall,govts resp: provide jobs for all,4,4 definitely should not be,17.421843263527723,4,True,,1:-5.0 2:-11.7 3:-0.7 4:+17.4,3 probably should not be,,,,
-goveqinc,govmnt should reduce inc differentials,4 5,4 disagree; 5 strongly disagree,27.05052905128043,4 5,True,,1:-6.9 2:-13.7 3:-6.4 4:+6.8 5:+20.3,,,,,
-meovrwrk,men hurt family when focus on work too much,1 2,1 strongly agree; 2 agree,4.676589105218087,1 2,True,,1:+1.9 2:+2.7 3:-1.8 4:-2.2 5:-0.7,5 strongly disagree,,,,
-letin1a,number of immigrants nowadays should be,4 5,4 reduced a little; 5 reduced a lot,25.86375881713166,4 5,True,,1:-6.9 2:-10.1 3:-8.8 4:+8.7 5:+17.1,,,,4 5,True
-usintl,take active part in world affairs,1,1 active part,3.5276076567627257,1,True,,1:+3.5 2:-3.5,,,,,
-usun,remain in u.n. or pull out,2,2 pull out,7.475226195921473,2,True,,1:-7.5 2:+7.5,,,,,
-commun,feelings about communism,1,1 worst kind,17.899781284659813,1,True,,1:+17.9 2:-6.6 3:-10.0 4:-1.3,,,,,
+natspac,space exploration program,1 2,1 too little; 2 about right,1.6681131941892462,2,False,,1:-1.3 2:+2.9 3:-1.7,,,,,
+natenvir,improving & protecting environment,2 3,2 about right; 3 too much,23.031165884136513,2 3,True,,1:-23.0 2:+13.5 3:+9.5,,2 3,True,2 3,True
+natheal,improving & protecting nations health,2 3,2 about right; 3 too much,17.039125588414056,2 3,True,,1:-17.0 2:+10.5 3:+6.6,,,,,
+natcity,solving problems of big cities,2 3,2 about right; 3 too much,15.22680737688982,2 3,True,,1:-15.2 2:+3.8 3:+11.4,,,,,
+natcrime,halting rising crime rate,1,1 too little,2.3177895046834114,1 3,False,,1:+2.3 2:-3.0 3:+0.7,3 too much,,,,
+natdrug,dealing with drug addiction,2 3,2 about right; 3 too much,4.359221532788904,2 3,True,,1:-4.4 2:+1.3 3:+3.0,,,,,
+nateduc,improving nations education system,2 3,2 about right; 3 too much,14.383445535409638,2 3,True,,1:-14.4 2:+6.4 3:+8.0,,,,,
+natrace,Improving the conditions of Black people,2 3,2 about right; 3 too much,21.56892578736481,2 3,True,,1:-21.6 2:+9.9 3:+11.7,,,,1,True
+natarms,"military, armaments, and defense",1 2,1 too little; 2 about right,23.10857023287138,1 2,True,,1:+17.0 2:+6.1 3:-23.1,,,,,
+nataid,foreign aid,3,3 too much,10.782214345394227,3,True,,1:-5.3 2:-5.5 3:+10.8,,,,,
+natfare,welfare,3,3 too much,22.123210684796025,3,True,,1:-15.3 2:-6.8 3:+22.1,,3,True,3,True
+natroad,highways and bridges,1,1 too little,0.7936388892826587,1,True,,1:+0.8 2:-0.1 3:-0.7,1 too little; 2 about right; 3 too much,,,,
+natsoc,social security,2 3,2 about right; 3 too much,7.001704763821007,2 3,True,,1:-7.0 2:+3.4 3:+3.6,,,,,
+natmass,mass transportation,2 3,2 about right; 3 too much,11.028193556452266,2 3,True,,1:-11.0 2:+5.4 3:+5.6,,,,,
+natpark,parks and recreation,2 3,2 about right; 3 too much,10.57539599934822,2 3,True,,1:-10.6 2:+7.1 3:+3.5,,,,,
+natchld,assistance for childcare,2 3,2 about right; 3 too much,19.23968801609209,2 3,True,,1:-19.2 2:+11.4 3:+7.9,,,,,
+natsci,supporting scientific research,2 3,2 about right; 3 too much,10.96712943638388,2 3,True,,1:-11.0 2:+6.9 3:+4.1,,,,,
+natspacy,space exploration:version y,2 3,2 about right; 3 too much,2.4637899636715686,2,False,,1:-2.5 2:+2.9 3:-0.5,3 too much,,,,
+natenviy,the environment:version y,2 3,2 about right; 3 too much,23.699047024872005,2 3,True,,1:-23.7 2:+14.3 3:+9.4,,,,,
+nathealy,health:version y,2 3,2 about right; 3 too much,15.37143188314003,2 3,True,,1:-15.4 2:+7.3 3:+8.1,,,,,
+natcityy,assistance to big cities:version y,3,3 too much,18.147970451830084,3,True,,1:-12.9 2:-5.3 3:+18.1,,,,,
+natcrimy,law enforcement:version y,1,1 too little,12.757580989137763,1,True,,1:+12.8 2:-7.6 3:-5.2,,,,,
+natdrugy,drug rehabilitation:version y,2 3,2 about right; 3 too much,12.151431155676693,2 3,True,,1:-12.2 2:+6.1 3:+6.0,,,,,
+nateducy,education:version y,2 3,2 about right; 3 too much,13.487048313016743,2 3,True,,1:-13.5 2:+6.6 3:+6.9,,,,,
+natracey,Assistance to Black people: version y,2 3,2 about right; 3 too much,22.409547869123344,2 3,True,,1:-22.4 2:+6.0 3:+16.4,,,,1,True
+natarmsy,national defense:version y,1 2,1 too little; 2 about right,25.0425141243176,1 2,True,,1:+17.6 2:+7.5 3:-25.0,,,,,
+nataidy,assistance to other countries:ver y,3,3 too much,12.387960868696869,3,True,,1:-4.7 2:-7.7 3:+12.4,,,,,
+natfarey,assistance to the poor:version y,2 3,2 about right; 3 too much,21.06300284028412,2 3,True,,1:-21.1 2:+11.1 3:+10.0,,,,3,False
+eqwlth,should govt reduce income differences,4 5 6 7,4 ; 5 ; 6 ; 7 the government should not concern itself with reducing income differences,26.89065074501893,4 5 6 7,True,,1:-12.4 2:-7.6 3:-6.9 4:+0.8 5:+5.0 6:+6.5 7:+14.7,4 ,,,5 6 7,False
+tax,r's federal income tax,1,1 too high,8.263178657931297,1,True,4,1:+8.3 2:-6.4 3:-1.7 4:-0.2,,,,,
+spkath,allow anti-religionist to speak,2,2 not allowed,7.823558721425496,2,True,,1:-7.8 2:+7.8,,,,2,True
+colath,allow anti-religionist to teach,5,5 not allowed,15.639591019425842,5,True,,4:-15.6 5:+15.6,,,,5,True
+libath,allow anti-religious book in library,1,1 remove,11.344085021141275,1,True,,1:+11.3 2:-11.3,,,,1,True
+spkrac,allow racist to speak,2,2 not allowed,4.457026183588475,2,True,,1:-4.5 2:+4.5,,,,1,True
+colrac,allow racist to teach,5,5 not allowed,5.808216986279615,5,True,,4:-5.8 5:+5.8,,,,4,True
+librac,allow racists book in library,1,1 remove,6.535002231346889,1,True,,1:+6.5 2:-6.5,,,,2,True
+spkcom,allow communist to speak,2,2 not allowed,10.540179359140083,2,True,,1:-10.5 2:+10.5,,,,,
+colcom,should communist teacher be fired,4,"4 yes, fired",15.822574981081528,4,True,,4:+15.8 5:-15.8,,,,,
+libcom,allow communists book in library,1,1 remove,10.96000218723677,1,True,,1:+11.0 2:-11.0,,,,,
+spkmil,allow militarist to speak,2,2 not allowed,8.496144016027426,2,True,,1:-8.5 2:+8.5,,,,,
+colmil,allow militarist to teach,5,5 not allowed,13.232296427876346,5,True,,4:-13.2 5:+13.2,,,,,
+libmil,allow militarists book in library,1,1 remove,9.805860038187555,1,True,,1:+9.8 2:-9.8,,,,,
+spkhomo,allow homosexual to speak,2,2 not allowed,9.853495685811819,2,True,,1:-9.9 2:+9.9,,,,1,True
+colhomo,allow homosexual to teach,5,5 not allowed,14.15209039357134,5,True,,4:-14.2 5:+14.2,,,,4,True
+libhomo,allow homosexuals book in library,1,1 remove,12.25653736201946,1,True,,1:+12.3 2:-12.3,,,,2,True
+spkmslm,allow muslim clergymen preaching hatred of the us,2,2 not allowed,12.989384068006125,2,True,,1:-13.0 2:+13.0,,,,2,True
+colmslm,allow anti-american muslim clergymen teaching in college,5,5 not allowed,12.475696055433543,5,True,,4:-12.5 5:+12.5,,,,5,True
+libmslm,allow anti-american muslim clergymen's books in library,1,1 remove,15.291088783440376,1,True,,1:+15.3 2:-15.3,,,,1,True
+cappun,favor or oppose death penalty for murder,1,1 favor,20.02562729555734,1,True,,1:+20.0 2:-20.0,,1,True,1,True
+gunlaw,favor or oppose gun permits,2,2 oppose,13.258493036417992,2,True,,1:-13.3 2:+13.3,,2,True,1,True
+courts,courts dealing with criminals,2,2 not harshly enough,12.481674105953129,2,True,,1:-7.6 2:+12.5 3:-4.9,,,,,
+wirtap,wiretapping,1,1 approve,9.546510017125657,1,True,,1:+9.5 2:-9.5,,,,,
+grass,should marijuana be made legal,2,2 should not be legal,23.136882678416626,2,True,,1:-23.1 2:+23.1,,2,True,2,True
+prayer,bible prayer in public schools,2,2 disapprove,23.175767379187185,2,True,,1:-23.2 2:+23.2,,2,True,2,True
+world1,world image:much evil vs. much good,1 2 3,1 world is evil; 2 ; 3 ,3.5923538635798264,1 2 3,True,,1:+2.6 2:+0.6 3:+0.4 4:-1.4 5:-0.4 6:-1.2 7:-0.5,2 ; 3 ; 5 ; 7 world is good,,,,
+racmar,favor law against racial intermarriage,1,1 yes,8.384705389176876,1,True,,1:+8.4 2:-8.4,,,,1,True
+racpush,blacks shouldn't push,1 2,1 agree strongly; 2 agree slightly,17.322501385210323,1 2,True,,1:+10.0 2:+7.3 3:-2.3 4:-15.1,,,,1 2,True
+racseg,whites have right to seg. neighborhood,1 2 3,1 agree strongly; 2 agree slightly; 3 disagree slightly,14.165757400082226,1 2 3,True,,1:+4.0 2:+2.4 3:+7.8 4:-14.2,,,,1 2,False
+racopen,vote on open housing law,1,1 first law,13.98967357448117,1,True,3,1:+14.0 2:-14.4 3:+0.4,,1,True,2,True
+racfew,children to school with opposite race,2,2 no,0.052011944779191945,2,True,,1:-0.1 2:+0.1,"1 yes, object; 2 no",,,1,True
+busing,attitude toward racial busing,2,2 oppose,15.531977087035132,2,True,,1:-15.5 2:+15.5,,,,1,True
+racpres,would vote for black president,2,2 no,3.7433988878690636,2,True,,1:-3.7 2:+3.7,,,,1,True
+affrmact,Favor preference in hiring Black people,4,4 strongly opposes,22.814133750301185,4,True,,1:-9.8 2:-7.4 3:-5.6 4:+22.8,,,,1 2,False
+wrkwayup,Black people overcome prejudice without favors,1 2,1 agree strongly; 2 agree somewhat,25.015697008896126,1 2,True,,1:+19.8 2:+5.2 3:-2.9 4:-10.5 5:-11.6,,,,1 2,True
+helpful,people helpful or looking out for selves,1,1 try to be helpful,1.5566331697853888,1,True,3,1:+1.6 2:-1.3 3:-0.2,,,,1,True
+fair,people fair or try to take advantage,2,2 would try to be fair,2.437086135375225,2,True,3,1:-2.4 2:+2.3 3:+0.2,,,,2,True
+trust,can people be trusted,2,2 can't be too careful,1.739411852887153,2,True,3,1:-1.7 2:+2.4 3:-0.6,,,,1,True
+confinan,confid in banks & financial institutions,1 2,1 a great deal; 2 only some,5.2909087353234705,1 2,True,,1:+4.1 2:+1.2 3:-5.3,,,,1 2,True
+conbus,confidence in major companies,1,1 a great deal,8.810935066838768,1,True,,1:+8.8 2:-2.7 3:-6.1,,,,1 2,False
+conclerg,confidence in organized religion,1 2,1 a great deal; 2 only some,10.305793775079984,1 2,True,,1:+8.2 2:+2.1 3:-10.3,,,,1 2,True
+coneduc,confidence in education,3,3 hardly any,4.9149876856671835,3,True,,1:-2.6 2:-2.3 3:+4.9,,,,1 2,True
+confed,confid. in exec branch of fed govt,3,3 hardly any,1.5807635301316172,1 3,False,,1:+1.1 2:-2.7 3:+1.6,,,,1 2,True
+conlabor,confidence in organized labor,3,3 hardly any,15.247821126044098,3,True,,1:-4.4 2:-10.9 3:+15.2,,,,1 2,True
+conpress,confidence in press,3,3 hardly any,14.430917260558878,3,True,,1:-7.2 2:-7.2 3:+14.4,,,,1 2,True
+conmedic,confidence in medicine,2 3,2 only some; 3 hardly any,0.9068290554034926,2,False,,1:-0.9 2:+1.0 3:-0.1,1 a great deal; 3 hardly any,,,1 2,False
+contv,confidence in television,3,3 hardly any,6.31510149756694,3,True,,1:-3.6 2:-2.7 3:+6.3,,,,1 2,True
+conjudge,confid. in united states supreme court,2 3,2 only some; 3 hardly any,0.9124869630147223,2 3,True,,1:-0.9 2:+0.0 3:+0.9,1 a great deal; 2 only some; 3 hardly any,,,1 2,False
+consci,confidence in scientific community,2 3,2 only some; 3 hardly any,7.340807600154732,2 3,True,,1:-7.3 2:+5.7 3:+1.7,,,,1 2,False
+conlegis,confidence in congress,3,3 hardly any,2.6557606756924743,3,True,,1:-0.7 2:-2.0 3:+2.7,1 a great deal,,,1 2,True
+conarmy,confidence in military,1,1 a great deal,11.929473001937938,1,True,,1:+11.9 2:-2.0 3:-9.9,,,,1 2,False
+obey,to obey,1 2 3,1 most important; 2 2nd important; 3 3rd important,15.172146087034239,1 2 3,True,,1:+6.1 2:+4.0 3:+5.0 4:-2.3 5:-12.8,,,,,
+popular,to be well liked or popular,5,5 least important,13.606014690324198,5,True,,2:-0.6 3:-1.2 4:-11.4 5:+13.6 1:-0.4,1 most important; 2 2nd important,,,,
+thnkself,to think for ones self,2 3 4 5,2 2nd important; 3 3rd important; 4 4th important; 5 least important,10.489982413680316,2 3 4,False,,1:-10.5 2:+1.1 3:+2.6 4:+7.1 5:-0.3,5 least important,,,,
+workhard,to work hard,1 2,1 most important; 2 2nd important,5.183551360743679,1 2 4,False,,1:+4.5 2:+0.7 3:-7.1 4:+2.3 5:-0.4,2 2nd important; 5 least important,,,,
+helpoth,to help others,3 4 5,3 3rd important; 4 4th important; 5 least important,4.979953920741087,1 3 4,False,,1:+0.3 2:-5.2 3:+0.7 4:+4.4 5:-0.1,1 most important; 3 3rd important; 5 least important,,,,
+aged,should aged live with their children,2,2 a bad idea,5.625919422856111,2,True,3,1:-5.6 2:+5.4 3:+0.2,,,,,
+anomia5,lot of the average man getting worse,2,2 disagree,4.56846256771597,2,True,,1:-4.6 2:+4.6,,,,,
+anomia6,not fair to bring child into world,2,2 disagree,1.8375316746413592,2,True,,1:-1.8 2:+1.8,,,,,
+anomia7,officials not interested in average man,2,2 disagree,0.365620913040642,2,True,,1:-0.4 2:+0.4,1 agree; 2 disagree,,,,
+getahead,opinion of how people get ahead,1,1 hard work most important,8.420957921513889,1,True,4,1:+8.4 2:-4.2 3:-4.2 4:-0.0,,,,1,True
+fehome,women take care of home not country,1,1 agree,8.891249435832002,1,True,,1:+8.9 2:-8.9,,,,1,True
+fework,should women work,2,2 disapprove,5.70418474175368,2,True,,1:-5.7 2:+5.7,,,,1,True
+fepres,vote for woman president,2,2 no,5.572117256481136,2,True,5,1:-5.6 2:+5.6 5:+0.0,,,,1,True
+fepol,women not suited for politics,1,1 agree,12.550082794683027,1,True,,1:+12.6 2:-12.6,,1,True,1,True
+abdefect,strong chance of serious defect,2,2 no,14.865996371405519,2,True,,1:-14.9 2:+14.9,,,,2,True
+abnomore,married--wants no more children,2,2 no,25.220319611154743,2,True,,1:-25.2 2:+25.2,,,,2,True
+abhlth,woman's health seriously endangered,2,2 no,8.119330528407671,2,True,,1:-8.1 2:+8.1,,,,2,True
+abpoor,low income--cant afford more children,2,2 no,24.94674734421721,2,True,,1:-24.9 2:+24.9,,,,2,True
+abrape,pregnant as result of rape,2,2 no,13.401696520581554,2,True,,1:-13.4 2:+13.4,,,,2,True
+absingle,not married,2,2 no,24.28752040091317,2,True,,1:-24.3 2:+24.3,,,,2,True
+abany,abortion if woman wants for any reason,2,2 no,26.22328245937331,2,True,,1:-26.2 2:+26.2,,2,True,2,True
+pillok,birth control to teenagers 14-16,3 4,3 disagree; 4 strongly disagree,28.00917518064796,3 4,True,,1:-19.6 2:-8.4 3:+11.0 4:+17.0,,,,3 4,True
+sexeduc,sex education in public schools,2,2 oppose,11.37031524766225,2,True,3,1:-11.4 2:+11.3 3:+0.0,,2,True,2,True
+divlaw,divorce laws,2,2 more difficult,19.739995242726575,2,True,,1:-15.7 2:+19.7 3:-4.0,,2,True,2,True
+premarsx,sex before marriage,1 2,1 always wrong; 2 almost always wrong,26.733230851215794,1 2,True,,1:+21.9 2:+4.9 3:-1.1 4:-25.7,,1 2 3,False,1 2,True
+teensex,sex before marriage:teens 14-16,1,1 always wrong,24.70494572626048,1,True,,1:+24.7 2:-9.0 3:-10.3 4:-5.4,,,,1 2,False
+xmarsex,sex with person other than spouse,1,1 always wrong,18.537302482138745,1,True,,1:+18.5 2:-8.9 3:-7.5 4:-2.2,,,,1 2,False
+homosex,homosexual sex relations,1,1 always wrong,31.082418878096583,1,True,5,1:+31.1 2:-0.3 3:-4.0 4:-26.7 5:-0.0,2 almost always wrong,1 2 3,False,1 2 3,False
+porninf,materials provide info about sex,2,2 no,7.737145248964235,2,True,,1:-7.7 2:+7.7,,,,,
+pornmorl,materials lead to breakdown in morals,1,1 yes,20.485278977606818,1,True,,1:+20.5 2:-20.5,,,,,
+pornrape,materials lead to rape,1,1 yes,17.062632024725147,1,True,,1:+17.1 2:-17.1,,,,,
+pornout,materials provide outlet,2,2 no,6.669787935757581,2,True,,1:-6.7 2:+6.7,,,,,
+pornlaw,feelings about pornography laws,1,1 there should be laws against the distribution of pornography whatever the age,19.73217935896929,1,True,,1:+19.7 2:-16.9 3:-2.9,,1,True,1,True
+spanking,favor spanking to discipline child,1 2,1 strongly agree; 2 agree,16.61222279358581,1 2,True,,1:+9.5 2:+7.1 3:-9.4 4:-7.2,,,,,
+letdie1,allow incurable patients to die,2,2 no,15.033141299569005,2,True,,1:-15.0 2:+15.0,,2,True,2,True
+suicide1,suicide if incurable disease,2,2 no,17.675242008902995,2,True,,1:-17.7 2:+17.7,,,,2,True
+suicide2,suicide if bankrupt,2,2 no,7.155931036479378,2,True,,1:-7.2 2:+7.2,,,,2,True
+suicide3,suicide if dishonored family,2,2 no,6.827572393374124,2,True,,1:-6.8 2:+6.8,,,,2,True
+suicide4,suicide if tired of living,2,2 no,11.116328474705822,2,True,,1:-11.1 2:+11.1,,,,2,True
+hitok,ever approve of man punching adult male,1,1 yes,1.3729527063441316,1,True,,1:+1.4 2:-1.4,,,,,
+hitmarch,stranger in protest march,1,1 yes,0.12239143025995546,1,True,,1:+0.1 2:-0.1,1 yes; 2 no,,,,
+hitdrunk,drunk bumped into man & wife,1,1 yes,1.313109009734631,1,True,,1:+1.3 2:-1.3,,,,,
+hitchild,stranger had hit mans child,2,2 no,0.8818212632316862,2,True,,1:-0.9 2:+0.9,1 yes; 2 no,,,,
+hitbeatr,stranger was beating up a woman,1,1 yes,3.2283947664175927,1,True,,1:+3.2 2:-3.2,,,,,
+hitrobbr,stranger had broken into mans house,1,1 yes,3.850030251292575,1,True,,1:+3.9 2:-3.9,,,,,
+polhitok,ever approve of police striking citizen,1,1 yes,6.659401883323842,1,True,,1:+6.7 2:-6.7,,,,,
+polabuse,citizen said vulgar or obscene things,1,1 yes,3.9025157694948525,1,True,,1:+3.9 2:-3.9,,,,,
+polmurdr,citizen questioned as murder suspect,1,1 yes,1.0582303237434887,1,True,,1:+1.1 2:-1.1,,,,,
+polescap,citizen attempting to escape custody,1,1 yes,7.440852520074377,1,True,,1:+7.4 2:-7.4,,,,,
+polattak,citizen attacking policeman with fists,1,1 yes,2.536690385543146,1,True,,1:+2.5 2:-2.5,,,,,
+fechld,mother working doesn't hurt children,3 4,3 disagree; 4 strongly disagree,14.045981586192084,3 4,True,,1:-10.3 2:-3.7 3:+9.6 4:+4.5,,,,1 2,True
+fehelp,wife should help husbands career first,1 2 3,1 strongly agree; 2 agree; 3 disagree,14.041306459486364,1 2 3,True,,1:+1.5 2:+11.5 3:+1.0 4:-14.0,,,,1 2,False
+fepresch,preschool kids suffer if mother works,1 2,1 strongly agree; 2 agree,15.756590185213522,1 2,True,,1:+4.8 2:+10.9 3:-9.2 4:-6.6,,,,1 2,True
+fefam,"better for man to work, woman tend home",1 2,1 strongly agree; 2 agree,20.055851965617805,1 2,True,,1:+5.6 2:+14.5 3:-3.6 4:-16.5,,,,1 2,True
+racchng,try to integrate social club,2,2 no,13.546541241556334,2,True,3,1:-13.5 2:+13.6 3:-0.1,,,,1,True
+racdif1,differences due to discrimination,2,2 no,22.600640615476227,2,True,,1:-22.6 2:+22.6,,,,1,True
+racdif2,differences due to in-born learning ability,1,1 yes,2.6303333323429587,1,True,,1:+2.6 2:-2.6,,,,1,True
+racdif3,differences due to lack of education,2,2 no,17.0123915850059,2,True,,1:-17.0 2:+17.0,,,,1,True
+racdif4,differences due to lack of will,1,1 yes,17.567552639126482,1,True,,1:+17.6 2:-17.6,,,,1,True
+helppoor,should govt improve standard of living?,4 5,4 ; 5 people should care for themselves,23.898454120190586,4 5,True,,1:-10.5 2:-10.9 3:-2.4 4:+12.5 5:+11.4,,,,,
+helpnot,should govt do more or less?,4 5,4 ; 5 government does too much,25.988305110602333,4 5,True,,1:-7.6 2:-10.6 3:-7.8 4:+9.7 5:+16.3,,,,,
+helpsick,should govt help pay for medical care?,3 4 5,3 agree with both; 4 ; 5 people should care for themselves,29.466329479727758,3 4 5,True,,1:-21.2 2:-8.3 3:+10.5 4:+10.3 5:+8.6,,,,,
+helpblk,Should govt aid Black people?,4 5,4 ; 5 no special treatment,25.61391772443501,4 5,True,,1:-10.2 2:-10.2 3:-5.1 4:+6.7 5:+18.9,,,,1 2,False
+wlthwhts,rich - poor,4 5 6 7,4 ; 5 ; 6 ; 7 7 - poor,9.67665659637407,4 5,False,,1:-2.3 2:-3.1 3:-4.3 4:+9.0 5:+0.9 6:-0.1 7:-0.1,5 ; 6 ; 7 7 - poor,,,,
+wlthblks,rich - poor,1 2 3 4 5,1 1 - rich; 2 ; 3 ; 4 ; 5 ,2.1583116610170023,2 4 5,False,,1:-0.2 2:+0.2 3:-0.3 4:+1.8 5:+0.7 6:-1.7 7:-0.5,1 1 - rich; 2 ; 3 ; 5 ; 7 7 - poor,,,,
+workwhts,hard working - lazy,1 2 3,1 1 - hard-working; 2 ; 3 ,3.0900361010483537,2 3 5 7,False,,1:-0.3 2:+0.1 3:+3.3 4:-3.5 5:+0.6 6:-0.2 7:+0.0,1 1 - hard-working; 2 ; 5 ; 6 ; 7 7 - lazy,,,,
+workblks,hard working - lazy,5 6 7,5 ; 6 ; 7 7 - lazy,10.674769838972237,5 6 7,True,,1:-1.9 2:-2.7 3:-2.7 4:-3.4 5:+6.2 6:+3.0 7:+1.5,,,,,
+intlwhts,unintelligent -intelligent,5 6 7,5 ; 6 ; 7 7-intelligent,7.017403764733993,5 6,False,,1:-0.3 2:-0.2 3:-1.1 4:-5.4 5:+4.2 6:+3.6 7:-0.8,1 1-unintelligent; 2 ; 7 7-intelligent,,,,
+intlblks,unintelligent - intelligent,1 2 3,1 1-unintelligent; 2 ; 3 ,2.0943223243933295,1 2 3 5 6,False,,1:+0.3 2:+0.4 3:+1.4 4:-2.7 5:+1.0 6:+0.8 7:-1.2,1 1-unintelligent; 2 ; 6 ,,,,
+liveblks,neighborhood half black,4 5,4 oppose; 5 strongly oppose,9.136798958097438,4 5,True,,1:-4.8 2:-1.2 3:-3.1 4:+5.4 5:+3.8,,,,1 2,False
+livewhts,r favors living in half white neighborhood,1 2,1 strongly favor; 2 favor,5.583948623424749,1 2 4 5,False,,1:+4.4 2:+1.2 3:-7.4 4:+1.2 5:+0.6,5 strongly oppose,,,,
+marblk,close relative marry Black person,4 5,4 oppose; 5 strongly oppose,15.775429780765016,2 4 5,False,,1:-7.9 2:+0.5 3:-8.4 4:+7.3 5:+8.5,2 favor,,,1 2,False
+marasian,close relative marry asian,4 5,4 oppose; 5 strongly oppose,8.905087298142078,2 4 5,False,,1:-5.7 2:+2.1 3:-5.3 4:+6.3 5:+2.7,,,,1 2,False
+marhisp,close relative marry hispanic,4 5,4 oppose; 5 strongly oppose,8.754884097580701,2 4 5,False,,1:-5.6 2:+2.1 3:-5.2 4:+5.8 5:+3.0,,,,1 2,False
+marwht,r favor close relative marrying white person,1 2,1 strongly favor; 2 favor,11.48249439302817,1 2 4,False,,1:+10.6 2:+0.9 3:-11.8 4:+0.4 5:-0.0,2 favor; 4 oppose; 5 strongly oppose,,,1 2,True
+discaff,whites hurt by aff. action,1 2,1 very likely; 2 somewhat likely,15.596314003966649,1 2,True,,1:+8.1 2:+7.5 3:-15.6,,,,1 2,True
+fejobaff,for or against preferential hiring of women,4,4 strongly oppose,18.942400306614562,4,True,,1:-9.9 2:-5.4 3:-3.6 4:+18.9,,,,1 2,False
+discaffm,a man won't get a job or promotion,1 2,1 very likely; 2 somewhat likely,11.601929112750122,1 2,True,,1:+3.5 2:+8.1 3:-4.9 4:-6.7,,,,1 2,True
+discaffw,a woman won't get a job or promotion,3 4,3 not very likely; 4 very unlikely,14.456726030656696,3 4,True,,1:-9.7 2:-4.8 3:+10.7 4:+3.7,,,,1 2,True
+fehire,should hire and promote women,3 4 5,3 neither agree nor disagree; 4 disagree; 5 strongly disagree,14.792858801080525,3 4 5,True,,1:-8.7 2:-6.1 3:+1.4 4:+9.4 5:+4.0,,,,1 2,True
+nextgen,science & tech. give more opportunities to next generation,2 3 4,2 agree; 3 disagree; 4 strongly disagree,4.87497708179014,2,False,,1:-4.9 2:+5.5 3:-0.2 4:-0.5,3 disagree; 4 strongly disagree,,,,
+toofast,science makes our way of life change too fast,1 2,1 strongly agree; 2 agree,5.849992261017232,2,False,,1:-0.0 2:+5.9 3:-1.8 4:-4.1,1 strongly agree,,,,
+advfront,sci rsch is necessary and should be supported by federal govt,2 3 4,2 agree; 3 disagree; 4 strongly disagree,17.945119919857348,2 3 4,True,,1:-17.9 2:+10.0 3:+7.2 4:+0.8,4 strongly disagree,,,,
+jobsall,govts resp: provide jobs for all,4,4 definitely should not be,17.511057153579486,4,True,,1:-4.7 2:-12.0 3:-0.8 4:+17.5,3 probably should not be,,,,
+goveqinc,govmnt should reduce inc differentials,4 5,4 disagree; 5 strongly disagree,27.190337123441637,4 5,True,,1:-6.4 2:-14.4 3:-6.4 4:+6.9 5:+20.3,,,,,
+meovrwrk,men hurt family when focus on work too much,1 2,1 strongly agree; 2 agree,4.1598360829594885,1 2,True,,1:+2.0 2:+2.1 3:-1.7 4:-2.0 5:-0.5,5 strongly disagree,,,,
+letin1a,number of immigrants nowadays should be,4 5,4 reduced a little; 5 reduced a lot,25.948143722844293,4 5,True,,1:-7.3 2:-10.3 3:-8.4 4:+8.6 5:+17.4,,,,4 5,True
+usintl,take active part in world affairs,1,1 active part,3.986059795372179,1,True,,1:+4.0 2:-4.0,,,,,
+usun,remain in u.n. or pull out,2,2 pull out,7.658601434946462,2,True,,1:-7.7 2:+7.7,,,,,
+commun,feelings about communism,1,1 worst kind,17.852014839611822,1,True,,1:+17.9 2:-5.8 3:-10.4 4:-1.6,,,,,

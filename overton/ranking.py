@@ -5,7 +5,7 @@ best contiguous cut from overton/coding.py.
 
 Score: the book's find_questions model, with the coded split as the
 outcome: logit(conservative ~ year + cohort + polviews), weighted
-(wtssall, or wtssps where wtssall is missing; weights scaled to mean 1).
+(WEIGHT_COL from overton/data.py, scaled to mean 1).
 Ranked by the polviews coefficient.
 
 Redundancy: tetrachoric correlation between two coded questions among
@@ -29,7 +29,7 @@ from scipy.optimize import brentq
 from scipy.stats import multivariate_normal, norm
 
 from overton.candidates import EXTRACT, PRIMARY
-from overton.data import CONSERVATIVE_VALUES
+from overton.data import CONSERVATIVE_VALUES, WEIGHT_COL
 from overton.pipeline import FIG_DIR
 
 MIN_OVERLAP = 200
@@ -37,7 +37,7 @@ MIN_OVERLAP = 200
 
 def load():
     gss = pd.read_hdf(PRIMARY, "gss")
-    gss["w"] = gss["wtssall"].fillna(gss["wtssps"])
+    gss["w"] = gss[WEIGHT_COL]
     gss["w"] /= gss["w"].mean()
     return gss
 

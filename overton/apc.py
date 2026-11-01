@@ -16,7 +16,7 @@ continuous-outcome ("mean") likelihood from its Task 165:
 - age: CultureWar's cohort_model, which is the time model with another
   index; here the index is age, within a window of survey years.
 
-Weights: wtsmerge (wtssall, or wtssps where it's missing), on the original
+Weights: WEIGHT_COL from overton/data.py (wtssps), on the original
 extract, not resampled. n_eff is Kish's effective sample size.
 
 Difficulties (--difficulties):
@@ -171,14 +171,14 @@ def prepare(names=None, difficulties="em", sample="interviewer"):
     sample: "interviewer", the primary sample (overton/data.py), or "all",
     every respondent with NORC's weights.
     """
-    from overton.data import CANDIDATES, CANDIDATES_PRIMARY
+    from overton.data import CANDIDATES, CANDIDATES_PRIMARY, WEIGHT_COL
     from overton.drift import estimate_with_difficulties
     from overton.pipeline import RECODE_POLVIEWS, estimate_conservatism, make_questions
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     gss = pd.read_hdf(CANDIDATES_PRIMARY if sample == "interviewer" else CANDIDATES, "gss")
     gss["year"] = gss["year"].astype(int)
-    gss["weight"] = gss["wtssall"].fillna(gss["wtssps"])
+    gss["weight"] = gss[WEIGHT_COL]
     sets = question_sets()
     d = None
     if difficulties == "m1pool":

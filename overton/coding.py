@@ -2,8 +2,8 @@
 
 For each response, the difference in the percentage choosing it
 (Conservative minus Liberal) is computed within each year and averaged
-over the years, weighted by the number of respondents. Weights: wtssall,
-or wtssps where wtssall is missing.
+over the years, weighted by the number of respondents. Weights: WEIGHT_COL
+(overton/data.py).
 
 Rule: split the response scale, in order, at the point that best separates
 conservatives and liberals; the conservative side is the side
@@ -31,7 +31,7 @@ import numpy as np
 import pandas as pd
 
 from overton.candidates import PRIMARY
-from overton.data import CONSERVATIVE_VALUES
+from overton.data import CONSERVATIVE_VALUES, WEIGHT_COL
 from overton.pipeline import FIG_DIR
 
 # volunteered answers that aren't positions on the question
@@ -123,7 +123,7 @@ def main():
     scope = scope[scope["scope"] == "opinion"]
 
     gss = pd.read_hdf(PRIMARY, "gss")
-    gss["w"] = gss["wtssall"].fillna(gss["wtssps"])
+    gss["w"] = gss[WEIGHT_COL]
     recode = {1: "Liberal", 2: "Liberal", 3: "Liberal", 4: "Moderate"}
     gss["polviews3"] = gss["polviews"].map(lambda x: recode.get(x, "Conservative") if pd.notna(x) else np.nan)
 
