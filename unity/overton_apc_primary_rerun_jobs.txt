@@ -1,0 +1,13 @@
+# birth-group period-cohort fits with more than 20 divergences in the first run (2026-11-01): longer tuning, higher target accept
+--model period_cohort --set p48 --cohorts 1883-1927 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set p48 --cohorts 1930-1939 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set p48 --cohorts 1965-1980 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set p48 --cohorts 1910-1919 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set p48 --cohorts 1980-1989 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set p48 --cohorts 1990-1999 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set p48 --cohorts 1970-1979 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set p48 --cohorts 1960-1969 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set p48 --cohorts 1900-1909 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set p48 --cohorts 2000-2009 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set p48 --cohorts 1920-1929 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set p48 --cohorts 1940-1949 --tune 8000 --draws 6000 --target-accept 0.995
