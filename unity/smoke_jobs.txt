@@ -1,0 +1,2 @@
+# smoke test for a new sandbox: one short fit
+--model period --set econA --tune 100 --draws 100 --tag _smoke
