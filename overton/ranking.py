@@ -28,7 +28,7 @@ import statsmodels.formula.api as smf
 from scipy.optimize import brentq
 from scipy.stats import multivariate_normal, norm
 
-from overton.candidates import EXTRACT
+from overton.candidates import EXTRACT, PRIMARY
 from overton.data import CONSERVATIVE_VALUES
 from overton.pipeline import FIG_DIR
 
@@ -36,7 +36,7 @@ MIN_OVERLAP = 200
 
 
 def load():
-    gss = pd.read_hdf(EXTRACT, "gss")
+    gss = pd.read_hdf(PRIMARY, "gss")
     gss["w"] = gss["wtssall"].fillna(gss["wtssps"])
     gss["w"] /= gss["w"].mean()
     return gss
@@ -91,7 +91,7 @@ def tetrachoric(x, y):
 
 
 def mode_flag(gss, varname):
-    """True if asked in 2022 or 2024 but with no web responses."""
+    """True if asked in 2022 or 2024 but with no web responses (gss: the full file)."""
     recent = gss[gss["year"].isin([2022, 2024]) & gss[varname].notna()]
     if len(recent) == 0:
         return False
@@ -102,6 +102,7 @@ def main():
     coding = pd.read_csv(FIG_DIR / "candidates_coding.csv", index_col=0)
     scope = pd.read_csv(FIG_DIR / "candidates_scope.csv", index_col=0)
     gss = load()
+    full = pd.read_hdf(EXTRACT, "gss", columns=None)
     codes = conservative_codes(coding)
     coded = code_responses(gss, codes)
 
@@ -120,7 +121,7 @@ def main():
                 last=meta["last"],
                 conservative=" ".join(f"{v:g}" for v in codes[varname]),
                 separation=coding.loc[varname, "separation"],
-                in_person_only=mode_flag(gss, varname),
+                in_person_only=mode_flag(full, varname),
                 in_book_15=varname in CONSERVATIVE_VALUES,
             )
         )

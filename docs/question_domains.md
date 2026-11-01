@@ -117,3 +117,27 @@ The review kept the proposed classification, with these points:
 - **Social:** the 29 social questions, without both and neither.
 
 All 43 are in the full pool, which is the headline specification.
+
+## Addendum (2026-11-01): the pool after rerunning the selection on the primary sample
+
+The question selection was rerun on the primary sample (2021 dropped; interviewer-administered respondents only in 2022 and 2024; `docs/mode_design.md`). The coverage rule, at least half the survey years with `polviews`, is now 16 of 32 years (it was 17 of 33). The primary pool has 48 questions:
+- **Added:**
+  - `busing`, `fehome`, `fework`: asked in 16 years, which now meets the coverage rule;
+  - `fechld`: replaces `fepresch` in the same topic (working mothers), because it now ranks one place higher;
+  - `colmil`, `trust`: no longer flagged by the stability rule; their flags came from the 2020s decade, which no longer includes 2021 or web respondents.
+- **Removed:** `fepresch`.
+- **Codings:** none changed.
+
+Classification of the new questions, by the category definitions above (not sent out for review):
+
+| Question | Text | Classification |
+|---|---|---|
+| `busing` | Attitude toward busing for racial integration | social (race relations) |
+| `fechld` | A working mother can have as warm a relationship with her children | social (gender roles) |
+| `fehome` | Women should take care of their homes and leave running the country to men | social (gender roles) |
+| `fework` | Should a married woman earn money if her husband can support her | social (gender roles) |
+| `colmil` | Allow someone who advocates doing away with elections and letting the military run the country to teach in a college | social (civil liberties) |
+| `trust` | Can most people be trusted | **neither**: social trust isn't one of the social topics, and it isn't economic (judgment call, Allen to confirm) |
+
+The economic sets A, B, and C are unchanged. Social now has 33 questions (29 − `fepresch` + 5); "neither" has 3.
+

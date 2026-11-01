@@ -30,7 +30,7 @@ import re
 import numpy as np
 import pandas as pd
 
-from overton.candidates import EXTRACT
+from overton.candidates import PRIMARY
 from overton.data import CONSERVATIVE_VALUES
 from overton.pipeline import FIG_DIR
 
@@ -122,7 +122,7 @@ def main():
     scope = pd.read_csv(FIG_DIR / "candidates_scope.csv", index_col=0)
     scope = scope[scope["scope"] == "opinion"]
 
-    gss = pd.read_hdf(EXTRACT, "gss")
+    gss = pd.read_hdf(PRIMARY, "gss")
     gss["w"] = gss["wtssall"].fillna(gss["wtssps"])
     recode = {1: "Liberal", 2: "Liberal", 3: "Liberal", 4: "Moderate"}
     gss["polviews3"] = gss["polviews"].map(lambda x: recode.get(x, "Conservative") if pd.notna(x) else np.nan)

@@ -1,0 +1,84 @@
+# Decided specification (2026-11-01): EM difficulties on the primary sample (interviewer-administered
+# responses, 2021 dropped), selection rerun on that sample; headline set p48, plus social and core economic.
+--model period --set p48 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --by polviews3=Liberal --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --by polviews3=Moderate --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --by polviews3=Conservative --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --by polviews=1 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --by polviews=2 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --by polviews=3 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --by polviews=4 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --by polviews=5 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --by polviews=6 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --by polviews=7 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --by polviews3=Liberal --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --by polviews3=Moderate --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --by polviews3=Conservative --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --window 1972-1979 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --window 1980-1989 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --window 1990-1999 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --window 2000-2009 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --window 2010-2019 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --window 2020-2024 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set social --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set social --by polviews3=Liberal --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set social --by polviews3=Moderate --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set social --by polviews3=Conservative --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set social --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set econA --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set econA --by polviews3=Liberal --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set econA --by polviews3=Moderate --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set econA --by polviews3=Conservative --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set econA --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --cohorts 1900-1909 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --cohorts 1910-1919 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --cohorts 1920-1929 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --cohorts 1930-1939 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --cohorts 1940-1949 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --cohorts 1950-1959 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --cohorts 1960-1969 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --cohorts 1970-1979 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --cohorts 1980-1989 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --cohorts 1990-1999 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --cohorts 2000-2009 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --cohorts 1883-1927 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --cohorts 1928-1945 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --cohorts 1946-1964 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --cohorts 1965-1980 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --cohorts 1981-1996 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set p48 --cohorts 1997-2012 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --cohorts 1900-1909 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --cohorts 1910-1919 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --cohorts 1920-1929 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --cohorts 1930-1939 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --cohorts 1940-1949 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --cohorts 1950-1959 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --cohorts 1960-1969 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --cohorts 1970-1979 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --cohorts 1980-1989 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --cohorts 1990-1999 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --cohorts 2000-2009 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --cohorts 1883-1927 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --cohorts 1928-1945 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --cohorts 1946-1964 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --cohorts 1965-1980 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --cohorts 1981-1996 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set p48 --cohorts 1997-2012 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --cohorts 1900-1909 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --cohorts 1910-1919 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --cohorts 1920-1929 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --cohorts 1930-1939 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --cohorts 1940-1949 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --cohorts 1950-1959 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --cohorts 1960-1969 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --cohorts 1970-1979 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --cohorts 1980-1989 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --cohorts 1990-1999 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --cohorts 2000-2009 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --cohorts 1883-1927 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --cohorts 1928-1945 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --cohorts 1946-1964 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --cohorts 1965-1980 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --cohorts 1981-1996 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set p48 --cohorts 1997-2012 --tune 4000 --draws 6000 --target-accept 0.99

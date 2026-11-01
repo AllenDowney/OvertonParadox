@@ -63,7 +63,9 @@ MIN_ANSWERED_BY_SET = {"econA": 2, "econB": 2, "econC": 2, "social": 2}
 ECON_A = ["helppoor", "helpnot", "helpsick", "eqwlth"]
 ECON_B = ECON_A + ["natenvir", "nateduc", "natmass", "natpark", "tax", "getahead"]
 ECON_C = ECON_B + ["helpblk", "natdrug"]
-NOT_SOCIAL = ECON_C + ["natarms", "nataid"]
+# "neither": defense and foreign aid (review, 2026-10-31); trust, which entered the pool when the
+# selection was rerun on the primary sample (2026-11-01; docs/question_domains.md)
+NOT_SOCIAL = ECON_C + ["natarms", "nataid", "trust"]
 DOMAIN_SETS = {"econA": ECON_A, "econB": ECON_B, "econC": ECON_C, "social": None}  # social: the rest of the pool
 DIFFICULTIES = ["heuristic", "em", "em66", "emset", "m1pool"]
 SCALE = 15  # results are reported as conservative responses out of 15, whatever the set size
@@ -113,9 +115,16 @@ def names_primary(sets):
     return max((v for k, v in sets.items() if k.startswith("p")), key=len)
 
 
-def data_name(name, difficulties="heuristic"):
-    """Name of a set's data and results, with the suffix for the difficulties."""
-    return name if difficulties == "heuristic" else f"{name}-{difficulties}"
+def data_name(name, difficulties="em", sample="interviewer"):
+    """Name of a set's data and results.
+
+    The decided specification (EM difficulties, primary sample) has plain
+    names (e.g. p43); variations get suffixes (e.g. p43-heuristic-all).
+    Results from before 2026-11-01 used plain names for the heuristic and all
+    modes; they're in results/apc_exploratory.
+    """
+    suffix = "".join(f"-{v}" for v, default in [(difficulties, "em"), (sample, "interviewer")] if v != default)
+    return name + suffix
 
 
 def pool_difficulties():
@@ -156,14 +165,18 @@ def reference_difficulties(gss, sets, difficulties):
     return d
 
 
-def prepare(names=None, difficulties="heuristic"):
-    """Weighted grid estimates for each question set, on the original extract."""
-    from overton.data import CANDIDATES
+def prepare(names=None, difficulties="em", sample="interviewer"):
+    """Weighted grid estimates for each question set, on the original (not resampled) data.
+
+    sample: "interviewer", the primary sample (overton/data.py), or "all",
+    every respondent with NORC's weights.
+    """
+    from overton.data import CANDIDATES, CANDIDATES_PRIMARY
     from overton.drift import estimate_with_difficulties
     from overton.pipeline import RECODE_POLVIEWS, estimate_conservatism, make_questions
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
-    gss = pd.read_hdf(CANDIDATES, "gss")
+    gss = pd.read_hdf(CANDIDATES_PRIMARY if sample == "interviewer" else CANDIDATES, "gss")
     gss["year"] = gss["year"].astype(int)
     gss["weight"] = gss["wtssall"].fillna(gss["wtssps"])
     sets = question_sets()
@@ -191,10 +204,10 @@ def prepare(names=None, difficulties="heuristic"):
         df["answered"] = answered
         df = df[(answered >= min_answered) & df["cohort"].notna() & df["age"].notna()]
         df["y"] = df["conservatism"] / df["n_questions"]
-        df.to_parquet(DATA_DIR / f"{data_name(name, difficulties)}.parquet")
-        print(data_name(name, difficulties), len(df), df.groupby("year")["y"].mean().iloc[[0, -1]].round(3).to_dict())
+        df.to_parquet(DATA_DIR / f"{data_name(name, difficulties, sample)}.parquet")
+        print(data_name(name, difficulties, sample), len(df), df.groupby("year")["y"].mean().iloc[[0, -1]].round(3).to_dict())
     if used:
-        pd.DataFrame(used).to_csv(DATA_DIR / f"difficulties_{difficulties}.csv")
+        pd.DataFrame(used).to_csv(DATA_DIR / f"difficulties{data_name('', difficulties, sample)}.csv")
 
 
 def weighted_cells(df, keys):
@@ -384,7 +397,7 @@ def fit_period_cohort(df, scale, stem, args):
 
 
 def fit(args):
-    set_name = data_name(args.set, args.difficulties)
+    set_name = data_name(args.set, args.difficulties, args.sample)
     df = pd.read_parquet(DATA_DIR / f"{set_name}.parquet")
     label = [args.model, set_name]
     if args.by:
@@ -417,7 +430,7 @@ def fit(args):
     else:
         trace, summary, names = fit_period_cohort(df, scale, stem, args)
 
-    summary.update(run=run, model=args.model, set=set_name, difficulties=args.difficulties, by=args.by, window=summary.get("window", args.window),
+    summary.update(run=run, model=args.model, set=set_name, difficulties=args.difficulties, sample=args.sample, by=args.by, window=summary.get("window", args.window),
                    cohorts=args.cohorts, age_range=f"{int(df['age'].min())}-{int(df['age'].max())}",
                    respondents=len(df), n_questions=n_questions, elapsed_seconds=round(time.time() - start, 1),
                    tune=args.tune, draws=args.draws, chains=args.chains, seed=args.seed,
@@ -443,10 +456,11 @@ def main():
     parser.add_argument("--seed", type=int, default=17)
     parser.add_argument("--target-accept", type=float, default=None, help="default: CultureWar's setting for the model")
     parser.add_argument("--tag", default="")
-    parser.add_argument("--difficulties", choices=DIFFICULTIES, default="heuristic")
+    parser.add_argument("--difficulties", choices=DIFFICULTIES, default="em")
+    parser.add_argument("--sample", choices=["interviewer", "all"], default="interviewer")
     args = parser.parse_args()
     if args.step == "prepare":
-        prepare(args.sets, args.difficulties)
+        prepare(args.sets, args.difficulties, args.sample)
     else:
         fit(args)
 

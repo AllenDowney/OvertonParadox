@@ -26,7 +26,7 @@ Usage: python -m overton.stability
 import numpy as np
 import pandas as pd
 
-from overton.candidates import EXTRACT
+from overton.candidates import PRIMARY
 from overton.pipeline import FIG_DIR, RECODE_POLVIEWS
 
 MIN_RESPONDENTS = 200
@@ -76,7 +76,7 @@ def flags(gaps):
 def main():
     ranking = pd.read_csv(FIG_DIR / "candidates_ranking.csv", index_col=0)
     coded = pd.read_hdf(FIG_DIR / "candidates_coded.hdf", "coded")
-    gss = pd.read_hdf(EXTRACT, "gss")
+    gss = pd.read_hdf(PRIMARY, "gss")
     weight = gss["wtssall"].fillna(gss["wtssps"])
     alignment = gss["polviews"].replace(RECODE_POLVIEWS)
     decade = (gss["year"] // 10 * 10).astype(int)

@@ -17,11 +17,21 @@ CultureWar variable catalog (selected values, where available).
 
 No trends are computed here.
 
+Primary sample (decided 2026-11-01): the selection is run on the primary
+sample (overton/data.py: 2021 dropped, interviewer-administered respondents
+only in 2022 and 2024). `--primary` recomputes the pass-1 table from that
+sample, using the extract above (every variable that can pass on the primary
+sample passed on the full file, except, in principle, one whose number of
+distinct values drops to MAX_VALUES or below without the dropped
+respondents). Downstream steps (scope, coding, ranking, stability) read the
+primary sample.
+
 Writes:
 - ../data/gss_overton_candidates_r3a.hdf (key "gss")
 - figs/candidates_pass1.csv
 
-Usage: python -m overton.candidates
+Usage: python -m overton.candidates            # full file: pass 1 and 2, the extract
+       python -m overton.candidates --primary  # pass-1 table from the primary sample
 """
 
 import gzip
@@ -44,6 +54,7 @@ GSSRDOC = CULTUREWAR / "codebook/extracted/gssrdoc_dict_flat.json"
 CATALOG = CULTUREWAR / "notebooks/variable_metadata/variables.yaml"
 DATA_DIR = paths.DATA_DIR
 EXTRACT = DATA_DIR / "gss_overton_candidates_r3a.hdf"
+PRIMARY = DATA_DIR / "gss_overton_candidates_r3a_interviewer.hdf"  # overton/data.py
 
 MIN_WAVES = 8
 MIN_SPAN = 15
@@ -77,6 +88,15 @@ def first_pass(path):
             if len(seen) <= MAX_VALUES:
                 seen.update(numeric[col].dropna().unique().tolist())
     by_year = pd.concat(counts).groupby(level=0).sum()
+    return by_year, values
+
+
+def first_pass_extract(gss):
+    """The same counts and values as first_pass, from an extract in memory."""
+    gss = gss[gss["polviews"].notna()]
+    numeric = gss.select_dtypes("number")
+    by_year = numeric.notna().groupby(gss["year"]).sum()
+    values = {col: set(numeric[col].dropna().unique().tolist()) for col in numeric.columns}
     return by_year, values
 
 
@@ -152,5 +172,14 @@ def main():
     print("in CultureWar catalog and passing:", (table["passes"] & table["in_culturewar"]).sum())
 
 
+def main_primary():
+    by_year, values = first_pass_extract(pd.read_hdf(PRIMARY, "gss"))
+    table = add_metadata(apply_gates(by_year, values))
+    table.to_csv(FIG_DIR / "candidates_pass1.csv")
+    print(f"primary sample: {len(table)} variables; {table['passes'].sum()} pass the gates")
+
+
 if __name__ == "__main__":
-    main()
+    import sys
+
+    main_primary() if "--primary" in sys.argv else main()

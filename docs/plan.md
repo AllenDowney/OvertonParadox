@@ -193,7 +193,9 @@ Goal (Allen, 2026-10-31): treat each respondent's estimated conservatism as the 
   - [ ] Optional: bootstrap the EM calibration within survey replicates.
 - [x] Social vs economic: classification of the 43 primary-pool questions sent out for review (`docs/question_domains.md`). Review (2026-10-31): keep the classification (race questions social, `helpblk` both; spending: domestic economic, defense and foreign aid neither); prespecify three economic specifications, A core (`helppoor`, `helpnot`, `helpsick`, `eqwlth`), B broad (A + `natenvir`, `nateduc`, `natmass`, `natpark`, `tax`, `getahead`), C inclusive (B + `helpblk`, `natdrug`); compare with social-only (29, without both and neither); don't expand the pool; report on a common scale; spending questions are relative to the status quo, so watch their influence. Minimum answers for these sets: 2 (Allen).
 - [x] Run the four domain sets (period national, by `polviews3`, period–cohort): 20 fits, all pass. Social: classic Overton (within-cohort −0.14; Overton gap 1.05). Core economic: polarization; within-cohort **+0.24**, conservatives +1.1; broad economic +0.07. The "don't get more conservative as they age" claim holds for social questions, not economic ones: revisit the headline framing.
-- [ ] Interview mode after 2018: design document `docs/mode_design.md` (2026-11-01), for review. Options: pool, 2018 cutoff, mode terms, dropping the interviewer-only questions, NORC's weights, and the randomized protocol assignment. The sensitivity runs follow the decision.
+- [x] Interview mode after 2018: `docs/mode_design.md`. Decided 2026-11-01, following the review and CultureWar: interviewer-administered responses in 2022 and 2024 with raked weights; 2021 dropped.
+- [x] Rerun the question selection on the primary sample (Allen, 2026-11-01): 48 questions; new ones classified (`docs/question_domains.md`, addendum).
+- [ ] Complete analysis with the decided specification: `unity/overton_apc_primary_jobs.txt` (82 fits), then figures and the lab notebook.
 - [ ] Fine-tune figures (label placement etc.) only after the question set is settled (Allen, 2026-10-31).
 - [ ] Headline framing given the domain results: social questions (and the full pool) show no within-cohort conservative shift; core economic questions show +0.24 per decade and polarization. Decide how the article and appendix present the split (Allen).
 
@@ -211,6 +213,22 @@ Goal (Allen, 2026-10-31): treat each respondent's estimated conservatism as the 
 - Blog article: stand-alone canonical presentation of the paradox. Use `related-articles` skill to find earlier posts to link.
 
 ## Decisions
+
+**The decided specification (2026-11-01).** Each step has one decided choice; variations come later, a few per step, to see how much each decision matters (Allen: focus on the decided analysis first, then a small number of variations).
+
+| Step | Decision | Where it's documented |
+|---|---|---|
+| Data | GSS 1972–2024 (R3a). Primary sample: 2021 dropped; in 2022 and 2024, interviewer-administered respondents only (in person, phone), with weights raked to the full sample's margins, the same as CultureWar | `docs/mode_design.md` |
+| Weights | `wtssall`, or `wtssps` where it's missing (the same as CultureWar) | `docs/mode_design.md` (open item E) |
+| Questions | Rule-based pool, rerun on the primary sample: scope, best contiguous coding, ranking by association with `polviews`, coverage (at least half the survey years, 16 of 32), one per topic, no confidence questions, stability rule. 48 questions (`p48`) | `docs/confidence_review.md`, `docs/question_domains.md` (addendum) |
+| Difficulties | Weighted EM, calibrated on the 48, on the primary sample | `docs/difficulties_design.md` |
+| Score | Rasch grid, N(0, 4) prior, at least 5 answers (2 for the domain sets), reported out of 15 | |
+| Models | Period (national, by `polviews3`, by `polviews`), period–cohort (within-cohort slope: straight line of the standardized period component; decomposition), age model by decade of survey | lab notebook, Phase 4b |
+| Reported sets | Full pool (headline); social; core economic (econA) | `docs/question_domains.md`, `docs/difficulties_design.md` |
+| Birth groups | Period–cohort within each decade of birth and generation (plus the by-age and by-year versions) | lab notebook |
+
+Variations for later (one or two per step): all modes; through 2018; the heuristic difficulties; calibration on all candidates or per set; the pool selected on all respondents; by N; econB/C; with the confidence questions.
+
 
 - **Location (2026-10-30):** this repo, `notebooks/`, next to `overton.md` and `overton_irt`. The appendix may replace the orphan `overton_irt` page. Article drafted in `~/ProbablyOverthinkingBlog/articles`.
 - **Weights (2026-10-30):** both. Weighted resamplings from `wtsmerge` (the book's method) for the main results; direct weighting as a check.

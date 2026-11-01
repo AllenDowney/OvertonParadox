@@ -824,6 +824,19 @@ Details: `docs/difficulties_design.md`, "Outcome of the second round".
 
 **Next.** Redo the by-N curves, the birth-group fits, and the figures with `--difficulties em`; revisit the headline numbers (full pool: within-cohort −0.14, Overton gap 1.31) and the economic framing (the positive within-cohort slope now holds for core economic questions only).
 
+## 2026-11-01: The decided specification
+
+**Interview mode.** The design question (`docs/mode_design.md`) went out for review. The reviewer drew on CultureWar's decision on the same data and recommended using interviewer-administered responses in 2022 and 2024, with weights raked to the full sample's margins, and dropping 2021. The rationale is continuity of the measurement procedure used through 2018, not that this gives a preferred result; it isn't NORC's recommended estimator, and we say so. Adopted, with the same rule and weights as CultureWar: `overton/data.py` builds the primary sample (68,005 respondents; 1,763 in 2022, 1,428 in 2024). Its raked weights come from CultureWar's interviewer extract, which matches our rows exactly.
+
+**Selection rerun on the primary sample** (Allen). The coverage rule, at least half the survey years with `polviews`, becomes 16 of 32. The primary pool is now 48 questions:
+- added: `busing`, `fehome`, `fework` (16 years each), `fechld` (replaces `fepresch` in the same topic), `colmil`, `trust` (no longer flagged by the stability rule);
+- removed: `fepresch`;
+- no codings changed.
+
+The new questions are classified by the reviewed definitions; `trust` is "neither" (`docs/question_domains.md`, addendum).
+
+**Approach from here** (Allen). Make each design decision, run the complete analysis with the decided choices, then come back for a small number of variations per step. The specification is in `docs/plan.md` (Decisions). Results from before this point used the heuristic difficulties and all modes. They're kept locally in `results/apc_exploratory/`, and their summaries are in the entries above.
+
 ## Next
 
 - **Headline framing.** Decide how the article and appendix present the domain split: on social questions (and the full pool), people don't get more conservative within cohorts; on core economic questions, they do (+0.24 per decade), and opinion polarizes.
