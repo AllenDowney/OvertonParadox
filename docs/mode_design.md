@@ -61,7 +61,7 @@ These matter differently for different quantities:
 - **The within-cohort slope and the decomposition** use every year. The post-2020 surveys are 3 of 33.
 - **The period models** include a year-level noise term, which can absorb a level shift in a single year but not a persistent shift across 2021, 2022, and 2024. A persistent shift would show up in the trend.
 
-**Identification problem.** In this data, mode and time are almost perfectly confounded. Every survey after 2020 is web or multimode, and every survey before is interviewer-administered. So a "design era" term (a level shift from 2021 on) can't be separated from real change in opinion after 2020 without outside information. Within 2022 and 2024, comparing modes of completion mixes measurement with self-selection (NORC's point). The randomized assignment of the first mode offered would identify the effect of the protocol (web-first vs face-to-face-first) on our score. That's an intent-to-treat contrast, diluted by people who completed in the other mode, but it's free of self-selection. We haven't found the assignment indicator in the cumulative file; it may be in the 2022 and 2024 single-year files or the paradata.
+**Identification problem.** In this data, mode and time are almost perfectly confounded. Every survey after 2020 is web or multimode, and every survey before is interviewer-administered. So a "design era" term (a level shift from 2021 on) can't be separated from real change in opinion after 2020 without outside information. Within 2022 and 2024, comparing modes of completion mixes measurement with self-selection (NORC's point). The randomized assignment of the first mode offered would identify the effect of the protocol (web-first vs face-to-face-first) on our score. That's an intent-to-treat contrast, diluted by people who completed in the other mode, but it's free of self-selection. The cumulative file has the assignment indicator, `modesequence` (1 in-person first, 2 web first; 2022 and 2024). *(Corrected 2026-11-01: an earlier draft said we hadn't found it.)* CultureWar's analysis of the same data found the arm comparison has little power: both arms end up mixed mode, and once weighted, the share interviewed by an interviewer differs between arms by only 10 points in 2022 and 15 in 2024.
 
 ## Options
 
@@ -122,3 +122,36 @@ These checks were run earlier, before this decision was framed (lab notebook, 20
 - GSS 2022 and 2024 codebooks: https://gss.norc.org/content/dam/gss/get-documentation/pdf/codebook/GSS%202022%20Codebook.pdf, https://gss.norc.org/content/dam/gss/get-documentation/pdf/codebook/GSS%202024%20Codebook%20R3a.pdf
 - Kolenikov, S., and C. Kennedy (2014). "Evaluating three approaches to statistically adjust for mode effects." *Journal of Survey Statistics and Methodology* 2(2): 126–158.
 - Brick, J. M., C. Kennedy, I. Cervantes-Flores, and A. W. Mercer (2022). "An Adaptive Mode Adjustment for Multimode Household Surveys." *Journal of Survey Statistics and Methodology* 10(4): 1024–1047.
+
+## Review, round 1 (2026-11-01)
+
+The review drew on the parallel decision in CultureWar (*You Would Choose Now*; `~/CultureWar/gss_mode_decision.md`, `gss_mode_plan.md`), which uses the same GSS data and faced the same question.
+
+**What CultureWar found and decided (2026-10-31):**
+- **Large item-level mode differences:** 15–25 points between in-person and web respondents for several questions (e.g., `fehire`, `marwht`, `natracey`, `spkrac`, `goodlife`). Adjusting for demographics and `polviews` changes them by a few points at most, so composition on those covariates doesn't explain them.
+- **Interviewer responses continue the pre-2020 trends more closely,** where that can be checked. This is supporting evidence, not proof of accuracy.
+- **The randomized sequence comparison has little power** (see above).
+- **Decision:** use interviewer-administered responses (in person and phone) in 2022 and 2024, and drop 2021. The weights in 2022 and 2024 are raked to the full sample's weighted margins (age group, sex, race/ethnicity, education, region); NORC's are kept as `*_norc`. The rule is applied in the extract, the same for every question, and is the default for every CultureWar analysis. Fits through 2018 and with all modes are the sensitivity checks.
+- **Costs:** in 2024, the effective sample size falls from about 1,689 to about 684. The interviewer subsample's composition changed between 2022 and 2024: older, more by phone, fewer self-identified conservatives (36% → 30%), more missing `polviews` (4% → 11%).
+
+**The reviewer's recommendation** (revised from the lean above):
+- **Primary:** 1972–2018, plus interviewer-administered respondents in 2022 and 2024 with recalibrated (raked) weights; 2021 excluded. The rationale is continuity of the measurement procedure used for the previous 46 years. It's a methodological choice for historical comparability, not NORC's recommended estimator, and should be described that way.
+- **Calibration:** rerun the weighted EM on the 43 questions using this primary sample, and hold those difficulties fixed across all comparisons. Don't calibrate separately by mode.
+- **Bridge comparison for 2022 and 2024,** with the same difficulties throughout:
+  - A: interviewer respondents, all 43 questions (the primary);
+  - B: all modes, the 36 questions common to both modes;
+  - C: interviewer respondents, the same 36 questions.
+
+  A vs C isolates the effect of the 7 interviewer-only questions, holding respondents fixed; B vs C compares the same questions across the two samples, so item coverage can't explain the difference. Also fit the historical series on the 36 common questions so B and C can be compared with the pre-2020 record.
+- **Composite-specific checks.** The item-level mode differences may cancel or add up in the 43-question score, and restricting by mode may change who is in each `polviews` group. Check, under A, B, and C:
+  - the mean scores of liberals and conservatives separately;
+  - the share in each `polviews` group;
+  - the within-cohort slope and its decomposition.
+- **Sensitivity:** the full multimode sample through 2024 with NORC's weights; the common-item comparison; a series ending in 2018.
+- **Reporting:** show the Overton gap with both 2018 and 2024 as the endpoint, and say where including web responses changes the conclusions materially.
+- **Also suggested:** compare our raked weights with the mode-specific weights of Fufunan, Jin, and Freese (2026), which come with replication code.
+
+**A note on how the checks are used.** The reviewer suggests adopting the interviewer rule "provisionally unless the composite-score comparisons reveal that it introduces a new, substantial distortion." Consistent with how the other design decisions were made, we'd treat the choice as resting on its rationale (continuity of the measurement procedure, and the same rule as CultureWar), and report A, B, C, all modes, and through 2018 as sensitivity analyses, whatever they show. The exception would be a check that reveals something wrong with the procedure itself, e.g., a weighting or composition problem in the interviewer subsample; that would be a reason to fix the procedure, not to switch to the option with the preferred result.
+
+**Still open:** the weighting system before 2021 (option E). Neither the review nor CultureWar changed it: both use `wtssall`, filled with `wtssps` where it's missing. Keeping the same rule as CultureWar is a reason to leave it as is for now.
+
