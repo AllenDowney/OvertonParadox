@@ -198,6 +198,8 @@ Goal (Allen, 2026-10-31): treat each respondent's estimated conservatism as the 
 - [x] Complete analysis with the decided specification: 82 fits plus 12 birth-group reruns; tables and figures; lab notebook 2026-11-01, "Results of the decided specification".
 - [x] Divergences that remain in the period–cohort fits within birth groups (up to 154 in 24,000 draws, 0.6%, at target accept 0.995): accepted as is (Allen, 2026-11-01).
 - [ ] Variations, a few per step (see Decisions).
+- [ ] Data build from a fresh clone: `scripts/build_data.sh` not yet run end to end; `overton.candidates` and `overton.data` still read from `~/CultureWar`.
+- [ ] Retire the scripts that still use resampling (comparisons from the exploratory phase).
 - [ ] Fine-tune figures (label placement etc.) only after the question set is settled (Allen, 2026-10-31).
 - [ ] Headline framing given the domain results: social questions (and the full pool) show no within-cohort conservative shift; core economic questions show +0.24 per decade and polarization. Decide how the article and appendix present the split (Allen).
 
