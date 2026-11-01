@@ -853,7 +853,7 @@ Tables: `figs/apc_results.csv`, `apc_birth_groups.csv`, `apc_age_slopes.csv` (`o
 **Diagnostics.**
 - **Fits other than the birth groups:** at most 17 divergences in 24,000 draws, R-hat ≤ 1.004, ESS ≥ 1,113.
 - **Birth groups:** 12 of the period–cohort fits within birth groups had 30–329 divergences, so they were rerun with longer tuning (8000) and a higher target accept (0.995). The divergences fell (at most 154, 0.6%, for the 1990s) but didn't go away; R-hat ≤ 1.004, ESS ≥ 1,113.
-- **Open item:** more tuning isn't converging on zero, which suggests the geometry of the cohort random walk in narrow birth ranges. Diagnose (`plan.md`). The narrowest groups (1990s, 2000s, Gen Z) also have the fewest respondents and the widest intervals.
+- **Accepted (Allen):** more tuning isn't converging on zero, which suggests the geometry of the cohort random walk in narrow birth ranges. The rate is small (at most 0.6% of draws), so the fits are used as is. The narrowest groups (1990s, 2000s, Gen Z) also have the fewest respondents and the widest intervals.
 
 **Headline quantities** (out of 15 conservative answers; 90% intervals; first year 1974, 1975 for core economic):
 

@@ -196,7 +196,7 @@ Goal (Allen, 2026-10-31): treat each respondent's estimated conservatism as the 
 - [x] Interview mode after 2018: `docs/mode_design.md`. Decided 2026-11-01, following the review and CultureWar: interviewer-administered responses in 2022 and 2024 with raked weights; 2021 dropped.
 - [x] Rerun the question selection on the primary sample (Allen, 2026-11-01): 48 questions; new ones classified (`docs/question_domains.md`, addendum).
 - [x] Complete analysis with the decided specification: 82 fits plus 12 birth-group reruns; tables and figures; lab notebook 2026-11-01, "Results of the decided specification".
-- [ ] Diagnose the divergences that remain in the period–cohort fits within birth groups (up to 154 in 24,000 draws at target accept 0.995); likely the geometry of the cohort random walk in narrow birth ranges.
+- [x] Divergences that remain in the period–cohort fits within birth groups (up to 154 in 24,000 draws, 0.6%, at target accept 0.995): accepted as is (Allen, 2026-11-01).
 - [ ] Variations, a few per step (see Decisions).
 - [ ] Fine-tune figures (label placement etc.) only after the question set is settled (Allen, 2026-10-31).
 - [ ] Headline framing given the domain results: social questions (and the full pool) show no within-cohort conservative shift; core economic questions show +0.24 per decade and polarization. Decide how the article and appendix present the split (Allen).
