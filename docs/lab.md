@@ -1083,7 +1083,12 @@ The period model's slope is −3.076 [−3.234, −2.914] with the current form 
   In every subgroup the two forms agree within Monte Carlo error. The trend form has 4–7× the ESS per second, never reaches the maximum depth, and has no divergences. The current form had 4 and 11 divergences in the two smallest fits, where production had 8 and 44. The trend form's ESS is lower in two of the fits but still above 1,100.
 - **Threads, timed** (2026-11-03, quiet machine, one fit at a time; `p48` period–cohort, trend form, 4 × (1000 + 1000) at 0.99, seed 17): with BLAS limited to one thread, 25 s, peak 22 threads, load 3.0 afterwards. With the default BLAS threading, 56 s, 70 threads, about 10 cores, load 10.7. Steps per draw were nearly the same (97 and 94), so the difference is the cost of each gradient: thread synchronization on a small matrix-vector product. The limit applies on Unity too, where `-c 4` gives fewer cores to share.
 - **Decided** (Allen, 2026-11-03): the trend form is the default for new fits (`--rw2-form cumsum` selects the old one, and a run gets `_rw2-cumsum` in its name). The saved results are unchanged.
-- **Open:** the thread setting for the Unity scripts and the memo. Next is the same timing test on Unity, with more cores available.
+- **Unity timing, first try (2026-11-03, inconclusive).** The same fit on one node (AMD EPYC 7402, 16 cores), configurations in order: 4 cores and one thread, 46.8 s; 4 cores and default threading, 31.8 s; 16 cores and one thread, 30.4 s; 16 cores and default threading, 33.0 s.
+  - The first configuration paid the cold-start costs. The one-thread runs drew identical samples, so the gap between 46.8 s and 30.4 s is mostly that.
+  - At 2,000 iterations, compilation is a large share of each fit's time.
+  - On Unity the default threading penalty is small or absent, unlike locally (2.3×). That may be the BLAS build or the CPU.
+  - A redesign would add a warm-up fit, run at production length, and repeat each configuration in alternating order.
+- **Open:** the thread setting for the Unity scripts and the memo.
 
 ## Next
 
