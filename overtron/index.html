@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Overtron</title>
+    <style>
+      :root { --ink: #1b1b1b; --muted: #666; --rule: #ddd; --bg: #fff; --accent: #2b5d9a; }
+      @media (prefers-color-scheme: dark) {
+        :root { --ink: #e8e8e8; --muted: #aaa; --rule: #444; --bg: #161616; --accent: #7fa8de; }
+      }
+      body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, sans-serif; }
+      main { max-width: 960px; margin: 0 auto; padding: 16px; }
+      h1 { margin: 0.2em 0; }
+      .muted { color: var(--muted); }
+      .controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 1em 0; }
+      button { font: inherit; padding: 0.4em 1.2em; }
+      progress { width: 100%; }
+      table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; font-size: 14px; }
+      th, td { text-align: right; padding: 2px 8px; border-bottom: 1px solid var(--rule); }
+      th:first-child, td:first-child { text-align: left; }
+      .wide { overflow-x: auto; }
+      #error { color: #b00020; white-space: pre-wrap; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>The Overtron</h1>
+      <p class="muted">Minimal page (milestone 5, step 1): run the Overton pipeline in your browser for a preset question set.</p>
+      <div class="controls">
+        <label>Questions <select id="preset"></select></label>
+        <button id="run" disabled>Run</button>
+        <span id="status" class="muted">Loading data…</span>
+      </div>
+      <progress id="progress" max="1" value="0"></progress>
+      <div id="error"></div>
+      <h2>Relative position</h2>
+      <div id="position" class="muted">Not run yet.</div>
+      <h2>Fits</h2>
+      <div class="wide"><table id="fits"><thead><tr>
+        <th>Fit</th><th>Time (s)</th><th>R-hat max</th><th>ESS min</th><th>Divergences</th><th>Slope per decade [90%]</th>
+      </tr></thead><tbody></tbody></table></div>
+      <p id="total" class="muted"></p>
+    </main>
+    <script type="module" src="./src/app.ts"></script>
+  </body>
+</html>

@@ -14,9 +14,9 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { Worker } from "node:worker_threads";
 import { gunzipSync } from "node:zlib";
 import { decode, type Manifest } from "../src/excerpt.ts";
-import { fit, type FitSpec, MAIN_PERIOD_COHORT_TARGET, PAGE_SETTINGS } from "../src/fits.ts";
-import { answered, code, score, series_cells, subset, weighted_cells } from "../src/measure.ts";
-import { summarize_period_cohort, summarize_series } from "../src/summaries.ts";
+import { fit, PAGE_SETTINGS } from "../src/fits.ts";
+import { make_jobs } from "../src/jobs.ts";
+import { answered, code, score } from "../src/measure.ts";
 
 const data = new URL("../public/data/v1/", import.meta.url);
 const manifest = JSON.parse(readFileSync(new URL("manifest.json", data), "utf8")) as Manifest;
@@ -45,60 +45,7 @@ function spawn() {
   };
 }
 
-const range = (values: Iterable<number>) => {
-  const v = [...values];
-  return Array.from({ length: Math.max(...v) - Math.min(...v) + 1 }, (_, i) => Math.min(...v) + i);
-};
-
-interface Job {
-  readonly label: string;
-  readonly saved: string; // the decided run's summary
-  readonly spec: FitSpec;
-  readonly summarize: (draws: Record<string, unknown>) => Record<string, unknown>;
-  readonly target_accept?: number;
-}
-
-function series_job(label: string, saved: string, keep: (i: number) => boolean, by: ArrayLike<number>): Job {
-  const sub = subset(scored, keep);
-  const grid = range(Array.from(sub.rows, (i) => by[i]));
-  const cells = series_cells(excerpt, sub, by);
-  return {
-    label, saved, spec: { kind: "series", cells: { grid, ...cells } },
-    summarize: (d) => summarize_series(d.mu as number[][], grid, cells).summary as unknown as Record<string, unknown>,
-  };
-}
-
-const jobs: Job[] = [];
-for (const [group, lo, hi] of [["Liberal", 1, 3], ["Moderate", 4, 4], ["Conservative", 5, 7]] as const)
-  jobs.push(series_job(`period ${group}`, `period_p48_polviews3-${group}`,
-    (i) => excerpt.polviews[i] >= lo && excerpt.polviews[i] <= hi, excerpt.year));
-for (const [lo, hi] of [[1972, 1979], [1980, 1989], [1990, 1999], [2000, 2009], [2010, 2019], [2020, 2024]])
-  jobs.push(series_job(`age ${lo}-${hi}`, `age_p48_window-${lo}-${hi}`,
-    (i) => excerpt.year[i] >= lo && excerpt.year[i] <= hi, excerpt.age));
-function period_cohort_job(label: string, saved: string, keep: (i: number) => boolean): Job {
-  const sub = subset(scored, keep);
-  const years = range(Array.from(sub.rows, (i) => excerpt.year[i]));
-  const cohorts = range(Array.from(sub.rows, (i) => excerpt.cohort[i]));
-  const c = weighted_cells(excerpt, sub);
-  const cells = {
-    years, cohorts, cell_cohort: Array.from(c.cohort), cell_year: Array.from(c.year), p_weighted: Array.from(c.p_weighted),
-    n: Array.from(c.n), n_eff: Array.from(c.n_eff),
-  };
-  const people = {
-    year: Array.from(sub.rows, (i) => excerpt.year[i]), cohort: Array.from(sub.rows, (i) => excerpt.cohort[i]),
-    weight: Array.from(sub.rows, (i) => excerpt.weight[i]),
-  };
-  return {
-    label, saved, spec: { kind: "period_cohort", cells },
-    summarize: (d) => summarize_period_cohort(d as never, years, cohorts, people, cells).summary,
-  };
-}
-jobs.push({ ...period_cohort_job("period-cohort", "period_cohort_p48", () => true), target_accept: MAIN_PERIOD_COHORT_TARGET });
-for (let d = 1900; d <= 2000; d += 10) {
-  const born = (i: number) => excerpt.cohort[i] >= d && excerpt.cohort[i] <= d + 9;
-  jobs.push(series_job(`age born ${d}s`, `age_p48_cohorts-${d}-${d + 9}`, born, excerpt.age));
-  jobs.push(period_cohort_job(`pc born ${d}s`, `period_cohort_p48_cohorts-${d}-${d + 9}`, born));
-}
+const jobs = make_jobs(excerpt, scored);
 
 const HEADLINE = ["slope_per_decade", "slope_lo90", "slope_hi90", "period_slope_per_decade", "period_slope_lo90",
   "period_slope_hi90", "generational_replacement", "changing_minds"];
@@ -108,7 +55,7 @@ const began = performance.now();
 const [only, target] = [process.argv[2], process.argv[3] ? Number(process.argv[3]) : undefined];
 for (const job of jobs.filter((j) => !only || j.label.includes(only))) {
   const result = await fit(job.spec, PAGE_SETTINGS, worker_module, spawn, undefined, target ?? job.target_accept);
-  const summary = job.summarize(result.draws);
+  const summary = job.summarize(result.draws).summary as unknown as Record<string, unknown>;
   const path = new URL(`${job.saved}_summary.json`, decided);
   const reference = existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : {};
   const keys = HEADLINE.filter((k) => k in summary);

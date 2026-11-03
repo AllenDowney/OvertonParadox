@@ -174,6 +174,18 @@ def question_table(names, added):
     return out, presets, book_codes, list(CATEGORIES)
 
 
+def preset_settings(df, questions, presets, book_codes):
+    """Each preset's codes, minimum answers, and difficulties calibrated on the preset itself
+    (decision 4), so the page needn't run EM for a preset. For p48 this is the decided calibration."""
+    out = {}
+    for name, names in presets.items():
+        codes = {v: book_codes[v] if name == "book15" else questions[v]["conservative"] for v in names}
+        min_answered = MIN_ANSWERED_BY_SET.get(name, MIN_ANSWERED)
+        d = calibrate(df, make_questions(df, codes), min_answered)
+        out[name] = dict(codes=codes, min_answered=min_answered, difficulties=d[list(codes)].to_dict())
+    return out
+
+
 def check_scores(gss):
     """Recompute the decided p48 scores from the decoded excerpt; they must match the parquet."""
     codes = question_sets()["p48"]
@@ -366,8 +378,12 @@ def main():
     (OUT / "respondents.bin.gz").write_bytes(gz)
     questions, presets, book_codes, categories = question_table(list(ranking.index), added)
     question_categories.check(questions)
+    preset_info = preset_settings(df, questions, presets, book_codes)
+    reference = pd.read_csv(APC_DATA / "difficulties.csv", index_col=0)["p48"].dropna()
+    p48_diff = max(abs(preset_info["p48"]["difficulties"][v] - reference[v]) for v in presets["p48"])
+    assert p48_diff < 1e-9, p48_diff  # p48 calibrated on itself is the decided calibration
     (OUT / "questions.json").write_text(json.dumps(dict(questions=questions, presets=presets, book_codes=book_codes,
-                                                         categories=categories)))
+                                                         categories=categories, preset_settings=preset_info)))
     commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True, cwd=paths.ROOT).stdout.strip()
     manifest = dict(
         version=VERSION, rows=len(df), source="GSS 1972-2024 cumulative file, release 3a (NORC), via the CultureWar extract",

@@ -58,7 +58,14 @@ export async function load(base: string): Promise<{ excerpt: Excerpt; manifest: 
     fetch(`${base}/questions.json`).then((r) => r.json() as Promise<QuestionTable>),
   ]);
   const response = await fetch(`${base}/respondents.bin.gz`);
-  const stream = response.body!.pipeThrough(new DecompressionStream("gzip"));
-  const raw = await new Response(stream).arrayBuffer();
+  if (!response.ok) throw new Error(`respondents.bin.gz: HTTP ${response.status}`);
+  let raw = await response.arrayBuffer();
+  // some servers send .gz files with Content-Encoding: gzip, and the browser has already
+  // decompressed them; others send the gzip bytes as is (magic number 1f 8b)
+  const head = new Uint8Array(raw, 0, 2);
+  if (head[0] === 0x1f && head[1] === 0x8b) {
+    const stream = new Blob([raw]).stream().pipeThrough(new DecompressionStream("gzip"));
+    raw = await new Response(stream).arrayBuffer();
+  }
   return { excerpt: decode(raw, manifest), manifest, questions };
 }
