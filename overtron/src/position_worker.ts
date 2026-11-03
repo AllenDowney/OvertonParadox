@@ -20,8 +20,14 @@ self.onmessage = async (event: MessageEvent<PositionRequest>) => {
     const answers = code(excerpt, codes);
     const d = answers.names.map((v) => difficulties[v]);
     const scored = score(excerpt, answers, answered(answers), d, min_answered);
-    const years = by_year(answers, excerpt, scored, d);
-    const head = headline(answers, excerpt, scored, d);
+    // the reference year: the first year with scored liberals, from 1974 on (overton/position.py)
+    const rows = Array.from(scored.rows);
+    const liberal_years = rows.filter((i) => excerpt.polviews[i] >= 1 && excerpt.polviews[i] <= 3).map((i) => excerpt.year[i]);
+    if (!liberal_years.some((y) => y >= 1974) || !rows.some((i) => excerpt.year[i] === 2024))
+      throw new Error("the selected questions score nobody in 2024, or no liberals from 1974 on");
+    const ref_year = Math.max(Math.min(...liberal_years), 1974);
+    const years = by_year(answers, excerpt, scored, d, ref_year);
+    const head = headline(answers, excerpt, scored, d, { ref_year });
     self.postMessage({ ok: true, by_year: years, headline: head });
   } catch (error) {
     self.postMessage({ ok: false, error: String(error) });

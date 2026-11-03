@@ -1,16 +1,17 @@
-// The Overtron page, minimal version (docs/overtron_plan.md, milestone 5, step 1): a preset,
-// Run, progress, and the numbers as tables. It proves the browser path end to end (the
-// excerpt with DecompressionStream, TyMC in module workers, the bootstrap in its own worker)
-// before the picker and the figures.
+// The Overtron page (docs/overtron_plan.md, milestone 5): pick questions, run the pipeline in
+// the browser (the excerpt with DecompressionStream, TyMC in module workers, EM and the
+// bootstrap in their own workers), and draw post 1's figures as the fits finish.
 
-import { type Excerpt, load, type QuestionTable } from "./excerpt.ts";
+import type { CalibrateRequest } from "./calibrate_worker.ts";
+import { type Excerpt, load } from "./excerpt.ts";
 import { conservatism_line } from "./figures.ts";
 import { fit, PAGE_SETTINGS } from "./fits.ts";
 import { make_jobs } from "./jobs.ts";
-import { type Done, draw_figures, FIGURES } from "./post_figures.ts";
-import { answered, code, score } from "./measure.ts";
+import { answered, code, min_answered_for, score } from "./measure.ts";
+import { Picker, type PickerTable, years_asked } from "./picker.ts";
 import type { Headline } from "./position.ts";
 import type { PositionRequest } from "./position_worker.ts";
+import { type Done, draw_figures, FIGURES } from "./post_figures.ts";
 
 interface PresetSettings {
   readonly codes: Record<string, number[]>;
@@ -20,18 +21,14 @@ interface PresetSettings {
 
 const BASE = new URL("data/v1", document.baseURI).href;
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
-const preset = $<HTMLSelectElement>("preset");
 const run = $<HTMLButtonElement>("run");
 const status = $<HTMLSpanElement>("status");
 const progress = $<HTMLProgressElement>("progress");
 
-const PRESET_NAMES: Record<string, string> = {
-  p48: "Decided pool (48 questions)", social: "Social questions", econA: "Core economic questions (econ A)",
-  book15: "The book's 15",
-};
-
 let excerpt: Excerpt;
-let table: QuestionTable & { preset_settings: Record<string, PresetSettings> };
+let table: PickerTable & { preset_settings: Record<string, PresetSettings> };
+let picker: Picker;
+let running = false;
 
 function spawn() {
   return new Worker(new URL("./fit_worker.ts", import.meta.url), { type: "module" });
@@ -44,9 +41,18 @@ const SETTINGS = new URLSearchParams(location.search).has("quick") ? { ...PAGE_S
 
 const fmt = (x: number, digits = 2) => (Number.isFinite(x) ? x.toFixed(digits) : "–");
 
-function position(request: PositionRequest): Promise<{ headline: Headline }> {
+/**
+ * Run a one-shot worker: post the request, resolve with its reply. The caller creates the worker
+ * with the literal `new Worker(new URL("./x.ts", import.meta.url), ...)`, which is the pattern vite
+ * bundles; a URL passed in as a variable would be treated as a plain asset.
+ */
+function in_worker<T>(create: () => Worker, request: unknown, name: string): Promise<T> {
   return new Promise((resolve, reject) => {
-    const worker = new Worker(new URL("./position_worker.ts", import.meta.url), { type: "module" });
+    const worker = create();
+    worker.onerror = (event) => {
+      worker.terminate();
+      reject(new Error(`${name}: ${event.message || "the worker failed to start"}`));
+    };
     worker.onmessage = (event) => {
       worker.terminate();
       if (event.data.ok) resolve(event.data);
@@ -56,26 +62,49 @@ function position(request: PositionRequest): Promise<{ headline: Headline }> {
   });
 }
 
+/** Codes, minimum answers, and difficulties for the selection: a preset's, or calibrated on the set. */
+async function settings_for_selection(): Promise<PresetSettings & { name: string }> {
+  const name = picker.preset();
+  if (name) return { name, ...table.preset_settings[name] };
+  const names = [...picker.selected];
+  const codes = Object.fromEntries(names.map((v) => [v, [...table.questions[v].conservative]]));
+  const min_answered = min_answered_for(names.length);
+  status.textContent = `Calibrating difficulties for your ${names.length} questions…`;
+  const request: CalibrateRequest = { base: BASE, codes, min_answered };
+  const { difficulties } = await in_worker<{ difficulties: Record<string, number> }>(
+    () => new Worker(new URL("./calibrate_worker.ts", import.meta.url), { type: "module" }), request, "calibration");
+  return { name: "custom", codes, min_answered, difficulties };
+}
+
+function update_run_button() {
+  run.disabled = running || picker.selected.size < 2;
+}
+
 async function start() {
-  run.disabled = true;
+  running = true;
+  update_run_button();
   $("error").textContent = "";
   const body = $<HTMLTableElement>("fits").tBodies[0];
   body.replaceChildren();
   const began = performance.now();
-  const settings = table.preset_settings[preset.value];
+  const settings = await settings_for_selection();
+  status.textContent = "Scoring respondents…";
   const answers = code(excerpt, settings.codes);
   const d = answers.names.map((v) => settings.difficulties[v]);
   const scored = score(excerpt, answers, answered(answers), d, settings.min_answered);
-  const jobs = make_jobs(excerpt, scored, preset.value);
+  const jobs = make_jobs(excerpt, scored, settings.name);
 
-  $("position").textContent = "Running (bootstrap, in its own worker)…";
-  const pos = position({ base: BASE, codes: settings.codes, difficulties: settings.difficulties,
-    min_answered: settings.min_answered }).then(({ headline: h }) => {
-    $("position").classList.remove("muted");
-    conservatism_line($("position"), h);
-  }).catch((error) => {
-    $("position").textContent = `Not available: ${error.message}`;
-  });
+  $("position").textContent = "Relative position: running (bootstrap, in its own worker)…";
+  const request: PositionRequest = { base: BASE, codes: settings.codes, difficulties: settings.difficulties,
+    min_answered: settings.min_answered };
+  const pos = in_worker<{ headline: Headline }>(
+    () => new Worker(new URL("./position_worker.ts", import.meta.url), { type: "module" }), request, "relative position")
+    .then(({ headline: h }) => {
+      $("position").classList.remove("muted");
+      conservatism_line($("position"), h);
+    }).catch((error) => {
+      $("position").textContent = `Relative position not available: ${error.message}`;
+    });
 
   if (POSITION_ONLY) jobs.length = 0;
   const figures = $("figures");
@@ -113,19 +142,21 @@ async function start() {
   const seconds = (performance.now() - began) / 1000;
   status.textContent = `Done: ${jobs.length} fits.`;
   $("total").textContent = `Total time ${fmt(seconds, 1)} s, with ${navigator.hardwareConcurrency} logical cores.`;
-  run.disabled = false;
 }
 
 async function init() {
   const loaded = await load(BASE);
   excerpt = loaded.excerpt;
-  table = loaded.questions as typeof table;
-  for (const name of Object.keys(table.preset_settings)) preset.add(new Option(PRESET_NAMES[name] ?? name, name));
+  table = loaded.questions as unknown as typeof table;
+  const asked = years_asked(excerpt, Object.keys(table.questions));
+  picker = new Picker($("picker"), table, excerpt, asked, update_run_button);
   status.textContent = `${loaded.manifest.rows.toLocaleString()} respondents, ${Object.keys(table.questions).length} questions loaded.`;
-  run.disabled = false;
+  update_run_button();
   run.onclick = () => start().catch((error) => {
     $("error").textContent = String(error?.stack ?? error);
-    run.disabled = false;
+  }).finally(() => {
+    running = false;
+    update_run_button();
   });
 }
 

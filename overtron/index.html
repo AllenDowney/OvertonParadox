@@ -44,6 +44,29 @@
       .tooltip .swatch { display: inline-block; width: 12px; height: 3px; margin-right: 6px; vertical-align: middle; }
       .tooltip .muted { color: var(--muted); }
       .waiting { color: var(--muted); font-size: 14px; padding: 1em 0; }
+      h2 { font-size: 20px; margin: 1.2em 0 0.3em; }
+      .picker-top { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin: 0.5em 0; font-size: 14px; }
+      .presets { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+      .preset { font-size: 14px; padding: 0.25em 0.8em; border: 1px solid var(--rule); border-radius: 999px;
+        background: var(--bg); color: var(--ink); cursor: pointer; }
+      .preset.active { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+      .show-all { color: var(--muted); }
+      .category { border-top: 1px solid var(--rule); }
+      .category summary { padding: 6px 0; cursor: pointer; font-weight: 600; }
+      .category summary input { margin-right: 4px; }
+      .category .count { color: var(--muted); font-weight: 400; font-size: 14px; }
+      .questions { display: grid; gap: 2px; padding: 0 0 8px 24px; }
+      .question { display: block; font-size: 14px; line-height: 1.35; padding: 2px 0; cursor: pointer; }
+      .question .meta { color: var(--muted); font-size: 12px; }
+      .coverage { border-top: 1px solid var(--rule); padding-top: 8px; margin-top: 4px; font-size: 14px; }
+      .coverage svg { width: 100%; max-width: 640px; height: auto; display: block; }
+      .coverage .bar { fill: var(--muted); opacity: 0.6; }
+      .coverage .bar.thin { fill: #c77c02; opacity: 1; }
+      .coverage .bar.dropped { fill: #b3261e; opacity: 1; }
+      .coverage .tick { fill: var(--muted); font-size: 11px; }
+      .coverage-note { color: var(--muted); }
+      .coverage-note.warn { color: #a55f00; }
+      @media (prefers-color-scheme: dark) { .coverage .bar.thin { fill: #e0a23a; } .coverage .bar.dropped { fill: #f2867d; } .coverage-note.warn { color: #e0a23a; } }
       .figure-title { font-weight: 700; font-size: 17px; line-height: 1.3; }
       .figure-subtitle { color: var(--muted); font-size: 14px; }
       .figure details { margin-top: 6px; font-size: 14px; }
@@ -57,8 +80,10 @@
     <main>
       <h1>The Overtron</h1>
       <p class="muted">Run the Overton pipeline in your browser for a preset question set.</p>
+      <h2>Choose the questions</h2>
+      <p class="muted">What counts as "getting more conservative" depends on which questions you ask. Start from a preset, then add or remove questions; hover over a question for its wording.</p>
+      <div id="picker"></div>
       <div class="controls">
-        <label>Questions <select id="preset"></select></label>
         <button id="run" disabled>Run</button>
         <span id="status" class="muted">Loading data…</span>
       </div>

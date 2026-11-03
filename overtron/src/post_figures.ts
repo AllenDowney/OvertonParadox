@@ -55,6 +55,11 @@ export function draw_figures(containers: Record<string, HTMLElement>, jobs: read
   for (const { id, needs } of FIGURES) {
     const container = containers[id];
     if (!container || container.dataset.drawn === "1") continue;
+    if (needs.some((g) => group(g).length === 0)) {
+      // e.g. a set whose questions leave a subgroup without respondents, or a run without fits (?position)
+      container.innerHTML = `<div class="waiting">Not available with these questions: no fits for this figure.</div>`;
+      continue;
+    }
     if (!ready(needs)) {
       const total = needs.reduce((n, g) => n + group(g).length, 0);
       const finished = needs.reduce((n, g) => n + group(g).filter((j) => done.has(j)).length, 0);
