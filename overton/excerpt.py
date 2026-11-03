@@ -44,10 +44,12 @@ from overton import paths
 from overton.apc import (COHORT_SETTINGS, DATA_DIR as APC_DATA, ECON_A, ECON_B, ECON_C, MIN_ANSWERED,
                          MIN_ANSWERED_BY_SET, NOT_SOCIAL, PERIOD_SETTINGS, RESULTS_DIR as APC_RESULTS,
                          build_period_cohort_model, build_series_model, calibrate, question_sets, weighted_cells)
-from overton.data import CANDIDATES_PRIMARY, CONSERVATIVE_VALUES, WEIGHT_COL
+from overton import out_of_scope, question_categories
+from overton.data import CANDIDATES_PRIMARY, CONSERVATIVE_VALUES, EXTRACT, WEIGHT_COL
 from overton.drift import estimate_with_difficulties
 from overton.larger_sets import CONFIDENCE, MIN_WAVES
 from overton.pipeline import IN_PERSON_ONLY, ORDER, make_questions
+from overton.question_categories import CATEGORIES, CATEGORY_OF
 from overton.topics import topic
 
 VERSION = "v1"
@@ -83,8 +85,12 @@ def domain(v):
 
 
 def respondents(names):
-    """The primary sample of the candidate extract, with its analysis weight."""
+    """The primary sample of the candidate extract, with its analysis weight, and attend
+    (an out-of-scope question readers can add back) from the full extract."""
     df = pd.read_hdf(CANDIDATES_PRIMARY, "gss").rename(columns={WEIGHT_COL: "weight"})
+    if "attend" in names:
+        attend = pd.read_hdf(EXTRACT, "gss")[["year", "id", "attend"]]
+        df = df.merge(attend, on=["year", "id"], how="left", validate="one_to_one")
     return df[["year", "id", "age", "cohort", "polviews", "mode", "weight"] + names].reset_index(drop=True)
 
 
@@ -123,7 +129,8 @@ def decode(raw, table):
     return pd.DataFrame(out)
 
 
-def question_table(names):
+def question_table(names, added):
+    """The candidates and the out-of-scope questions readers can add back (overton/out_of_scope.py)."""
     ranking, scope, stability = candidates()
     sets = question_sets()
     pool = set(sets["p48"])
@@ -151,10 +158,20 @@ def question_table(names):
             topic=topic(v), domain=domain(v), in_p48=v in pool, excluded_because=reasons,
             in_person_only_since_2022=v in IN_PERSON_ONLY, in_book_15=v in ORDER,
             gap_by_decade=stability.loc[v, "gaps"] if pd.notna(stability.loc[v, "gaps"]) else None)
+    for v, row in added.iterrows():
+        reasons = [row["scope_reason"]] + (["coverage"] if row["waves"] < MIN_WAVES else [])
+        out[v] = dict(
+            description=row["description"], question=row["question"], value_labels=value_labels(row["value_labels"]),
+            conservative=row["conservative"], rank=None, separation=row["separation"],
+            polviews_param=row["polviews_param"], waves=int(row["waves"]), first=int(row["first"]), last=int(row["last"]),
+            topic=v, domain="social", in_p48=False, excluded_because=reasons,
+            in_person_only_since_2022=None, in_book_15=False, gap_by_decade=None)
+    for v in out:
+        out[v]["category"] = CATEGORY_OF[v]
     presets = {name: list(sets[name]) for name in ["p48", "social", "econA"]}
     presets["book15"] = list(ORDER)
     book_codes = {v: [int(c) for c in CONSERVATIVE_VALUES[v]] for v in ORDER}
-    return out, presets, book_codes
+    return out, presets, book_codes, list(CATEGORIES)
 
 
 def check_scores(gss):
@@ -336,7 +353,8 @@ def main():
         print(FIXTURES / "models.json")
         return
     ranking, _, _ = candidates()
-    names = list(ranking.index)
+    added = out_of_scope.code_all(out_of_scope.load())
+    names = list(ranking.index) + list(added.index)
     df = respondents(names)
     spec = columns_spec(names)
     raw, table = encode(df, spec)
@@ -346,8 +364,10 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     gz = gzip.compress(raw, compresslevel=9, mtime=0)
     (OUT / "respondents.bin.gz").write_bytes(gz)
-    questions, presets, book_codes = question_table(names)
-    (OUT / "questions.json").write_text(json.dumps(dict(questions=questions, presets=presets, book_codes=book_codes)))
+    questions, presets, book_codes, categories = question_table(list(ranking.index), added)
+    question_categories.check(questions)
+    (OUT / "questions.json").write_text(json.dumps(dict(questions=questions, presets=presets, book_codes=book_codes,
+                                                         categories=categories)))
     commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True, cwd=paths.ROOT).stdout.strip()
     manifest = dict(
         version=VERSION, rows=len(df), source="GSS 1972-2024 cumulative file, release 3a (NORC), via the CultureWar extract",
