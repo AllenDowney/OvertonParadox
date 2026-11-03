@@ -200,6 +200,15 @@ Goal (Allen, 2026-10-31): treat each respondent's estimated conservatism as the 
 - [x] Relative position (Decisions, 2026-11-02): percentiles from EM latent distributions (`overton/position.py`), with figures; drop the Overton gap from the report and figures. Done 2026-11-02: latent distributions are normal on the logit scale (a nonparametric one didn't converge); the 1974 liberal is at the 61st percentile in 2024 [56, 66] (lab notebook).
 - [x] Reporting scale: percent instead of out of 15; saved fit results converted (no refits); figures zoomed, shared limits per family.
 - [ ] Variations, a few per step (see Decisions).
+- [ ] **Apply the revised selection** (`docs/stability_review.md`, section 8), in order:
+  - [x] Thresholds decided (Allen, 2026-11-03): reversal, 5 points, credible on both sides; drift diagnostic, a credible decade effect of at least 0.5 logits.
+  - [ ] Stability: retire the fading flag; add the reversal-with-size rule (`overton/stability.py`, `overton/question_sets.py`).
+  - [ ] Rerun the selection; the new pool replaces `p48` (its name will change with its size).
+  - [ ] Item-drift diagnostic on the new pool (leave-one-out score, decade effects); Allen reviews the listed questions case by case; reasons recorded in the lab notebook.
+  - [ ] Connectivity table: selected questions asked in each survey year, and questions shared between decades (1970s and 2020s in particular); for the appendix.
+  - [ ] Recalibrate, re-prepare, refit (Unity), and regenerate figures, the Overtron excerpt, fixtures, and presets.
+  - [ ] Sensitivity: with the confidence questions; the previous 48-question selection. Reported neutrally, not used to choose.
+  - [ ] Revise post 1's selection steps for the new rules (the stability example, `fepres`, is no longer excluded).
 - [ ] Data build from a fresh clone: `scripts/build_data.sh` not yet run end to end; `overton.candidates` and `overton.data` still read from `~/CultureWar`.
 - [ ] Retire the scripts that still use resampling (comparisons from the exploratory phase).
 - [ ] Fine-tune figures (label placement etc.) only after the question set is settled (Allen, 2026-10-31).
@@ -226,7 +235,7 @@ Goal (Allen, 2026-10-31): treat each respondent's estimated conservatism as the 
 |---|---|---|
 | Data | GSS 1972–2024 (R3a). Primary sample: 2021 dropped; in 2022 and 2024, interviewer-administered respondents only (in person, phone), with weights raked to the full sample's margins, the same as CultureWar | `docs/mode_design.md` |
 | Weights | `wtssps` (NORC's post-stratification weight) for every year, raked in 2022 and 2024. The same as CultureWar's default and NORC's guidance (Allen, 2026-11-01); before that, `wtssall` filled with `wtssps` | `docs/mode_design.md` (item E) |
-| Questions | Rule-based pool, rerun on the primary sample: scope, best contiguous coding, ranking by association with `polviews`, coverage (at least half the survey years, 16 of 32), one per topic, no confidence questions, stability rule. 48 questions (`p48`) | `docs/confidence_review.md`, `docs/question_domains.md` (addendum) |
+| Questions | Rule-based pool, rerun on the primary sample: scope, best contiguous coding, ranking by association with `polviews`, coverage (at least half the survey years, 16 of 32), one per topic, no confidence questions (construct rule), stability. **Revised 2026-11-03 after consultation, not yet applied:** the fading rule is retired; stability is a reversal rule with a size threshold; an item-drift diagnostic lists questions for inspection, decided case by case. The current pool (48 questions, `p48`, rules as of 2026-10-31) will be replaced by the new selection | `docs/stability_review.md` (section 8), `docs/confidence_review.md`, `docs/question_domains.md` (addendum) |
 | Difficulties | Weighted EM, calibrated on the 48, on the primary sample | `docs/difficulties_design.md` |
 | Score | Rasch grid, N(0, 4) prior, at least 5 answers (2 for the domain sets), reported as percent conservative responses (out of 15 before 2026-11-02) | |
 | Models | Period (national, by `polviews3`, by `polviews`), period–cohort (within-cohort slope: straight line of the standardized period component; decomposition), age model by decade of survey | lab notebook, Phase 4b |
@@ -269,11 +278,11 @@ Variations for later (one or two per step): all modes; through 2018; the heurist
 - **Headline and robustness (Allen, 2026-10-31; the Overton gap superseded on 2026-11-02 by the relative-position percentile, see the table above):** headline numbers come from the full primary pool (all 43 questions after the rules: the one point on the curve with no choice of where to stop). The by-N curves show robustness. Framing, split by claim: "people don't get more conservative as they age" is robust (never credibly positive at any N; size from about −0.12 to about 0); the Overton gap is positive at every N (1.6–2.5) and the headline uses the smallest value, so the text says it depends on the questions. Show both curves (with and without confidence questions) prominently; mention that the book's 15 give −0.16, more negative than any N in the new pool; note that all questions count equally, including weakly separating ones at the bottom of the pool.
 - **Stability rule (2026-10-31):** a question is excluded if the conservative–liberal gap on its coded answer, by decade, credibly changes sign or fades to zero after being credibly positive (`notebooks/overton/stability.py`). Follows from the method's fixed-coding assumption; uses only the gap, not trends. Removes 15 of the 65 pool questions, all ranked 39th or lower.
 - **Confidence questions (decided 2026-10-31, after independent review):** primary specification excludes all 13 `con*` questions by a revised scope rule (evaluations of institutions are out); the version including them is reported as a sensitivity analysis, visibly. Decided after seeing results; documented as a post hoc revision (review: `docs/confidence_review.md`; record and checks: lab notebook). Report the Overton gap and within-cohort slope as functions of N, one curve per specification.
+- **Confidence questions and stability (revised 2026-11-03, after consultation; `docs/stability_review.md`, section 8):** the confidence exclusion (C1) stays, now justified on construct grounds: confidence in an institution is a different construct from a position on an issue or a norm (approval of current decisions, legitimacy, trust in expertise, partisan alignment), and its meaning isn't stable (declining confidence in the Supreme Court is not a move toward conservatism; confidence in the executive branch tracks the party in power). Applies to all 13. The post hoc timing is disclosed. The stability rule changes: fading no longer excludes a question (a fixed Rasch difficulty predicts fading gaps near consensus, e.g. `fepres`); a reversal of at least a set size (5 points, credible on both sides; decided 2026-11-03 as a substantive judgment, with every candidate's decade gaps already known) does; a leave-one-out item-drift diagnostic lists questions for inspection only (a credible decade effect of at least 0.5 logits). Not adopted: S3, S4, S6, C2–C4. Results are not a criterion and weren't considered.
 - **Larger sets (2026-10-30):** the same rule, top N for N = 15–40 (`notebooks/overton/larger_sets.py`). Report the Overton gap as a function of N rather than as one number. Report two pools, all candidates and without the confidence-in-institutions items (`con*`), because `conpress` drifts strongly toward its conservative response. Which pool the article uses is decided later.
 
 ## Open questions
 
-(None at the moment.)
 
 ## Notes for CultureWar
 
@@ -303,6 +312,7 @@ Opinion questions that passed the Overton gates but aren't in CultureWar's varia
 
 ## Log
 
+- 2026-11-03: Stability and confidence questions reviewed by an outside consultant (`docs/stability_review.md`). Adopted: confidence exclusion kept on construct grounds; fading rule retired; reversal rule with a size threshold; one leave-one-out drift diagnostic for inspection; explicit definition of the scale; connectivity check; two sensitivity comparisons. Not yet applied (Phase 4b tasks).
 - 2026-11-03: Overtron milestone 4: models (trend form, eigenbasis computed in the browser), summaries, worker fits, and relative position in TypeScript, each tested against Python. The page's p48 run (32 fits, including the decade-of-birth fits) takes 149 s in Node and reproduces the decided results. Thread setting: one BLAS thread per chain (2.3× faster locally, no difference on Unity).
 - 2026-11-03: The trend form of the RW2 is the default for new fits (Allen), after tests on p48 and four subgroups (same results, 4–7× the ESS per second). The saved results are unchanged. Timed: limiting BLAS to one thread per chain makes the trend fit 2.3× faster locally. Lab notebook entry; memo `jb/rw2_reparameterization.md`.
 - 2026-11-02: Overtron milestone 3: the measurement port (`overtron/src/`), tested against both fixtures; the p48 EM stops at its 100-iteration cap (difficulties within 0.009 of converged).

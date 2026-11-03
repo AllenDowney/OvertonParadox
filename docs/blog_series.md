@@ -106,7 +106,7 @@ Numbers below are from the decided specification (lab notebook, 2026-11-01, "Res
 **Point:** How the questions were chosen and how answers become a score, without hand-picking.
 
 **Key results:**
-- Rule-based pool: scope, coding, ranking by association with `polviews`, coverage (16 of 32 years), one question per topic, stability rule, no confidence questions → 48 questions.
+- Rule-based pool: scope, coding, ranking by association with `polviews`, coverage (16 of 32 years), one question per topic, stability (reversals of at least a set size), no confidence questions → the new pool (48 questions under the rules of 2026-10-31; to be rerun with the revised stability rule, `docs/stability_review.md`, section 8).
 - Score: one-parameter item response model, difficulties by weighted EM.
 - The book's 15 hand-picked questions rank 4th–47th by the book's own criterion.
 
@@ -115,6 +115,10 @@ Numbers below are from the decided specification (lab notebook, 2026-11-01, "Res
 **Notes:**
 - Why not just pick questions still asked: selects on the outcome (questions retired after opinion reached consensus).
 - Item drift: questions move at different speeds, so a changing question set can bias the trend.
+- **Definition, stated explicitly** (consultation, 2026-11-03): the scale measures adherence to a fixed collection of positions historically associated with self-identified conservatism. Conservative answers are identified by their association with `polviews`, and the paradox is about self-identification, so say so.
+- **Connectivity:** the questions asked in each survey year, and the questions shared between the 1970s and the 2020s; what makes scores comparable across 50 years.
+- **Stability:** why fading isn't a reason to exclude a question (near consensus, a stable question's gap shrinks; `fepres`), why reversals are; the drift diagnostic and the questions it listed, with the decisions.
+- **Confidence questions:** excluded on construct grounds (evaluations of institutions, not positions; the Supreme Court and executive-branch examples); decided after seeing results, disclosed; the version with them as a sensitivity analysis (post 5).
 
 ---
 

@@ -1,33 +1,69 @@
 ---
-title: Do People Get More Conservative as They Age?
+title: Do People Get More Conservative With Age?
 description: >-
   An update of the Overton paradox analysis with GSS data through 2024: in every decade of
   surveys, older people hold more conservative beliefs, but following the same people over
   time, their beliefs get a little more liberal.
 ---
 
-# Do People Get More Conservative as They Age?
+# Do People Get More Conservative With Age?
 
-% Draft scaffold (2026-11-02): headings follow the outline in docs/blog_series.md, post 1.
-% Lines starting with % are notes for drafting; they don't appear on the site.
+There's a famous (but unattributable) quip that goes something like this:
 
-% Point: In every decade of surveys, older people hold more conservative beliefs. But following
-% the same people over time, their beliefs don't get more conservative; they get a little more liberal.
+> If you are not a liberal at 25, you have no heart. If you are not a conservative at 35, you have no brain.
 
-% This is an update of the analysis in Chapter 12: new data (GSS through 2024), better methods
-% (developed for YWCN).
-% Link: The Overton Paradox (2023-04-24) https://www.allendowney.com/blog/2023/04/24/the-overton-paradox/
-% Link: The Overton Paradox in Three Graphs (2023-09-19) https://www.allendowney.com/blog/2023/09/19/the-overton-paradox-in-three-graphs/
-% Link: You Would Choose Now (2026-06-16) https://www.allendowney.com/blog/2026/06/16/you-would-choose-now/
+In Chapter 12 of [*Probably Overthinking It*](https://greenteapress.com/wp/probably-overthinking-it), I used data from the General Social Survey (GSS) to show that the quip is half right. Older people are more likely to say they are conservative, and they hold more conservative views.
+
+But as people get older, their views don't become more conservative; on average, they become a little more liberal. I called this combination [the Overton paradox](https://www.allendowney.com/blog/2023/04/24/the-overton-paradox/).
+
+That analysis used data through 2021 and methods that were good enough for the chapter. Since then, the GSS has released data from 2022 and 2024, and while working on my next book, [*You Would Choose Now*](https://www.allendowney.com/blog/2026/06/16/you-would-choose-now/), I developed better methods for separating the effects of age, birth year, and current events. So it's time for an update.
+
+This is the first in a series of articles. In this one, we'll see whether people get more conservative as they get older? The answer is still no.
 
 ## How to measure conservatism
 
-% Core claim: conservative beliefs are the ones where liberals and conservatives differ.
-% What I did for the book (15 hand-picked questions).
-% What we did this time: rule-based selection (48 questions), and the rationale. Details in post 3.
-% The unit: percent conservative responses to the 48 questions.
+If someone says the people get more conservative with age, what do they mean? I assume that people have in mind some bundle of beliefs, attitudes, and behaviors they consider conservative. But different people might imagine a different bundle.
+
+For the book, I searched the General Social Survey (GSS) for the questions that most distinguish liberals and conservatives, and then I curated a list of 15 that cover a variety of topics and were asked often over the course of the survey. That worked well enough, but curating involves judgment calls, which is where researcher bias can sneak in.
+
+This time I replaced curation with a set of rules, applied one step at a time.
+
+1. **Start with everything.** The GSS cumulative file has 6,943 variables. I kept the ones that record responses to questions asked in at least 8 waves over a span of at least 15 years, with between 2 and 7 possible answers. That leaves 432.
+
+2. **Keep the opinions.** From those, I kept the questions that ask for an opinion about a public issue or a social norm. I left out demographics (like age and income), behavior (like smoking or owning a gun), personal circumstances (like happiness and health), and, as I did for the book, religious belief and practice (we'll revisit that one). I also left out questions about party and voting, which would make the measure circular. That leaves about 170 questions.
+
+3. **Identify the conservative answers.** For each question, I split the answers into two groups at the point that best separates people who identify as conservative from people who identify as liberal. The answers conservatives choose more often are the conservative side. For example, if the question is "Do you favor or oppose the death penalty for persons convicted of murder?", the conservative answer is "Favor".
+
+4. **Measure how well each question separates them.** For each question, I estimated how strongly the conservative answer is associated with self-identified ideology, controlling for the year of the survey and the respondent's year of birth.
+
+5. **Apply the requirements.** Then I removed questions that didn't meet these requirements:
+
+   * *Coverage:* For the final list, a question had to be asked in at least half of the survey years (16 of 32). That's because the measure compares people surveyed decades apart, and it can only do that through the questions they were asked. Long-running questions that overlap in time tie the years together; if too many questions were short-lived, people surveyed in different years would be measured by different questions, and changes over time would mix real changes in beliefs with changes in the questions.
+
+   * *Stability:* The difference between conservatives and liberals had to persist. Questions where it reversed or faded away are excluded, because the method assumes that the conservative answer doesn't change. For example, one question asks, "If your party nominated a woman for President, would you vote for her if she were qualified for the job?" In the 1970s, conservatives were about 9 percentage points more likely than liberals to say no. By 2010, the last year it was asked, the difference had faded to about 2 points. So "no" stopped distinguishing conservatives from liberals.
+
+% REVISE (2026-11-03): after the consultation (docs/stability_review.md, section 8), fading no longer excludes a
+% question (fepres is the example of why: near consensus, a stable question's gap shrinks). Stability becomes a
+% reversal rule with a size threshold, plus a drift diagnostic for inspection. Rewrite this bullet, the counts
+% (48), and the figures after the selection is rerun. Also state the definition: a fixed collection of positions
+% historically associated with self-identified conservatism.
+
+   * *No duplicates:* Some questions were asked with two different wordings, on different versions of the survey, so I kept one of each pair. And when several questions cover the same topic, like the seven versions of the abortion question, I kept the one that best separates conservatives and liberals, from step 4.
+
+   * *No confidence questions:* I left out 13 questions about confidence in institutions, like the press, organized religion, and the military, because they evaluate institutions rather than take a position on an issue. I made this decision after seeing results that included them, so in a later article I'll show what difference they make.
+
+That leaves 48 questions. There's no cutoff based on how strongly a question separates conservatives and liberals; every question that passes the requirements is in.
+
+I wrote these rules down before looking at how the answers to any question changed over time (except for the confidence questions, as I said). And none of the steps uses the trends in the answers, only the differences between conservatives and liberals, so the selection can't favor questions that tell a particular story. In a later article, I'll describe the process in more detail and show how much the results depend on it.
+
+To combine responses to 48 questions into a single measure, I use a statistical model that accounts for the fact that not every respondent was asked every question. For each respondent, it estimates the percentage of the 48 questions where they would give a conservative answer if they were asked all of them. I'll call that measure "percent conservative responses". The analysis includes about 65,000 respondents from 1972 to 2024 who answered at least five of the questions.
+
+% Sample: 2021 is dropped and, in 2022 and 2024, only interviewer-administered respondents are
+% included (mode; maybe a sentence or a footnote here, details in a later post).
 
 ## Older people are more conservative
+
+The following figure shows percent conservative responses as a function of age, with one line for each decade of the survey, from the 1970s to the 2020s.
 
 ```{figure} figs/age_series_p48.png
 :name: fig-age-series
@@ -36,10 +72,15 @@ description: >-
 Percent conservative responses by age, for each decade of surveys.
 ```
 
-% Age slope, percentage points per decade of age: +3.9 (1970s), +2.9 (1980s, 1990s),
-% +2.1 to +2.4 (since 2000).
+In every decade, older people give more conservative answers than younger people. In the 1970s, conservatism increased by about 3.9 percentage points per decade of age. Since then the slope has been a little smaller, about 2.9 points per decade in the 1980s and 1990s, and 2.1 to 2.4 points per decade since 2000. But in every decade, the oldest respondents are 15 to 25 points more conservative than the youngest.
+
+The figure also shows that every line is lower than the one before. At every age, people surveyed in the 2020s are more liberal than people the same age surveyed in the 1970s. Keep that in mind; it will be important.
+
+So the first half of the quip is right: older people are more conservative. But that doesn't mean that people *become* more conservative as they get older.
 
 ## But people don't get more conservative
+
+To see why, let's group people by decade of birth. The following figure shows percent conservative responses as a function of age again, but this time each line represents a decade of birth, from the 1900s to the 2000s.
 
 ```{figure} figs/age_by_decade_p48.png
 :name: fig-age-by-decade
@@ -48,14 +89,23 @@ Percent conservative responses by age, for each decade of surveys.
 Percent conservative responses by age, for each decade of birth: the updated version of the figure in the book.
 ```
 
-% Each decade of birth is flat or declining as it ages.
-% Why this figure is biased: a group spans many birth years, and at older ages only its earliest,
-% more conservative birth years have been observed, so the line is pushed up with age even if no
-% one changes. So the bias works against the conclusion. (Against survey year, the bias goes the
-% other way.) These are directions, not bounds: don't promise the truth lies between the two.
-% Link: Simpson's Paradox and Age Effects (2021-05-03) https://www.allendowney.com/blog/2021/05/03/simpsons-paradox-and-age-effects/
+This is the updated version of the figure in the book, and the conclusion is the same. Within each group, the lines are mostly flat or declining. As people get older, they don't become more conservative.
+
+So why are older people more conservative? Because they were born earlier. Almost every decade of birth is more liberal than the one before, and older respondents are more likely to come from the earlier, more conservative groups. That's why we see the age effect in the previous figure, even though no group follows it.
+
+This is an example of Simpson's paradox, which I wrote about in [*Simpson's Paradox and Age Effects*](https://www.allendowney.com/blog/2021/05/03/simpsons-paradox-and-age-effects/) and in Chapter 10 of *Probably Overthinking It*: the trend in every group goes one way, and the overall trend goes the other way.
+
+However, this figure has a subtle problem. Each line represents people born over a ten-year span, and the mix of birth years changes as we follow the line. For example, when we see the 1940s group in their 30s, it includes everyone born in the 1940s. But we only see them in their 70s and 80s near the end of the survey, so the right end of the line includes only people born early in the decade, who are more conservative. As a result, the line is pushed up at older ages, even if no one changes their mind.
+
+Fortunately, that bias works against the conclusion. The lines are flat or declining even though the shifting mix of birth years pushes them up. But to see what is really happening, we need a better method.
+
+% If we plot the same groups by survey year instead of age, the bias goes the other way (members
+% drop out and the mix shifts toward later, more liberal birth years). These are the directions
+% composition pushes, not bounds: don't say the truth lies between the two.
 
 ## Following each birth year
+
+The better method is the one I used in [*You Would Choose Now*](https://www.allendowney.com/blog/2026/06/16/you-would-choose-now/) and recent articles like [*Sexual morality*](https://www.allendowney.com/blog/2026/05/28/sexual-morality/). Using a Bayesian model, I estimate an effect for each year of birth and an effect for each year of the survey. Together, they describe a trajectory for each birth year over the years it was observed. The following figure shows those trajectories.
 
 ```{figure} figs/trajectories_p48.png
 :name: fig-trajectories
@@ -64,12 +114,17 @@ Percent conservative responses by age, for each decade of birth: the updated ver
 Estimated percent conservative responses for each birth year, from the period–cohort model.
 ```
 
-% The fix (YWCN): estimate each birth year's trajectory, then aggregate with the mix of birth
-% years held fixed, so composition can't move the line.
-% Say: the trajectories are parallel by construction (same period curve, shifted by each
-% cohort's effect, on the logit scale), so the direction is easier to read from the period component.
-% Every birth year observed in 3+ surveys moves toward liberal: median -0.86 points per decade.
-% Link: Sexual morality (2026-05-28) https://www.allendowney.com/blog/2026/05/28/sexual-morality/
+Each line represents a single birth year. For example, the yellow-green line at the top left shows people born in 1900, who were 72 when the survey started in 1972 and 90 when they aged out in 1990. The purple line at the bottom right shows people born in 2006, who became eligible for the survey when they turned 18 in 2024.
+
+Two patterns are clear:
+
+* Each birth year starts out more liberal than the one before. People born in 1900 gave conservative answers to about two-thirds of the questions; people born after 2000 give conservative answers to about 40%.
+
+* As each birth year ages, its line drifts down. Following the same people over time, their answers become more liberal, not more conservative.
+
+To be precise about the second point: in this model, the lines have the same shape by construction, shifted up or down for each birth year. So the figure shows the structure of the model, not a separate finding for each birth year. The evidence for the downward drift is that the model is fit to data that follow each birth year over time, and the drift is what the data show. We can see it more directly by separating the two effects.
+
+The following figure shows the cohort effect: the average level of conservatism for each birth year, as if every birth year had been surveyed in every year of the survey.
 
 ```{figure} figs/cohort_component_p48.png
 :name: fig-cohort-component
@@ -78,6 +133,10 @@ Estimated percent conservative responses for each birth year, from the period–
 Cohort component: where each birth year starts.
 ```
 
+The decline is steepest between people born in the 1930s and 1950s, it pauses for people born in the 1950s and 1960s, and it continues after that.
+
+The following figure shows the period effect: the average level of conservatism in each year of the survey, as if the population had the same mix of birth years throughout.
+
 ```{figure} figs/period_component_p48.png
 :name: fig-period-component
 :alt: Period component: percent conservative responses within cohorts, by survey year, falling slowly from about 52 to about 47.
@@ -85,14 +144,20 @@ Cohort component: where each birth year starts.
 Period component: how everyone moves together.
 ```
 
-% First metric: the slope of a line through the period component:
-% -0.84 [-1.01, -0.68] percentage points per decade (90% interval).
-% Decomposition of the total change (-17.0 points): generational replacement -12.0,
-% changing minds -4.9 (71% replacement).
-% Within-cohort change combines aging and the times (age-period-cohort identification);
-% phrase the claim that way.
+With the mix of birth years held constant, conservatism declines slowly, from about 52% in the 1970s to about 47% in 2024. If we fit a straight line, the slope is −0.84 percentage points per decade. With 90% confidence, the slope is between −1.01 and −0.68. So the change is small, but we can be confident about the direction: following the same people over time, they become a little more liberal.
+
+One caveat: following a birth year over time, people get older and the times change, and there is no way to separate those effects. So the period effect combines aging and the times. What we can say is that, as people get older in the world as it is, their beliefs don't move toward conservative.
+
+% Within-cohort change combines aging and the times (age-period-cohort identification); the
+% paragraph above phrases the claim that way.
+
+Finally, we can use these components to break down the total change. Over the course of the survey, average conservatism fell by 17.0 percentage points. Of that, about 12.0 points are due to generational replacement — older, more conservative people leaving the population and younger, more liberal people joining it — and about 4.9 points are due to changing minds. So more than two-thirds of the change is generational.
+
+% Decomposition: -17.0 = -12.0 (replacement) + -4.9 (changing minds), 71% replacement; window 1972-2024.
 
 ## Every group moves left
+
+If we fit the same model separately for each decade of birth, we can see whether the overall trend holds within every group. The following figure shows the period effect for each decade of birth, holding its mix of birth years fixed, so the shifting composition of each group can't move the line.
 
 ```{figure} figs/pc_by_decade_p48.png
 :name: fig-pc-by-decade
@@ -101,6 +166,10 @@ Period component: how everyone moves together.
 Conservatism within cohorts, for each decade of birth.
 ```
 
+The dotted line shows the overall average, which falls faster than most of the groups, because it includes the effect of generational replacement. Within the groups, the lines are flat or declining. People born in the 1950s moved a little toward conservative until about 1980, when they were in their 20s, and toward liberal after that.
+
+The following figure shows the same analysis with respondents grouped by generation, using the Pew Research Center's definitions.
+
 ```{figure} figs/pc_by_generation_p48.png
 :name: fig-pc-by-generation
 :alt: Period component within each generation, by survey year, with the overall average dotted; every line is flat or declining.
@@ -108,9 +177,18 @@ Conservatism within cohorts, for each decade of birth.
 Conservatism within cohorts, for each generation. The dotted line is the overall average.
 ```
 
+The results are the same: no group of birth years, defined either way, became more conservative over the course of the survey. All of them became more liberal or stayed about the same.
+
 % Every birth group's within-cohort slope is negative or about zero; none moves toward conservative.
 
 ## So why do older people say they're conservative?
 
-% Lead-in to post 2 (the Overton paradox).
-% Link: The Center Moves Faster Than You (2024-01-04) https://www.allendowney.com/blog/2024/01/04/the-center-moves-faster-than-you/
+The quip is half right. Older people are more conservative than younger people, but not because they got older. They are more conservative because they were born earlier, and as they age, they become a little more liberal.
+
+That leaves the other half of the paradox. As people get older, they are more likely to *say* they are conservative. If their beliefs are moving toward liberal, why would they?
+
+The answer, as I suggested in [*The Center Moves Faster Than You*](https://www.allendowney.com/blog/2024/01/04/the-center-moves-faster-than-you/), is that "liberal" and "conservative" are relative terms. In the next article, I'll use the updated data to show that the center of public opinion moves faster than the people in it — and what happens to the liberal of 1974 when they find themselves in 2024.
+
+% Possibly mention the Overtron here once it is live: "If you want to see how the results depend
+% on which questions count as conservative, you can choose your own and run the analysis in your
+% browser."
