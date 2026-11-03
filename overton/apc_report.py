@@ -32,9 +32,9 @@ def results_table(summaries):
 
     Within-cohort slope: straight line of the standardized period component
     (national period-cohort model), per decade; decomposition from the same
-    fit. Overton gap: the period model's conservatives in the endpoint year
-    minus its liberals in the first year (1974; 1975 for econA), for 2024 and
-    2018 as endpoints. Changes: first year to 2024, by polviews3.
+    fit. Changes: first year (1974; 1975 for econA) to 2024, by polviews3.
+    Percent conservative responses. Where the 1974 liberal stands in later
+    years is in overton/position.py.
     """
     rows = []
     for name in REPORTED_SETS:
@@ -47,8 +47,6 @@ def results_table(summaries):
                    slope_hi90=pc["period_slope_hi90"], total_change=pc["total_change"],
                    generational_replacement=pc["generational_replacement"], changing_minds=pc["changing_minds"],
                    first_year=first, liberal_first=lib.loc[first, "mean"])
-        for end in [2024, 2018]:
-            row[f"overton_gap_{end}"] = con.loc[end, "mean"] - lib.loc[first, "mean"]
         for group, df in [("liberal", lib), ("moderate", mod), ("conservative", con)]:
             row[f"change_{group}"] = df.loc[2024, "mean"] - df.loc[first, "mean"]
         rows.append(row)

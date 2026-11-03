@@ -7,7 +7,7 @@
 We are updating an analysis of the "Overton paradox" (Chapter 12 of *Probably Overthinking It*) with General Social Survey (GSS) data from 1972 through 2024. Each respondent's conservatism is estimated from their answers to 43 opinion questions, chosen by a fixed rule. Each question has a fixed "conservative" answer, and the score comes from a one-parameter item response model whose question difficulties are estimated by weighted EM. Scores are reported as the expected number of conservative answers out of 15.
 
 The scores then feed several analyses:
-- trends by self-described political alignment (`polviews`: liberal, moderate, conservative);
+- trends by self-identified ideology (`polviews`: liberal, moderate, conservative);
 - the "Overton gap": the average self-described conservative in the last survey year minus the average liberal in 1974;
 - age–period–cohort models (Bayesian random-walk smoothers, survey-weighted), whose main quantity is the "within-cohort slope", the average change in conservatism per decade within birth cohorts.
 

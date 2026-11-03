@@ -41,6 +41,7 @@ Two steps; the fit needs only numpy, pandas, and PyMC (CultureWar env):
     python -m overton.apc fit --model period --set v1 [--by polviews3=Liberal]
     python -m overton.apc fit --model age --set v1 --window 1972-1979
     python -m overton.apc fit --model age --set v1 --cohorts 1946-1964
+    python -m overton.apc rescale              # results saved out of 15 -> percent
 
 Results go to results/apc/results/{run}_*.csv and _diagnostics.json.
 """
@@ -48,6 +49,7 @@ Results go to results/apc/results/{run}_*.csv and _diagnostics.json.
 import argparse
 import json
 import time
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -68,7 +70,12 @@ ECON_C = ECON_B + ["helpblk", "natdrug"]
 NOT_SOCIAL = ECON_C + ["natarms", "nataid", "trust"]
 DOMAIN_SETS = {"econA": ECON_A, "econB": ECON_B, "econC": ECON_C, "social": None}  # social: the rest of the pool
 DIFFICULTIES = ["heuristic", "em", "em66", "emset", "m1pool"]
-SCALE = 15  # results are reported as conservative responses out of 15, whatever the set size
+SCALE = 100  # results are reported as percent conservative responses (out of 15 before 2026-11-02)
+# summary fields on the reporting scale (the others are on the logit scale, or not results)
+SCALED_FIELDS = ["slope_per_decade", "slope_lo90", "slope_hi90", "change_first_last", "period_slope_per_decade",
+                 "period_slope_lo90", "period_slope_hi90"] + [
+    f"{q}{suffix}" for q in ["total_change", "generational_replacement", "changing_minds", "period_change_per_decade"]
+    for suffix in ["", "_lo90", "_hi90"]]
 
 # defaults from CultureWar time_model/settings.py and model10/settings.py
 PERIOD_SETTINGS = dict(sigma_t_scale=0.125, slope_init_scale=0.2, sigma_short_scale=0.5, target_accept=0.9)
@@ -285,6 +292,19 @@ def sample(m, target_accept, tune, draws, chains, seed, override=None):
                          target_accept=target_accept, progress_bar=False)
 
 
+def save_trace(trace, stem):
+    """The posterior (without the standardized innovations, which the other variables
+    determine) and the sampler stats, as compressed float32 NetCDF, so later summaries
+    don't need a refit. Read with arviz.from_netcdf."""
+    import xarray as xr
+
+    posterior = trace["posterior"].to_dataset()
+    keep = [v for v in posterior.data_vars if not v.endswith(("_z", "_z_delta"))]
+    groups = {"posterior": posterior[keep].astype("float32"), "sample_stats": trace["sample_stats"].to_dataset()}
+    encoding = {f"/{g}": {v: dict(zlib=True, complevel=4) for v in ds.data_vars} for g, ds in groups.items()}
+    xr.DataTree.from_dict(groups).to_netcdf(f"{stem}_trace.nc", engine="h5netcdf", encoding=encoding)
+
+
 def draws_of(trace, name):
     """Posterior draws stacked over chains: (draws, ...)."""
     values = trace["posterior"][name].values
@@ -293,6 +313,12 @@ def draws_of(trace, name):
 
 def interval(x, axis=0):
     return np.mean(x, axis=axis), np.quantile(x, 0.05, axis=axis), np.quantile(x, 0.95, axis=axis)
+
+
+def bands(x, axis=0):
+    """Mean and the 90% and 84% intervals, for the series and components tables (figures draw the 84%)."""
+    return dict(mean=np.mean(x, axis=axis), lo90=np.quantile(x, 0.05, axis=axis), hi90=np.quantile(x, 0.95, axis=axis),
+                lo84=np.quantile(x, 0.08, axis=axis), hi84=np.quantile(x, 0.92, axis=axis))
 
 
 def diagnostics_for(trace, names):
@@ -312,12 +338,11 @@ def fit_series(df, index, grid, scale, stem, args):
     m = build_series_model(cells, index, grid)
     trace = sample(m, PERIOD_SETTINGS["target_accept"], args.tune, args.draws, args.chains, args.seed, args.target_accept)
     mu = draws_of(trace, "mu") * scale
-    mean, lo, hi = interval(mu)
-    out = pd.DataFrame({index: grid, "mean": mean, "lo90": lo, "hi90": hi}).merge(
+    out = pd.DataFrame({index: grid, **bands(mu)}).merge(
         cells.assign(observed=cells["p_weighted"] * scale)[[index, "observed", "n", "n_eff"]], how="left")
     out.to_csv(f"{stem}_series.csv", index=False)
 
-    # linear slope of the latent mean per decade (count scale), over the values with data
+    # linear slope of the latent mean per decade (reporting scale), over the values with data
     x = np.asarray(grid, float)
     observed = np.isin(x, cells[index].values)
     xs = x[observed] - x[observed].mean()
@@ -345,7 +370,7 @@ def fit_period_cohort(df, scale, stem, args):
     comp = comp.div(comp.sum(axis=1), axis=0).loc[survey_years].values  # (years, cohorts)
 
     def level(comp_row, t_idx):
-        """Population mean (count scale) with cohort mix comp_row and period at year index t_idx."""
+        """Population mean (reporting scale) with cohort mix comp_row and period at year index t_idx."""
         p = 1 / (1 + np.exp(-(alpha[:, 0, 0, None] + cohort + period[:, t_idx, None])))
         return (p * comp_row).sum(axis=1) * scale
 
@@ -369,10 +394,17 @@ def fit_period_cohort(df, scale, stem, args):
 
     rows = []
     for j, y in enumerate(years):
-        rows.append(dict(component="period", index=y, **dict(zip(["mean", "lo90", "hi90"], interval(std_period[:, j])))))
+        rows.append(dict(component="period", index=y, **bands(std_period[:, j])))
     for k, c in enumerate(cohorts):
-        rows.append(dict(component="cohort", index=c, **dict(zip(["mean", "lo90", "hi90"], interval(p_c[:, k])))))
+        rows.append(dict(component="cohort", index=c, **bands(p_c[:, k])))
     pd.DataFrame(rows).to_csv(f"{stem}_components.csv", index=False)
+
+    # cohort trajectories, as in CultureWar's cohort_trajectories: for each observed
+    # cohort x year cell, the inverse logit of the posterior mean of alpha + cohort + period
+    eta = alpha[:, 0, 0, None] + cohort[:, cells["cohort"].map(cohorts.index)] + \
+        period[:, cells["year"].map(years.index)]
+    cells.assign(mean=1 / (1 + np.exp(-eta.mean(axis=0))) * scale, observed=cells["p_weighted"] * scale)[
+        ["cohort", "year", "mean", "observed", "n", "n_eff"]].to_csv(f"{stem}_trajectories.csv", index=False)
 
     summary = {}
     for label, x in [("total_change", total), ("generational_replacement", d_cohort), ("changing_minds", d_period),
@@ -382,7 +414,7 @@ def fit_period_cohort(df, scale, stem, args):
     summary["window"] = f"{y0}-{y1}"
 
     # the within-cohort slope: a straight line fit to the standardized period
-    # component over the surveyed years, per decade, on the count scale (each draw)
+    # component over the surveyed years, per decade, on the reporting scale (each draw)
     x = np.array(survey_years, float) - np.mean(survey_years)
     sp = std_period[:, [ti[y] for y in survey_years]]
     slope = (sp - sp.mean(axis=1, keepdims=True)) @ x / (x @ x) * 10
@@ -430,20 +462,53 @@ def fit(args):
     else:
         trace, summary, names = fit_period_cohort(df, scale, stem, args)
 
-    summary.update(run=run, model=args.model, set=set_name, difficulties=args.difficulties, sample=args.sample, by=args.by, window=summary.get("window", args.window),
+    summary.update(run=run, scale=scale, model=args.model, set=set_name, difficulties=args.difficulties, sample=args.sample, by=args.by, window=summary.get("window", args.window),
                    cohorts=args.cohorts, age_range=f"{int(df['age'].min())}-{int(df['age'].max())}",
                    respondents=len(df), n_questions=n_questions, elapsed_seconds=round(time.time() - start, 1),
                    tune=args.tune, draws=args.draws, chains=args.chains, seed=args.seed,
                    target_accept=args.target_accept)
     summary.update(diagnostics_for(trace, names))
+    save_trace(trace, stem)
     with open(f"{stem}_summary.json", "w") as f:
         json.dump(summary, f, indent=2)
     print(json.dumps(summary, indent=2))
 
 
+def rescale():
+    """Convert saved results from out of 15 to SCALE, without refitting.
+
+    The models are fit to the fraction of conservative responses; the scale
+    is applied only when the results are written, so converting the saved
+    results is the same as refitting. A summary with a "scale" field is
+    already converted, so this can be rerun (e.g. after pulling from Unity).
+    """
+    factor = SCALE / 15
+    converted = 0
+    for path in sorted(RESULTS_DIR.glob("*_summary.json")):
+        summary = json.load(open(path))
+        if "scale" in summary:
+            continue
+        for field in SCALED_FIELDS:
+            if field in summary:
+                summary[field] *= factor
+        summary["scale"] = SCALE
+        stem = str(path)[:-len("_summary.json")]
+        for kind in ["series", "components"]:
+            table = Path(f"{stem}_{kind}.csv")
+            if table.exists():
+                df = pd.read_csv(table)
+                columns = [c for c in ["mean", "lo90", "hi90", "lo84", "hi84", "observed"] if c in df]
+                df[columns] *= factor
+                df.to_csv(table, index=False)
+        with open(path, "w") as f:
+            json.dump(summary, f, indent=2)
+        converted += 1
+    print(f"converted {converted} runs to the scale {SCALE}")
+
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("step", choices=["prepare", "fit"])
+    parser.add_argument("step", choices=["prepare", "fit", "rescale"])
     parser.add_argument("--model", choices=["period", "period_cohort", "age"], default="period")
     parser.add_argument("--set", default="v1")
     parser.add_argument("--sets", nargs="*", default=None, help="prepare: which sets (default all)")
@@ -461,6 +526,8 @@ def main():
     args = parser.parse_args()
     if args.step == "prepare":
         prepare(args.sets, args.difficulties, args.sample)
+    elif args.step == "rescale":
+        rescale()
     else:
         fit(args)
 

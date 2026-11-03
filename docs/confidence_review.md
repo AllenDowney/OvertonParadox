@@ -19,7 +19,7 @@ A memorable version of the claim: the average self-described conservative today 
 
 - **Questions.** The book used 15 GSS opinion questions on which self-identified liberals and conservatives (the 7-point `polviews` scale, grouped into liberal, moderate, and conservative) answer most differently. Each question has a coding: the set of answers that count as "conservative", the side chosen more often by conservatives. The coding is fixed for all years.
 - **Score.** A one-parameter item response model (Rasch). Each question's difficulty is set from how common the conservative answer is overall; each respondent's latent conservatism is estimated on a grid with a wide prior. The reported score is the posterior mean number of conservative answers out of 15. Respondents answer different subsets of questions (the GSS uses split ballots), and the model puts them on a common scale.
-- **Trends.** Scores are then analyzed by survey year, birth cohort, age, and self-identified alignment.
+- **Trends.** Scores are then analyzed by survey year, birth cohort, age, and self-identified ideology.
 
 ### What we are doing now
 

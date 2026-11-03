@@ -20,3 +20,6 @@ unity/config.sh
 # editors
 .vscode/
 .cursor/
+
+# Jupyter Book site
+jb/_build/
