@@ -52,14 +52,15 @@ for pass in 1 2; do
     tag="_threads-c${cores}-${threads}-p${pass}"
     samples="$TMPDIR/samples${tag}_${SLURM_JOB_ID}.txt"
     : > "$samples"
-    ( while true; do p=$(pgrep -f "tag ${tag}\$" | head -1); [ -n "$p" ] && ps -o nlwp= -p "$p" >> "$samples"; sleep 5; done ) &
+    # the sampler must survive pgrep and ps finding nothing (set -e, pipefail)
+    ( set +e +o pipefail; while true; do p=$(pgrep -f "tag ${tag}\$" | head -1); [ -n "$p" ] && ps -o nlwp= -p "$p" >> "$samples"; sleep 5; done ) &
     sampler=$!
     echo "=== pass $pass, cores $cores, BLAS threads $threads"
     # shellcheck disable=SC2086
     $pin python -u -m overton.apc fit --model period_cohort --set p48 --tune 4000 --draws 6000 --chains 4 \
       --target-accept 0.99 --rw2-form trend --tag "$tag" \
       | grep -E '"(elapsed_seconds|n_steps_mean|ess_bulk_min|rhat_max|divergences|period_slope_per_decade)"'
-    kill "$sampler"
+    kill "$sampler" 2>/dev/null || true
     echo "  max threads $(sort -n "$samples" | tail -1)"
   done
 done
