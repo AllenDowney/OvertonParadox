@@ -3,7 +3,12 @@
   "private": true,
   "type": "module",
   "description": "The Overtron: the Overton pipeline in the browser, with TyMC (docs/overtron_plan.md)",
-  "engines": { "node": ">=22.22.2" },
+  "engines": {
+    "node": ">=22.22.2"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.ts\""
+  },
   "dependencies": {
     "tymc": "file:../../tymc"
   }

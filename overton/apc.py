@@ -78,9 +78,10 @@ SCALED_FIELDS = ["slope_per_decade", "slope_lo90", "slope_hi90", "change_first_l
     for suffix in ["", "_lo90", "_hi90"]]
 
 # defaults from CultureWar time_model/settings.py and model10/settings.py
-PERIOD_SETTINGS = dict(sigma_t_scale=0.125, slope_init_scale=0.2, sigma_short_scale=0.5, target_accept=0.9)
+PERIOD_SETTINGS = dict(sigma_t_scale=0.125, slope_init_scale=0.2, sigma_short_scale=0.5, target_accept=0.9,
+                       rw2_form="cumsum")
 COHORT_SETTINGS = dict(sigma_c_scale=0.125, sigma_t_scale=0.125, slope_init_scale=0.2,
-                       sigma_short_scale=0.2, sigma_resid_scale=0.5, target_accept=0.95)
+                       sigma_short_scale=0.2, sigma_resid_scale=0.5, target_accept=0.95, rw2_form="cumsum")
 
 
 def question_sets():
@@ -230,10 +231,41 @@ def weighted_cells(df, keys):
     return df.groupby(keys).apply(summarize).reset_index()
 
 
-def rw2(name, n, sigma, slope_init_scale, dims):
-    """CultureWar's mean-centered RW2 (double cumsum, non-centered, free initial slope)."""
+def rw2_trend_basis(n):
+    """Eigenbasis of the mean-centered RW2 prior, with the linear ramp split out.
+
+    L maps the n - 2 innovations to f_raw (double cumsum, f_raw[0] = 0, first slope 0),
+    P removes the mean, and r is the mean-centered ramp the free slope scales.
+    P L L' P = U diag(lam) U', M = U sqrt(lam) = r a' + M_perp.
+    """
+    L = np.zeros((n, n - 2))
+    for k in range(2, n):
+        L[k, : k - 1] = np.arange(k - 1, 0, -1)
+    P = np.eye(n) - 1 / n
+    lam, U = np.linalg.eigh(P @ L @ L.T @ P)
+    keep = lam > 1e-9 * lam.max()
+    M = U[:, keep] * np.sqrt(lam[keep])
+    r = P @ np.arange(n, dtype=float)
+    a = M.T @ r / (r @ r)
+    return M - np.outer(r, a), r, a
+
+
+def rw2(name, n, sigma, slope_init_scale, dims, form="cumsum"):
+    """CultureWar's mean-centered RW2 (double cumsum, non-centered, free initial slope).
+
+    form="trend" is the same prior in other coordinates (docs/lab.md, Overtron spike):
+    f = sigma M_perp w + beta r, with w ~ N(0, I) a rotation of the innovations and
+    beta = v0 + sigma a'w the walk's linear trend, flat, with v0's prior as a potential.
+    """
     import pymc as pm
 
+    if form == "trend":
+        M_perp, r, a = rw2_trend_basis(n)
+        w = pm.Normal(f"{name}_w", 0.0, 1.0, shape=n - 2)
+        beta = pm.Flat(f"{name}_trend")
+        v0 = beta - sigma * pm.math.dot(a, w)
+        pm.Potential(f"{name}_slope_init_prior", pm.logp(pm.Normal.dist(0.0, slope_init_scale), v0))
+        return pm.Deterministic(name, sigma * pm.math.dot(M_perp, w) + beta * r, dims=dims)
     z_delta = pm.Normal(f"{name}_z_delta", 0.0, 1.0, shape=n - 2)
     delta = sigma * z_delta
     v0 = pm.Normal(f"{name}_slope_init", 0.0, slope_init_scale)
@@ -251,7 +283,7 @@ def build_series_model(cells, index, grid, s=PERIOD_SETTINGS):
     with pm.Model(coords={"grid": grid}) as m:
         alpha = pm.Normal("alpha", 0.0, 1.0)
         sigma_t = pm.Exponential("sigma_t", 1.0 / s["sigma_t_scale"])
-        trend = rw2("trend", len(grid), sigma_t, s["slope_init_scale"], dims="grid")
+        trend = rw2("trend", len(grid), sigma_t, s["slope_init_scale"], dims="grid", form=s["rw2_form"])
         eta = pm.Deterministic("eta", alpha + trend, dims="grid")
         pm.Deterministic("mu", pm.math.sigmoid(eta), dims="grid")
         sigma_short = pm.HalfNormal("sigma_short", s["sigma_short_scale"])
@@ -270,9 +302,9 @@ def build_period_cohort_model(cells, years, cohorts, s=COHORT_SETTINGS):
     with pm.Model(coords={"year": years, "cohort_grid": cohorts}) as m:
         alpha = pm.Normal("alpha", 0.0, 1.0)
         sigma_c = pm.Exponential("sigma_c", 1.0 / s["sigma_c_scale"])
-        cohort = rw2("cohort", len(cohorts), sigma_c, s["slope_init_scale"], dims="cohort_grid")
+        cohort = rw2("cohort", len(cohorts), sigma_c, s["slope_init_scale"], dims="cohort_grid", form=s["rw2_form"])
         sigma_t = pm.Exponential("sigma_t", 1.0 / s["sigma_t_scale"])
-        period = rw2("period", len(years), sigma_t, s["slope_init_scale"], dims="year")
+        period = rw2("period", len(years), sigma_t, s["slope_init_scale"], dims="year", form=s["rw2_form"])
         sigma_short = pm.Exponential("sigma_short", 1.0 / s["sigma_short_scale"])
         epsilon_z = pm.ZeroSumNormal("epsilon_z", sigma=1.0, dims="year")
         epsilon = pm.Deterministic("epsilon", sigma_short * epsilon_z, dims="year")
@@ -299,7 +331,7 @@ def save_trace(trace, stem):
     import xarray as xr
 
     posterior = trace["posterior"].to_dataset()
-    keep = [v for v in posterior.data_vars if not v.endswith(("_z", "_z_delta"))]
+    keep = [v for v in posterior.data_vars if not v.endswith(("_z", "_z_delta", "_w"))]
     groups = {"posterior": posterior[keep].astype("float32"), "sample_stats": trace["sample_stats"].to_dataset()}
     encoding = {f"/{g}": {v: dict(zlib=True, complevel=4) for v in ds.data_vars} for g, ds in groups.items()}
     xr.DataTree.from_dict(groups).to_netcdf(f"{stem}_trace.nc", engine="h5netcdf", encoding=encoding)
@@ -326,8 +358,11 @@ def diagnostics_for(trace, names):
 
     rhat = az.rhat(trace, var_names=names)
     ess = az.ess(trace, var_names=names)
+    stats = trace["sample_stats"]
     return dict(
-        divergences=int(trace["sample_stats"]["diverging"].values.sum()),
+        divergences=int(stats["diverging"].values.sum()),
+        n_steps_mean=float(stats["n_steps"].values.mean()),
+        maxdepth_share=float(stats["maxdepth_reached"].values.mean()),
         rhat_max=float(max(np.nanmax(rhat[v].values) for v in names)),
         ess_bulk_min=float(min(np.nanmin(ess[v].values) for v in names)),
     )
@@ -445,6 +480,9 @@ def fit(args):
         first, last = map(int, args.cohorts.split("-"))
         df = df[df["cohort"].between(first, last)]
         label.append(f"cohorts-{args.cohorts}")
+    if args.rw2_form != "cumsum":
+        PERIOD_SETTINGS["rw2_form"] = COHORT_SETTINGS["rw2_form"] = args.rw2_form
+        label.append(f"rw2-{args.rw2_form}")
     run = "_".join(label) + args.tag
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     stem = RESULTS_DIR / run
@@ -466,7 +504,7 @@ def fit(args):
                    cohorts=args.cohorts, age_range=f"{int(df['age'].min())}-{int(df['age'].max())}",
                    respondents=len(df), n_questions=n_questions, elapsed_seconds=round(time.time() - start, 1),
                    tune=args.tune, draws=args.draws, chains=args.chains, seed=args.seed,
-                   target_accept=args.target_accept)
+                   target_accept=args.target_accept, rw2_form=args.rw2_form)
     summary.update(diagnostics_for(trace, names))
     save_trace(trace, stem)
     with open(f"{stem}_summary.json", "w") as f:
@@ -520,6 +558,8 @@ def main():
     parser.add_argument("--chains", type=int, default=4)
     parser.add_argument("--seed", type=int, default=17)
     parser.add_argument("--target-accept", type=float, default=None, help="default: CultureWar's setting for the model")
+    parser.add_argument("--rw2-form", choices=["cumsum", "trend"], default="cumsum",
+                        help="RW2 coordinates; trend is the same prior (rw2), still under test")
     parser.add_argument("--tag", default="")
     parser.add_argument("--difficulties", choices=DIFFICULTIES, default="em")
     parser.add_argument("--sample", choices=["interviewer", "all"], default="interviewer")

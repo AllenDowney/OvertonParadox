@@ -302,6 +302,10 @@ Opinion questions that passed the Overton gates but aren't in CultureWar's varia
 
 ## Log
 
+- 2026-11-02: Overtron milestone 3: the measurement port (`overtron/src/`), tested against both fixtures; the p48 EM stops at its 100-iteration cap (difficulties within 0.009 of converged).
+- 2026-11-02: The trend form of the RW2 in the PyMC fits (`--rw2-form trend`, same model): p48 period–cohort in 159 s against 1,026 s, with the same results. Not the default. Lab notebook entry.
+- 2026-11-02: Overtron decisions (Allen): calibrate difficulties on the reader's set; primary sample only (the excerpt dropped the other rows); v1 chooses questions only, with the decided coding; the page keeps target_accept 0.95.
+- 2026-11-02: Overtron milestone 2: `overton/excerpt.py` writes the browser data excerpt (the 68,005 respondents of the primary sample × 170 candidates, 2.47 MB gzipped; reproduces the decided p48 scores exactly) and the p48 and econA fixtures.
 - 2026-11-02: Overtron spike, continued: the RW2 in its eigenbasis with the trend split out (same model) plus nutpie adaptation: period–cohort fit in about 30 s (2 chains × 1000 + 2000), from 638 s. Lab notebook entry.
 - 2026-11-02: Overtron spike: the period–cohort model in TyMC reproduces the nutpie fit (same summaries within Monte Carlo error) in 638 s on two cores; trees near maximum depth. Lab notebook entry.
 - 2026-11-02: Planned the Overtron, a browser version of the pipeline with TyMC (reader-chosen questions and options; key figures and numbers): `docs/overtron_plan.md`; board Task 11 in `~/ProbablyOverthinkingIt/PROJECT_BOARD.md`.

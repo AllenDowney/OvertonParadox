@@ -1040,6 +1040,35 @@ The first milestone of `docs/overtron_plan.md`: `build_period_cohort_model` port
 - From 638 s to 30 s at comparable accuracy, the main gains came from the coordinates and the adaptation together. Either one alone did little.
 
 
+## 2026-11-02: The trend form of the RW2 in this repo's PyMC fits
+
+**Question** (Allen): does the reparameterization from the Overtron spike (the RW2 in its prior's eigenbasis, with the linear trend split out) also speed up this repo's nutpie fits?
+
+**Implementation.** `apc.rw2(..., form="trend")`, selected with `--rw2-form trend`. These runs get `_rw2-trend` in their names. The default is still the current form. It is the same model: `python -m overton.rw2_trend` maps random points between the two sets of coordinates, and the log densities agree to about 1e-9 for both the period–cohort and the period model. Summaries now also record `n_steps_mean` and `maxdepth_share`.
+
+**Runs.** `p48`, production settings (4 chains × (4000 + 6000), target_accept 0.99, seed 17), nutpie with a diagonal mass matrix. Both forms ran on this machine, one fit at a time.
+
+| Model | Form | Time | Leapfrog steps per draw | Draws at max depth | R-hat max | ESS bulk min | ESS per second |
+|---|---|---|---|---|---|---|---|
+| Period–cohort | current | 1,026 s | 1,023 | 100% | 1.003 | 1,416 | 1.4 |
+| Period–cohort | trend | 159 s | 121 | 0% | 1.002 | 1,434 | 9.0 |
+| Period | current | 183 s | 1,023 | 61% | 1.002 | 3,064 | 16.8 |
+| Period | trend | 20 s | 65 | 0% | 1.004 | 1,327 | 65 |
+
+| Period–cohort result | Current | Trend |
+|---|---|---|
+| Within-cohort slope per decade | −0.843 [−1.006, −0.680] | −0.843 [−1.009, −0.679] |
+| Generational replacement | −12.04 | −12.04 |
+| Changing minds | −4.92 | −4.94 |
+| Total change | −16.96 | −16.98 |
+
+The period model's slope is −3.076 [−3.234, −2.914] with the current form and −3.075 [−3.233, −2.916] with the trend form.
+
+- **Same results, much faster.** The period–cohort fit takes 6.5× less time with the same ESS. The period fit takes 9× less time, and its ESS per second is about 4× higher. The decided specification's fits are unchanged, since they still use the current form.
+- The speed-up is smaller than in TyMC (about 20×), because nutpie's adaptation was already working well on the current form.
+- **Thread setting.** The trend form multiplies by a dense matrix, and BLAS starts its own threads in each chain. With default settings, the first attempt used about 10 cores across 70 threads, so it was stopped. Run with `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1`, locally and on Unity.
+- **Next** (Allen, 2026-11-03): test the trend form on a few birth-group and by-ideology fits before deciding whether to make it the default. They have fewer cells and may behave differently.
+
 ## Next
 
 - **Headline framing.** Decide how the article and appendix present the domain split: on social questions (and the full pool), people don't get more conservative within cohorts; on core economic questions, they do (+1.6 points per decade), and opinion polarizes.

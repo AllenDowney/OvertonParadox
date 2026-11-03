@@ -52,7 +52,8 @@ Later (not v1): within-cohort slopes by decade of birth and generation (17 more 
   - `respondents.bin`: column store, int8 responses (−1 for missing), 170 columns × 68,005 rows. About 11.6 MB raw, 2.7 MB gzipped (measured 2026-11-02). Plus year, age, cohort, polviews as int16, and the weight as float32.
   - `questions.json`: per question, the wording, value labels, default coding, ranking and stability statistics, flags, and domain, plus the presets.
   - `manifest.json`: version, source extract (R3a), sample rule, the git hash, column offsets and dtypes, checksums.
-- Build from `data/gss_overton_candidates_r3a_interviewer.hdf` (the primary sample, with raked weights in 2022 and 2024). *Open:* also include the 2022–2024 self-administered respondents, with a `mode` column, so "all modes" can be an option (adds about 7,700 rows).
+- Build from `data/gss_overton_candidates_r3a_interviewer.hdf` (the primary sample, with raked weights in 2022 and 2024). Primary sample only (decision 5).
+- The excerpt isn't committed to `main` (`data/` and outputs stay out of git). The `jb/` build runs `python -m overton.excerpt` and copies the excerpt next to the page, so `ghp-import` publishes it on `gh-pages`. Deploying needs the local `data/`. If others should be able to build the page from a clone, commit the excerpt or host it as a release asset (which could also serve the notebook's data, `docs/plan.md`).
 - The version is in the path (`data/v1/…`), so a page built against one excerpt doesn't break when the excerpt changes.
 - GSS data can be redistributed with a citation (NORC). The manifest and the page carry the citation.
 
@@ -79,12 +80,12 @@ To check the port step by step, export the Python pipeline's intermediate result
 | Option | Default | Notes |
 |---|---|---|
 | Questions | `p48` | Presets or any subset; at least 2 |
-| Coding | from `overton/coding.py` | Per question, which responses count as conservative |
+| Coding | from `overton/coding.py` | Fixed in v1 (decision 6) |
 | Minimum answers per respondent | 5 (2 for sets of fewer than 10 questions) | `MIN_ANSWERED`, `MIN_ANSWERED_BY_SET` |
 | Difficulties | EM calibrated on the chosen set | The decided spec calibrates on `p48` and anchors the others to it. For a reader's set, calibrating on that set is the natural choice (*Open*) |
-| Sample | primary (interviewer-administered in 2022–2024) | "All modes" only if the excerpt includes them |
+| Sample | primary (interviewer-administered in 2022–2024) | Fixed (decision 5) |
 | Models | period by ideology, period–cohort, age by decade | Birth-group fits later |
-| Sampler | chains 2, tune 1000, draws 2000, target_accept 0.95, nutpie adaptation (candidate, from the spike) | Production used 4000 + 6000 at 0.99, to get the reported precision; the page's default trades precision for time, and says so |
+| Sampler | chains 2, tune 1000, draws 2000, target_accept 0.95, nutpie adaptation, trend form (the spike's 4 divergences accepted, Allen 2026-11-02; the page reports divergences) | Production used 4000 + 6000 at 0.99, to get the reported precision; the page's default trades precision for time, and says so |
 | Prior scales | from `PERIOD_SETTINGS`, `COHORT_SETTINGS` | Advanced; for readers who want to check prior sensitivity |
 
 ## Validation
@@ -119,15 +120,26 @@ To check the port step by step, export the Python pipeline's intermediate result
    - TyMC's examples catalogue can link to it.
 2. **Hosting:** GitHub Pages, through the `jb/` deploy above. TyMC doesn't appear to need cross-origin isolation headers, which GitHub Pages can't set (see TyMC facts). Confirm in the spike.
 3. **TyMC dependency:** it isn't on npm, so pin a commit of pymc-labs/tymc and build it, until there's a release.
-4. **Difficulties for a reader's set:** calibrate on the chosen set (self-contained), or keep the `p48` reference calibration and anchor the chosen set to it (matches the decided spec, but only for questions in the pool).
-5. **All modes in the excerpt:** yes or no.
-6. **Coding edits:** whether v1 lets readers change which responses count as conservative, or only choose questions.
+4. **Difficulties for a reader's set:** **decided (Allen, 2026-11-02): calibrate on the chosen set**, as the decided spec does for `p48`. (For `econA`, this moves difficulties by up to 0.93 from the `p48` reference.)
+5. **All modes:** **decided (Allen, 2026-11-02): no.** The excerpt holds the primary sample only.
+6. **Coding edits:** **decided (Allen, 2026-11-02): v1 lets readers choose questions only**, with the decided coding.
 
 ## Milestones
 
 1. **Spike:** port the period–cohort model to TyMC in Node, on cells exported from Python for `p48`. Time it, and compare the summaries with the saved trace. This decides whether the browser plan is feasible as written. Settings (Allen, 2026-11-02): light only, 4 chains × (1000 tune + 1000 draws) at target_accept 0.95, run locally in Node with two worker chains at a time. **Done (2026-11-02):** the same model (log densities agree with PyMC to about 2.5e-7) and the same results (within-cohort slope −0.843 [−1.007, −0.681] against −0.843 [−1.007, −0.682]). But it took 638 s on two cores: every draw is near the maximum tree depth. Next: discuss ways to shorten the trajectories before building the page (lab notebook, 2026-11-02). **Then (2026-11-02):** a reparameterization of the same model (the RW2 in its prior's eigenbasis, with the linear trend split out), plus TyMC's nutpie adaptation, brings the period–cohort fit to about 30 s for 2 chains × (1000 + 2000) on two cores, with R-hat max 1.008 and the headline numbers within 0.01–0.03 points of the saved fit.
-2. **Excerpt and fixtures:** `overton/excerpt.py`, the manifest, and the fixtures.
-3. **Measurement port:** coding, EM, scoring, and cells in TypeScript, tested against the fixtures.
+2. **Excerpt and fixtures:** `overton/excerpt.py`, the manifest, and the fixtures. **Done (2026-11-02):**
+   - **The excerpt** (`overtron/public/data/v1/`, gitignored; rebuild with `python -m overton.excerpt`, about 80 s):
+     - the 68,005 respondents of the primary sample and the 170 candidates, 2.47 MB gzipped, with the analysis weight (decision 5);
+     - `questions.json`: wording, value labels, default coding, ranking statistics, domain, and why each question is in or out of `p48` (coverage 49, topic 29, unstable 40, wording 12, confidence 13; several have more than one).
+   - **Check:** decoded, the excerpt reproduces the decided `p48` scores of all 64,610 respondents (max difference 3e-16).
+   - **Fixtures** (`overtron/fixtures/p48.json`, `econA.json`): codings, both calibrations, sampled scores, yearly means, cells, and the decided summary.
+   - **For decision 4:** calibrating `econA` on itself moves its difficulties by up to 0.93 from the reference calibration on `p48`. For `p48` the two are the same.
+3. **Measurement port:** coding, EM, scoring, and cells in TypeScript, tested against the fixtures. **Done (2026-11-02):**
+   - `overtron/src/excerpt.ts` decodes the column store (in the browser with DecompressionStream). `overtron/src/measure.ts` codes the answers, calibrates (EM), scores, and builds the yearly means and the cohort × year cells.
+   - **Tests** (`npm test` in `overtron/`, against both fixtures): EM difficulties within 2e-9, scores within 5e-16, and cells within 1e-8. The excerpt stores weights as float32, which accounts for that difference.
+   - **EM speed:** about 250 ms per iteration for `p48`, which is about twice as fast as numpy. EM runs on distinct answer patterns, so small sets are nearly instant (`econA` has 72 patterns). But almost every `p48` respondent is distinct, so its calibration takes about 25 s. The page should precompute the presets' difficulties and calibrate custom sets in a Web Worker.
+   - **Found:** for `p48`, the Python EM stops at its 100-iteration cap (last step 1.2e-4, tolerance 1e-4). Running to 1,000 iterations moves the difficulties by up to 0.009, mostly a shift in overall level, and the mean score by 0.002 points. The port reproduces the cap. Allen (2026-11-03): leave the cap, since the effect is negligible.
+   - **`min_answered` for a reader's set** (Allen, 2026-11-03): 5, or 2 for a set of fewer than 10 questions (`measure.min_answered_for`). Presets keep their decided values: 5, and 2 for the econ and social sets.
 4. **Models:** period and age, alongside the period–cohort model from the spike; summaries and components.
 5. **Page:** question picker, options, run, progress, figures, numbers, and diagnostics.
 6. **Validation pass:** the checks above, plus a few odd choices.
