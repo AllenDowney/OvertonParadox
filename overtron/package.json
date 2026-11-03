@@ -1,0 +1,10 @@
+{
+  "name": "overtron",
+  "private": true,
+  "type": "module",
+  "description": "The Overtron: the Overton pipeline in the browser, with TyMC (docs/overtron_plan.md)",
+  "engines": { "node": ">=22.22.2" },
+  "dependencies": {
+    "tymc": "file:../../tymc"
+  }
+}

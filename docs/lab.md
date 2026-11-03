@@ -909,9 +909,140 @@ A free distribution leaves the location of the scale unidentified, so the mean d
 - **What the free distribution changes is mostly the scale:** a stretch of 1.12–1.13 relative to the heuristic instead of 1.22, so the estimated distributions are narrower than the fixed prior implies. The ordering of the difficulties is the same (correlation 1.00).
 - **The size of the effect:** the descriptive numbers move by 0.04–0.10.
 
+## 2026-11-02: Relative position, and the percent scale
+
+**Why.** The Overton gap (the 2024 conservative's score minus the 1974 liberal's) is a difference on the score scale; it says how far apart two groups are, not where the 1974 liberal would stand today. The claim is about relative position, so the summary is now a percentile (Allen; `docs/plan.md`, Decisions). The Overton gap is dropped; it was introduced in this project (Phase 3), not in the book, which compared levels.
+
+**Percent scale.** Results are now reported as percent conservative responses (the expected share of conservative answers to the set's questions × 100) instead of "out of 15", which was left over from the book's 15 questions. The models are fit to the fraction, so the 82 saved fits were converted (`python -m overton.apc rescale`), not refit. Figures zoom the y-axis, with one range for every figure of a set (20–80 for the full pool and social, 10–60 for core economic). Entries above this one are out of 15; multiply by 6.67 to compare.
+
+| | Full pool (p48) | Social | Core economic |
+|---|---|---|---|
+| Within-cohort slope, points per decade | −0.84 [−1.01, −0.68] | −1.16 [−1.34, −0.98] | +1.61 [+1.16, +2.07] |
+| Total change | −17.0 | −21.2 | −5.2 |
+| Generational replacement / changing minds | −12.0 / −4.9 | −14.8 / −6.4 | −8.8 / +3.6 |
+| Change, liberal / moderate / conservative | −20.5 / −19.5 / −10.3 | −22.2 / −23.0 / −14.0 | −10.1 / −9.5 / +4.0 |
+
+**Method** (`overton/position.py`). The decided specification's respondents, questions, and difficulties.
+- **Latent distributions.** For each group (survey year; year × `polviews3`; year × decade of birth), a normal distribution on the logit scale, estimated by weighted EM on a 121-point grid with the difficulties held fixed (`overton/em.py`, `latent_normals`). These aren't widened by measurement noise or pulled in by the prior, so the spread doesn't depend on how many questions people answered.
+- **Why normal.** A nonparametric distribution on the fine grid didn't converge: after thousands of iterations, percentiles still moved by about 2 points. On the 21-point scoring grid it collapsed onto 3 or 4 points (each year's distribution spans only a few grid cells). Near the center, the nonparametric and normal CDFs agreed within about 2 percentile points (e.g. 48.0 vs 49.1, 71.5 vs 71.9). With normal distributions, a percentile is the normal CDF of a z-score on the logit scale.
+- **Reference.** The median 1974 liberal (1975 for core economic, whose questions start then). Medians, so the percentile is the same on any monotone scale.
+- **Intervals.** For the 2024 numbers, 200 bootstrap resamples of respondents within the two years involved, weights carried along; this ignores the GSS's clustering, so the intervals are somewhat too narrow.
+- **Check.** The same percentiles from the observed scores.
+- **Cohorts.** Cells with at least 100 respondents; decades of birth 1900s–1990s.
+
+**Headline** (percentiles of the 2024 distribution; 90% bootstrap intervals; `figs/position_headline.csv`):
+
+| | Full pool | Social | Core economic |
+|---|---|---|---|
+| The 1974 liberal (1975 for core economic), in their own year | 26 | 27 | 29 |
+| The 1974 liberal, in 2024 | **61** [56, 66] | **63** [57, 69] | **44** [37, 50] |
+| The same, from observed scores | 56 | 54 | 35 |
+| 2024 median liberal | 17 [14, 19] | 17 [14, 20] | 31 [25, 36] |
+| 2024 median moderate | 46 [42, 50] | 46 [43, 50] | 45 [40, 50] |
+| 2024 median conservative | 79 [76, 81] | 78 [75, 80] | 81 [77, 85] |
+| The 1974 liberal's score | 45.7% | 44.5% | 21.0% |
+| The 2024 median score | 40.8% | 38.5% | 25.0% |
+
+```{figure} ../figs/apc/position_p48.png
+:align: left
+The median 1974 liberal's percentile in each year's distribution (black), with the medians of each year's own liberals, moderates, and conservatives. Full pool.
+```
+
+```{figure} ../figs/apc/position_cohorts_p48.png
+:align: left
+Each decade of birth's median, as a percentile of each survey year's distribution. Full pool.
+```
+
+**What this shows:**
+- **The 1974 liberal is now right of center.** On the full pool, the median 1974 liberal went from the 26th percentile in 1974 to the 61st in 2024, passing the median around 2014. On social questions, the 63rd. The labels themselves hold their ranks (liberals 17th–26th, moderates about 50th, conservatives 65th → 79th), so it's the fixed point that moves, not the labels.
+- **Cohorts rise in rank as they age, although their scores fall.** Born in the 1940s: 30th–37th percentile in the 1970s, 64th–71st since 2018. Born in the 1950s: 18th–25th → 54th–62nd. Born in the 1960s: 31st–36th in the 1980s → 54th–59th. That's the mechanism: the center moves left faster than any cohort does. The 1980s and 1990s cohorts rise less, or not at all, so far.
+- **Core economic questions:** the 1975 liberal moves only to the 44th percentile, still left of center, and the conservatives move right, consistent with the within-cohort result.
+- **Observed scores give smaller numbers** (56th vs 61st), as expected: noise and shrinkage in the scores blur the distribution. The latent version is the one decided; the posts should say which they use.
+- **Year-to-year noise:** each year's percentile is an independent estimate, so the yearly series wobbles by a few points; the cohort series more, from cells of 100–400 respondents.
+
+## 2026-11-02: Refit with saved traces and 84% bands
+
+All 82 fits of the decided specification refit on Unity with the settings and seeds they were last fit with (`unity/overton_apc_refit_jobs.txt`, generated from the summaries). Each fit now saves its trace (`results/apc/results/*_trace.nc`), so other summaries of the posterior don't need a refit, and writes 84% intervals beside the 90% ones; the figure bands are now 84%, the reported intervals still 90%.
+
+- All 82 completed; max R-hat 1.007; divergence counts similar to the first run (the 1990s birth-group period–cohort fit went from 154 to 48).
+- Not bit-identical (different machine and nutpie version), but close: the within-cohort slope is −0.84 [−1.01, −0.68] as before; the largest change in any reported estimate is 0.54 points, in small birth-group fits.
+- At one decimal, two numbers in the results table change: social questions, liberals' change −22.2 → −22.3; core economic, conservatives' change +4.0 → +3.9.
+
+## 2026-11-02: Overtron spike, the period–cohort model in TyMC
+
+The first milestone of `docs/overtron_plan.md`: `build_period_cohort_model` ported to TyMC (`overtron/spike/model.ts`, TyMC commit 6cc9129f, Node 26.4) and sampled on the `p48` cohort × year cells. The cells are exported by `overtron/spike/export_cells.py`.
+
+- **Same model:** log densities at three random points in transformed space agree with PyMC to about 2.5e-7, on values near −7,600 (`spike/check_logp.ts`).
+- **Same results:** light settings (Allen): 4 chains × (1000 tune + 1000 draws) at target_accept 0.95, two chains at a time in worker threads. Summarized by `fit_period_cohort` itself (`spike/compare.py`):
+
+| | nutpie (saved, 4000 + 6000 at 0.99) | TyMC (1000 + 1000 at 0.95) |
+|---|---|---|
+| Within-cohort slope | −0.843 [−1.007, −0.682] | −0.843 [−1.007, −0.681] |
+| Total change | −16.963 | −16.963 |
+| Generational replacement | −12.039 | −12.035 |
+| Changing minds | −4.925 | −4.929 |
+| Divergences | 0 | 5 |
+| R-hat max | 1.0047 | 1.0085 |
+| ESS bulk min | 1455 | 387 |
+
+  The components differ by at most 0.04 points in the mean, and 0.10 at the ends of the 84% bands.
+- **Time and memory:** 638 s on two cores (about 320 s per chain); peak memory 283 MB.
+- **Where the time goes:**
+  - A gradient takes 198 µs in TyMC (`spike/time_grad.ts`). Nutpie's saved fit implies about 100 µs on Unity, so TyMC is about 2× slower per gradient here, on different hardware.
+  - Most of the cost is trajectory length. In the saved fit, every draw hit the maximum tree depth of 10 (1,023 leapfrog steps). TyMC's iterations took about 160 ms, which is about 800 gradients each, so it was near the maximum too.
+- **What it means for the page:**
+  - A reader's run of this model alone would take 5–10 minutes, depending on cores. That's too slow for a default, and the period and age models come on top.
+  - The deepest lever is the geometry: saturated trees suggest strong posterior correlation in the double-cumsum RW2.
+  - Options to discuss, not adopted:
+    - another parameterization of the same model;
+    - TyMC's `adaptation: "nutpie"`;
+    - fewer draws for a reader's run;
+    - precomputed decided-spec results with the reader's run on demand.
+
+**Follow-up: options 2 and 1 (Allen: try the adaptation first, then the parameterization; then fewer draws and maybe two chains, as on Colab).** All runs were 4 chains × (1000 + 1000) at 0.95, two at a time. All three match the saved fit within Monte Carlo error (`spike/compare.py`).
+
+| Run | Time | Mean leapfrog steps | Divergences | ESS bulk min | ESS min per minute |
+|---|---|---|---|---|---|
+| As above (PyMC adaptation) | 638 s | (not recorded; near 1,023) | 5 | 387 | 36 |
+| Nutpie adaptation | 655 s | 1,023 | 3 | 554 | 51 |
+| Eigenbasis RW2, PyMC adaptation | 569 s | 997 | 0 | 785 | 83 |
+
+- **Nutpie adaptation:** a larger step size (0.017), but every draw still at the maximum depth. A little more ESS, no less time.
+- **Screening parameterizations on the saved trace** (`spike/geometry.py`): condition number of the rescaled posterior.
+  - The current form is about 9,200. Its worst directions are smooth shapes of the cohort curve over the data-rich birth years (around 1930–1960), each spread over about 50 innovations.
+  - Centering the walks is far worse, up to about 1.6 million. Moving the free slope's anchor makes almost no difference.
+  - Writing the same RW2 prior in its eigenbasis brings it to about 2,900.
+- **Eigenbasis RW2** (`build_model_spectral`):
+  - What it is: f = σ·M·w + v0·r, where w is a rotation of the innovations, so it's the same model. Log densities match PyMC to about 2.5e-7.
+  - Result: about 2.3× the ESS per minute and no divergences. Trees are still near the maximum depth, at a smaller step size (0.0057).
+- **TyMC's mass matrix is diagonal only** (no dense or low-rank option).
+- **The slowest parameters are now `sigma_t` and `sigma_short`** (ESS about 790). They're the split between the smooth period trend and the year-to-year noise, which the data identify only weakly.
+
+**Then: eigenbasis with nutpie adaptation, and the trend split out** (Allen: yes).
+
+| Run | Time | Mean leapfrog steps | Divergences | R-hat max | ESS bulk min | ESS min per minute |
+|---|---|---|---|---|---|---|
+| Eigenbasis, nutpie adaptation, 4 × (1000 + 1000) | 63 s | 87 | 0 | 1.084 | 40 | 38 |
+| Trend split out, nutpie adaptation, 4 × (1000 + 1000) | 38 s | 50 | 1 | 1.021 | 167 | 263 |
+| The same, 2 × (500 + 500) | 9 s | 48 | 0 | 1.081 | 21 | 140 |
+| The same, 2 × (1000 + 2000) | 30 s | 48 | 4 | 1.008 | 138 | 276 |
+
+- **The eigenbasis with nutpie adaptation:** the trees are much shorter, about 87 steps against 1,000, but the smoothest few eigencomponents and the free slopes mix slowly. Their ESS is 10–20. As the screen showed, the smoothest components are nearly the same linear ramp that `v0` scales.
+- **The trend split out** (`build_model_trend`):
+  - M = r·a′ + M⊥, so f = σ·M⊥·w + β·r, where β = v0 + σ·a′w is the walk's total linear trend.
+  - The change of variables (v0, w) → (β, w) has Jacobian 1. β gets a flat prior, and v0's Normal(0, 0.2) prior is kept as a potential on β − σ·a′w, so it's the same model. Log densities match PyMC to about 2.5e-7.
+- **Accuracy:** every run matches the saved fit within Monte Carlo error.
+  - Within-cohort slope −0.842 to −0.853, against −0.843.
+  - Decomposition within 0.06 points.
+  - The largest component differences are for the earliest birth years (1883–1887), where the posterior SD is about 2.4 points.
+- **Slowest parameters now:** the smoothest few cohort components (ESS about 110 in the 4-chain run), then `sigma_t`.
+- **Candidate default for the page:** 2 chains × (1000 + 2000), the trend form, nutpie adaptation, about 30 s on two cores. The 4 divergences at 0.95 should be looked at before it's fixed: either a higher target_accept, or the page reports them.
+- From 638 s to 30 s at comparable accuracy, the main gains came from the coordinates and the adaptation together. Either one alone did little.
+
+
 ## Next
 
-- **Headline framing.** Decide how the article and appendix present the domain split: on social questions (and the full pool), people don't get more conservative within cohorts; on core economic questions, they do (+0.24 per decade), and opinion polarizes.
+- **Headline framing.** Decide how the article and appendix present the domain split: on social questions (and the full pool), people don't get more conservative within cohorts; on core economic questions, they do (+1.6 points per decade), and opinion polarizes.
 - **Redo with EM difficulties** (`--difficulties em`): the by-N curves, the birth-group fits, and the figures.
 - **Mode sensitivity** for the final set: through 2018, and without the questions asked only in person.
 - **Birth-group figures** (by decade of birth and by generation) with the final question set; fine-tune labels only then.

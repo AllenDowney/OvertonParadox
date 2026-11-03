@@ -1,0 +1,170 @@
+# The Overtron: plan
+
+A web page that runs the whole Overton pipeline in the browser, with [TyMC](https://github.com/pymc-labs/tymc) (PyMC-like modeling and NUTS in TypeScript) in place of PyMC and nutpie. The reader chooses the questions that define "more conservative" (and, optionally, other settings), and the page measures conservatism, fits the age, period, and cohort models, and draws the key figures and numbers.
+
+**Board:** Task 11 in `~/ProbablyOverthinkingIt/PROJECT_BOARD.md`.
+
+**Status (2026-11-02):** planning. Nothing built yet. The decisions below marked *Open* are Allen's to make before work starts.
+
+**Why:** the results depend on which questions count as conservative. The project's answer is a written rule (`docs/plan.md`, Decisions) plus sensitivity analyses, but a reader who would choose differently can only take our word for it. The Overtron lets them make their own choice and see whether the conclusions hold: "people don't get more conservative as they age" should survive most reasonable choices, and the page shows readers where it doesn't.
+
+---
+
+## What the page does
+
+1. **Loads a data excerpt** from this repo: every GSS respondent in the primary sample, with the raw responses to all 170 candidate questions, plus year, age, birth year, self-identified ideology (`polviews`), and the weight. Also a metadata file: question wording, value labels, the default conservative coding, and the selection statistics (rank, separation, waves, stability, topic, domain).
+2. **Lets the reader choose the questions.**
+   - Presets: the decided pool (`p48`), social, core economic (`econA`), and the book's 15.
+   - Or any subset of the 170, in a searchable table sorted by rank. Each row shows the question, its coding, its separation between liberals and conservatives, its years, and flags (failed the stability rule, in-person only since 2022, confidence question, outside the scope rule).
+   - Optionally, which responses count as conservative (default: the coding from `overton/coding.py`).
+3. **Lets the reader set options** (advanced, collapsed by default; see "Configuration").
+4. **Runs the pipeline,** showing progress at each step:
+   1. Code responses 1/0/missing.
+   2. Calibrate question difficulties by weighted EM on the grid.
+   3. Score each respondent (Rasch grid posterior mean, as percent conservative responses).
+   4. Aggregate to weighted cells (mean, variance, Kish n_eff).
+   5. Fit the models with NUTS (TyMC, in a Web Worker): period by self-identified ideology, period–cohort, and age by decade of survey.
+   6. Summarize: components, decomposition, within-cohort slope, age slopes, relative position.
+5. **Shows the key figures and numbers.** Each one sits next to the decided specification's value, so the reader can see what changed.
+
+## Key outputs
+
+These follow the blog series (`docs/blog_series.md`), in the post 1 style (`overton/apc_figures.py`): percent scale, 84% bands, and the same y-limits within a family.
+
+| Output | From | Decided value (p48) |
+|---|---|---|
+| Conservatism by self-identified ideology, by year | period model × 3 | figure `time_series_p48` |
+| Conservatism by age, one line per decade of surveys; age slope per decade of age | age model × 6 windows | +3.9 (1970s) … +2.1 to +2.4 (since 2000) |
+| Cohort and period components | period–cohort | figures `cohort_component_p48`, `period_component_p48` |
+| Within-cohort slope (points per decade) | period–cohort | −0.84 [−1.01, −0.68] |
+| Decomposition of the total change | period–cohort | −17.0 = −12.0 (replacement) + −4.9 (changing minds) |
+| Cohort trajectories | period–cohort | figure `trajectories_p48` |
+| Relative position: the median 1974 liberal as a percentile of 2024 | EM latent distributions | `figs/position_headline.csv` |
+| Diagnostics: R-hat, ESS, divergences per model | sampler | shown, with a warning if they fail |
+
+Later (not v1): within-cohort slopes by decade of birth and generation (17 more period–cohort fits), and the by-N curves.
+
+## Architecture
+
+### Data excerpt (built in this repo)
+
+- New step `python -m overton.excerpt`, writing `overtron/public/data/v1/`, which the build copies to the site (see Open decisions, 1):
+  - `respondents.bin`: column store, int8 responses (−1 for missing), 170 columns × 68,005 rows. About 11.6 MB raw, 2.7 MB gzipped (measured 2026-11-02). Plus year, age, cohort, polviews as int16, and the weight as float32.
+  - `questions.json`: per question, the wording, value labels, default coding, ranking and stability statistics, flags, and domain, plus the presets.
+  - `manifest.json`: version, source extract (R3a), sample rule, the git hash, column offsets and dtypes, checksums.
+- Build from `data/gss_overton_candidates_r3a_interviewer.hdf` (the primary sample, with raked weights in 2022 and 2024). *Open:* also include the 2022–2024 self-administered respondents, with a `mode` column, so "all modes" can be an option (adds about 7,700 rows).
+- The version is in the path (`data/v1/…`), so a page built against one excerpt doesn't break when the excerpt changes.
+- GSS data can be redistributed with a citation (NORC). The manifest and the page carry the citation.
+
+### Reference fixtures (built in this repo)
+
+To check the port step by step, export the Python pipeline's intermediate results for `p48` (and one small set, `econA`): the coded matrix checksum, EM difficulties, scores for a sample of respondents, the weighted cells, and the summaries. The TypeScript tests compare against them.
+
+### Page (TyMC)
+
+- Plain TypeScript, no MCMC, for the measurement steps: coding, EM (Bock–Aitkin, with brentq replaced by bisection or Newton per question), grid scoring, weighted cells, composition weights, and summaries. These run in seconds in Python with numpy; in JS they are loops over 68k × 48 × grid points. Run them in the worker too, so the page stays responsive.
+- TyMC for the three model families, ported from `overton/apc.py`:
+  - `rw2`: mean-centered RW2 by double cumsum, non-centered, free initial slope;
+  - ZeroSumNormal year noise (`zero_sum_normal`; check that its parameterization matches PyMC's);
+  - Normal likelihood on cell means with plug-in standard errors.
+
+  Each chain runs in its own Web Worker (`workers.parallel_sample`), and the models run one after another, the headline model first.
+- The figures are drawn on the page (SVG), matching the matplotlib styles: same colors, bands, and limits.
+- The page links to the blog series and the technical appendix.
+
+*TyMC capabilities, sampler speed, and packaging: see "TyMC facts" below.*
+
+## Configuration
+
+| Option | Default | Notes |
+|---|---|---|
+| Questions | `p48` | Presets or any subset; at least 2 |
+| Coding | from `overton/coding.py` | Per question, which responses count as conservative |
+| Minimum answers per respondent | 5 (2 for sets of fewer than 10 questions) | `MIN_ANSWERED`, `MIN_ANSWERED_BY_SET` |
+| Difficulties | EM calibrated on the chosen set | The decided spec calibrates on `p48` and anchors the others to it. For a reader's set, calibrating on that set is the natural choice (*Open*) |
+| Sample | primary (interviewer-administered in 2022–2024) | "All modes" only if the excerpt includes them |
+| Models | period by ideology, period–cohort, age by decade | Birth-group fits later |
+| Sampler | chains 2, tune 1000, draws 2000, target_accept 0.95, nutpie adaptation (candidate, from the spike) | Production used 4000 + 6000 at 0.99, to get the reported precision; the page's default trades precision for time, and says so |
+| Prior scales | from `PERIOD_SETTINGS`, `COHORT_SETTINGS` | Advanced; for readers who want to check prior sensitivity |
+
+## Validation
+
+- **Measurement:** the TS EM difficulties and scores match Python to about 1e-6 on the fixtures.
+- **Cells:** exact match.
+- **Models:** the summaries for `p48` and `econA` match the decided results within Monte Carlo error (for example, the within-cohort slope's mean within 0.05 points per decade, and the interval ends within 0.1). Use the saved traces (`results/apc/results/*_trace.nc`) to compare whole posteriors, not just summaries.
+- **Diagnostics:** R-hat < 1.01, no divergences at the page's default settings for `p48`, `social`, and `econA`. If the defaults can't get there in the time budget, choose different defaults; don't hide the warnings.
+- **Odd choices:** a reader can pick sets the rule would never choose (two questions, all unstable ones, a single domain). Test a handful, and make sure the page fails gracefully (too few respondents, empty cohort cells, a non-converging EM) with a message instead of a wrong figure.
+
+## Performance budget
+
+- **Target:** the default run finishes in a few minutes on a laptop.
+- **Sizes for `p48`:**
+  - the period–cohort model has 2,442 cohort × year cells and about 260 parameters (cohort RW2 over about 120 birth years, period RW2 over 53 years, year noise, and 32 residual scales);
+  - the period and age models have about 110 parameters each.
+- **Unity reference** (nutpie, 4 chains × 10,000 iterations):
+  - period–cohort: 1,047 s;
+  - period by ideology: 129 s;
+  - age window: 174 s.
+
+  At 2,000 iterations, nutpie would take about 210 s for the period–cohort fit. TyMC's speed relative to nutpie on this model is the main unknown. Measure it first (milestone 1).
+- **Fallback if it's too slow:** precompute the decided specification's figures and run only the reader's choice. Or fit fewer models by default (period–cohort first, since it carries the headline), with the others on request.
+
+## Open decisions (Allen)
+
+1. **Where the page lives (proposed 2026-11-02, Allen: one site to push):** in this repo, as part of the `jb/` site, so one `make -C jb deploy` publishes the blog drafts and the Overtron together.
+   - Source: `overtron/` at the top of the repo (TypeScript, `package.json`, vite config). It sits outside `jb/` so MyST doesn't see `node_modules`.
+   - The vite build writes a self-contained page (as TyMC's demos do, `tools/build_demo.mjs`). The excerpt is copied as static files next to the page, in `data/v1/`.
+   - `jb/Makefile`: `build` runs the vite build, then `jupyter book build --html`, then copies the page and its data into `_build/html/overtron/`; `deploy` stays `ghp-import` of `_build/html`. The URL is `/OvertonParadox/overtron/`.
+   - A MyST page in the table of contents (`jb/overtron.md`) explains what the Overtron does and links to it. An iframe is possible, but a full page gives the picker and figures room.
+   - TyMC's examples catalogue can link to it.
+2. **Hosting:** GitHub Pages, through the `jb/` deploy above. TyMC doesn't appear to need cross-origin isolation headers, which GitHub Pages can't set (see TyMC facts). Confirm in the spike.
+3. **TyMC dependency:** it isn't on npm, so pin a commit of pymc-labs/tymc and build it, until there's a release.
+4. **Difficulties for a reader's set:** calibrate on the chosen set (self-contained), or keep the `p48` reference calibration and anchor the chosen set to it (matches the decided spec, but only for questions in the pool).
+5. **All modes in the excerpt:** yes or no.
+6. **Coding edits:** whether v1 lets readers change which responses count as conservative, or only choose questions.
+
+## Milestones
+
+1. **Spike:** port the period–cohort model to TyMC in Node, on cells exported from Python for `p48`. Time it, and compare the summaries with the saved trace. This decides whether the browser plan is feasible as written. Settings (Allen, 2026-11-02): light only, 4 chains × (1000 tune + 1000 draws) at target_accept 0.95, run locally in Node with two worker chains at a time. **Done (2026-11-02):** the same model (log densities agree with PyMC to about 2.5e-7) and the same results (within-cohort slope −0.843 [−1.007, −0.681] against −0.843 [−1.007, −0.682]). But it took 638 s on two cores: every draw is near the maximum tree depth. Next: discuss ways to shorten the trajectories before building the page (lab notebook, 2026-11-02). **Then (2026-11-02):** a reparameterization of the same model (the RW2 in its prior's eigenbasis, with the linear trend split out), plus TyMC's nutpie adaptation, brings the period–cohort fit to about 30 s for 2 chains × (1000 + 2000) on two cores, with R-hat max 1.008 and the headline numbers within 0.01–0.03 points of the saved fit.
+2. **Excerpt and fixtures:** `overton/excerpt.py`, the manifest, and the fixtures.
+3. **Measurement port:** coding, EM, scoring, and cells in TypeScript, tested against the fixtures.
+4. **Models:** period and age, alongside the period–cohort model from the spike; summaries and components.
+5. **Page:** question picker, options, run, progress, figures, numbers, and diagnostics.
+6. **Validation pass:** the checks above, plus a few odd choices.
+7. **Publish:** host the page and link it from the blog series.
+
+## TyMC facts
+
+From pymc-labs/tymc at commit 6cc9129f (version 0.7.4-dev.1; clone in `~/tymc`), read 2026-11-02. Paths are in that repo. For the port, start with its agent skills: `skills/tymc-from-pymc`, `skills/tymc-in-the-browser`, `skills/tymc-modeling`, and `skills/tymc-checking-a-run`.
+
+- **What the models need is there:**
+  - `normal`, `half_normal`, `exponential`, `zero_sum_normal` (`src/distributions/index.ts`);
+  - `cumsum`, `sigmoid`, `mean`, `dot`;
+  - gather by a constant integer index (`x.at(idx)`);
+  - `mdl.deterministic`.
+
+  There's no GaussianRandomWalk; the docs write random walks as cumulative sums, which is how `rw2` is already written. Keep per-row deterministics out of the model, since there could be thousands (the cell-level models don't need any).
+- **Likelihood alternatives, if we ever want them** (not v1; any change to the likelihood needs discussion):
+  - `binomial` takes `{n, p}` with a per-row `n`;
+  - `bernoulli` takes `logit_p`;
+  - `ordered_logistic` exists.
+- **Sampler:**
+  - `sample_model({draws, tune, chains, seed, target_accept, max_tree_depth, adaptation})`. It is synchronous, so it runs in a worker.
+  - `workers.parallel_sample` runs one Web Worker per chain and gives the same draws as a sequential run (`docs/guide/live_sampling.md`).
+  - The CPU path is JS plus WASM in float64. WebGPU is experimental and slower for small hierarchical models, so use the CPU (`docs/guide/gpu_evaluation.md`).
+- **Speed:**
+  - The README's median across its corpus is about 1.28× nutpie in ESS per CPU-second.
+  - Corpus models with 1,500–2,000 parameters sampled in 100–520 s of CPU (`examples/results/cloud_x86/tymc/`).
+  - Our period–cohort model is small by comparison (2,442 cells, about 260 parameters), but it needs high target_accept, so the spike should measure it directly.
+- **Outputs:**
+  - `result.summary` gives R-hat, ESS bulk and tail, and MCSE; `result.divergences` gives the divergence count.
+  - Draws come as `Float64Array`s, chains × draws × size.
+  - The plots are Vega-Lite specs, and `mdl.live_session` updates them while sampling. We'd draw our own figures, but live trace plots could show progress.
+- **Packaging:**
+  - The package is `tymc`, ESM with no runtime dependencies, but it is **not on npm yet**: build it from the repo (`npm run build`) and depend on a pinned commit.
+  - The demos bundle with vite into self-contained pages, and start workers from a Blob URL (`tools/build_demo.mjs`).
+  - Nothing uses SharedArrayBuffer, so no COOP/COEP headers should be needed, and GitHub Pages should work. That isn't stated explicitly: check it in the spike.
+- **Transpiler:**
+  - `transpile.pymc(source)` translates PyMC model code to TyMC (`demo/pymc_transpiler.html`).
+  - It refuses indexing with a model variable; our models index only with data.
+  - It's worth trying on `build_period_cohort_model` as a cross-check of the hand port.

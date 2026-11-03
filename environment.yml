@@ -22,6 +22,9 @@ dependencies:
   - arviz=1.2
   - jupytext=1.19
   - jupyterlab
+  - jupyter-book=2.1     # the jb/ site (MyST)
+  - ghp-import=2.1       # jb/ deploy
+  - nodejs=26            # the Overtron (TyMC needs Node >= 22.22.2)
   - pip
   - pip:
       - empiricaldist
