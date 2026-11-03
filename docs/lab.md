@@ -1091,6 +1091,16 @@ The period model's slope is −3.076 [−3.234, −2.914] with the current form 
 - **Unity timing, redone (2026-11-03).** Same node type (AMD EPYC 7402), a discarded warm-up fit, then production length, 4 × (4000 + 6000), each configuration twice, the second pass in reverse order. 4 cores, one thread: 109.2 and 111.9 s. 4 cores, default: 109.5 and 109.5 s. 16 cores, one thread: 112.2 and 112.6 s. 16 cores, default: 112.7 and 115.2 s (69 threads). On Unity, neither the thread setting nor the core count matters.
 - **Decided:** always limit BLAS to one thread per chain. It helps locally and costs nothing on Unity. Set in `unity/overton_apc_array.sh`; the memo's caveat has both measurements.
 
+## 2026-11-03: Revised stability rule and the item-drift review
+
+After an outside consultation (`docs/stability_review.md`, section 8):
+
+- **Confidence questions** stay excluded, now on construct grounds (evaluations of institutions, not positions on issues). Post hoc timing disclosed; the version with them is a sensitivity analysis.
+- **Stability:** the fading rule is retired. The new rule excludes a question only for a reversal: credibly ahead by at least 5 points on each side, in different decades (threshold decided by Allen before applying it, with the decade gaps already known). Of 170 candidates, only `confed` has one (already excluded). The pool grows from 48 to 55: `racpres`, `natsoc`, `natspac`, `aged`, `natcrime`, `natroad`, `librac`. `fepres` stays out by the topic rule (`fepol` ranks higher).
+- **Item drift** (`overton/item_drift.py`, threshold 0.5 logits, decided before running): 14 of 55 listed. Allen reviewed them one at a time: kept 12 (`grass`, `homosex`, `racopen`, `racpres`, `colhomo`, `xmarsex`, `divlaw`, `fepol`, `fefam`, `courts`, `aged`, `racmar`: opinion moving at a different speed from the scale, not a change in meaning); excluded `librac` (removing a racist's book is no longer distinctively conservative) and `natspac` (also negatively related to the leave-one-out score). `colrac`, next in the topic, was checked, showed the same 2020s pattern, and was excluded with the topic (`spkrac` not brought in). Details: `docs/item_drift_review.md`.
+- **New pool: 53 questions (`p53`).** The previous selection is kept as `o48` for the sensitivity analysis.
+- Noted, not acted on: several spending questions (`natroad`, `natdrug`, `natcrime`, `natsoc`) are barely related to the leave-one-out score.
+
 ## Next
 
 - **Headline framing.** Decide how the article and appendix present the domain split: on social questions (and the full pool), people don't get more conservative within cohorts; on core economic questions, they do (+1.6 points per decade), and opinion polarizes.

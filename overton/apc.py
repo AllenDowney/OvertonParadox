@@ -63,11 +63,13 @@ MIN_ANSWERED = 5
 MIN_ANSWERED_BY_SET = {"econA": 2, "econB": 2, "econC": 2, "social": 2}
 
 ECON_A = ["helppoor", "helpnot", "helpsick", "eqwlth"]
-ECON_B = ECON_A + ["natenvir", "nateduc", "natmass", "natpark", "tax", "getahead"]
+ECON_B = ECON_A + ["natenvir", "nateduc", "natmass", "natpark", "tax", "getahead", "natsoc", "natroad"]
 ECON_C = ECON_B + ["helpblk", "natdrug"]
 # "neither": defense and foreign aid (review, 2026-10-31); trust, which entered the pool when the
 # selection was rerun on the primary sample (2026-11-01; docs/question_domains.md)
-NOT_SOCIAL = ECON_C + ["natarms", "nataid", "trust"]
+NOT_SOCIAL = ECON_C + ["natarms", "nataid", "trust", "natspac"]
+# excluded case by case after the item-drift diagnostic (Allen, 2026-11-03; docs/item_drift_review.md)
+DRIFT_EXCLUDED = ["librac", "natspac", "colrac", "spkrac"]  # colrac, spkrac: the whole topic (civil liberties: racist)
 DOMAIN_SETS = {"econA": ECON_A, "econB": ECON_B, "econC": ECON_C, "social": None}  # social: the rest of the pool
 DIFFICULTIES = ["heuristic", "em", "em66", "emset", "m1pool"]
 SCALE = 100  # results are reported as percent conservative responses (out of 15 before 2026-11-02)
@@ -87,10 +89,14 @@ COHORT_SETTINGS = dict(sigma_c_scale=0.125, sigma_t_scale=0.125, slope_init_scal
 def question_sets():
     """v1, v2, and the nested top-N sets from the ranked pool.
 
-    p{N}: primary specification, the top N after the stability rule and
-    without the confidence-in-institutions questions (decided 2026-10-31,
-    after independent review). s{N}: sensitivity, the top N after the
-    stability rule, keeping the confidence questions that pass it. Sizes run
+    p{N}: primary specification, the top N after the stability rule
+    (reversals of at least 5 points, revised 2026-11-03) and without the
+    confidence-in-institutions questions (construct rule). s{N}: sensitivity,
+    the same with the confidence questions that pass the stability rule.
+    o{N}: sensitivity, the whole primary pool under the previous stability
+    rule (sign change or fading, 2026-10-31); o48 is the previous selection.
+    DRIFT_EXCLUDED, decided case by case in the item-drift review, are left
+    out of the p and s sets before the topic rule. Sizes run
     in steps of 5 up to the whole pool. econA, econB, econC, social: domain
     subsets of the primary pool (core, broad, and inclusive economic; social
     without the "both" and "neither" questions).
@@ -98,11 +104,15 @@ def question_sets():
     from overton.larger_sets import CONFIDENCE, codes_for, ranked_questions
     from overton.question_sets import SETS
 
+    from overton.stability import unstable
+
     stability = pd.read_csv(paths.FIG_DIR / "candidates_stability.csv", index_col=0)
-    unstable = set(stability.index[stability["sign_change"] | stability["fades_any"]])
     sets = dict(SETS)
+    previous = ranked_questions(CONFIDENCE, drop=unstable(stability, "2026-10-31"))
+    sets[f"o{len(previous)}"] = codes_for(previous)
     for prefix, exclude_confidence in [("p", True), ("s", False)]:
-        ranked = ranked_questions(CONFIDENCE if exclude_confidence else None, drop=unstable)
+        drop = unstable(stability) | set(DRIFT_EXCLUDED)
+        ranked = ranked_questions(CONFIDENCE if exclude_confidence else None, drop=drop)
         codes = codes_for(ranked)
         names = list(ranked.index)
         sizes = list(range(15, len(names), 5)) + [len(names)]

@@ -8,9 +8,18 @@ liberals (polviews3), with a 90% interval from the Kish effective sample
 sizes. Decades with fewer than 200 liberal and conservative respondents are
 left out.
 
-Flags (decided before looking at which questions they catch, 2026-10-31):
-- sign change: one decade's gap credibly positive (interval above 0) and
-  another's credibly negative (interval below 0);
+Rule (revised 2026-11-03 after consultation, docs/stability_review.md,
+section 8):
+- reversal: in one decade the gap is at least REVERSAL_POINTS and credibly
+  positive (interval above 0), and in another it is at most -REVERSAL_POINTS
+  and credibly negative (interval below 0). A question with a reversal is
+  excluded. Fading is no longer a reason: near consensus, a question with a
+  fixed difficulty has a shrinking gap.
+
+Flags of the previous rule (2026-10-31), kept for the sensitivity analysis
+with the previous selection:
+- sign change: one decade's gap credibly positive and another's credibly
+  negative, with no size threshold;
 - fades: the gap is credibly positive in some decade and, in a later decade,
   its interval includes 0. Two versions: in the last decade observed, or in
   any later decade.
@@ -32,6 +41,7 @@ from overton.pipeline import FIG_DIR, RECODE_POLVIEWS
 
 MIN_RESPONDENTS = 200
 Z90 = 1.645
+REVERSAL_POINTS = 5  # decided by Allen, 2026-11-03
 
 
 def weighted_share(y, w):
@@ -74,6 +84,24 @@ def flags(gaps):
     return sign_change, fades_last, fades_any
 
 
+def reversal(gaps, points=REVERSAL_POINTS):
+    """Credibly ahead by at least `points` on each side, in different decades."""
+    con_ahead = (gaps["lo"] > 0) & (gaps["gap"] >= points)
+    lib_ahead = (gaps["hi"] < 0) & (gaps["gap"] <= -points)
+    return bool(con_ahead.any() and lib_ahead.any())
+
+
+def unstable(table, rule="reversal"):
+    """Names excluded by a stability rule: "reversal" (current) or "2026-10-31" (previous)."""
+    if rule == "reversal":
+        flagged = table["reversal"]
+    elif rule == "2026-10-31":
+        flagged = table["sign_change"] | table["fades_any"]
+    else:
+        raise ValueError(rule)
+    return set(table.index[flagged.fillna(False).astype(bool)])
+
+
 def main():
     ranking = pd.read_csv(FIG_DIR / "candidates_ranking.csv", index_col=0)
     coded = pd.read_hdf(FIG_DIR / "candidates_coded.hdf", "coded")
@@ -97,6 +125,7 @@ def main():
                 gaps=" ".join(f"{d}s:{g:+.0f}" for d, g in zip(gaps["decade"], gaps["gap"])),
                 min_gap=gaps["gap"].min(),
                 max_gap=gaps["gap"].max(),
+                reversal=reversal(gaps),
                 sign_change=sign_change,
                 fades_last=fades_last,
                 fades_any=fades_any,
@@ -105,13 +134,14 @@ def main():
     table = pd.DataFrame(rows).set_index("variable").sort_values("rank")
     table.to_csv(FIG_DIR / "candidates_stability.csv")
 
-    flagged = table[table["sign_change"] | table["fades_any"]]
+    flagged = table[table["reversal"] | table["sign_change"] | table["fades_any"]]
     with pd.option_context("display.width", 250, "display.max_rows", 200, "display.max_colwidth", 80):
         print(len(table), "candidates;",
+              table["reversal"].sum(), f"reversal of at least {REVERSAL_POINTS} points (current rule);",
               table["sign_change"].sum(), "sign change;",
               table["fades_last"].sum(), "fade in last decade;",
               table["fades_any"].sum(), "fade in any later decade")
-        print(flagged[["rank", "description", "gaps", "sign_change", "fades_last", "fades_any"]].round(1).to_string())
+        print(flagged[["rank", "description", "gaps", "reversal", "sign_change", "fades_last", "fades_any"]].round(1).to_string())
 
 
 if __name__ == "__main__":
