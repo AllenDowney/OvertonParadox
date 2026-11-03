@@ -23,6 +23,21 @@ const ordinal = (x: number) => {
   return `${n}${suffix}`;
 };
 
+/** A figure's header, as in the book's style: a bold title and a muted subtitle, left-aligned with the plot. */
+function header(container: HTMLElement, title: string, subtitle: string, indent: number) {
+  const head = document.createElement("div");
+  head.className = "figure-header";
+  head.style.paddingLeft = `${indent}px`;
+  const t = document.createElement("div");
+  t.className = "figure-title";
+  t.textContent = title;
+  const s = document.createElement("div");
+  s.className = "figure-subtitle";
+  s.textContent = subtitle;
+  head.append(t, s);
+  container.appendChild(head);
+}
+
 /** A tooltip shared by a figure's marks: shown on hover and on keyboard focus. */
 function tooltip(container: HTMLElement) {
   const tip = document.createElement("div");
@@ -73,9 +88,23 @@ function redraw_on_resize(container: HTMLElement & { _observer?: ResizeObserver 
 function draw_conservatism_line(container: HTMLElement, h: Headline, last_year: number) {
   container.replaceChildren();
   container.classList.add("figure");
-  const W = Math.max(320, Math.round(container.clientWidth || 800)), H = 200, left = 20, right = 20, axis = 100;
+  const W = Math.max(320, Math.round(container.clientWidth || 800)), left = 20, right = 20;
   const narrow = W < 560;
   const x = (p: number) => left + (p / 100) * (W - left - right);
+  // the 2024 group medians' labels go in one row, staggered to a second when two are close;
+  // room above the axis only for the rows used
+  const groups = (["Liberal", "Moderate", "Conservative"] as const).map((g) => ({ g, key: g.toLowerCase() as "liberal" }));
+  const label_row: number[] = [];
+  groups.forEach(({ key }, k) => {
+    const close = k > 0 && x(h[key]) - x(h[groups[k - 1].key]) < (narrow ? 100 : 130);
+    label_row.push(close ? 1 - label_row[k - 1] : 0);
+  });
+  const axis = 56 + 16 * Math.max(...label_row), H = axis + 100;
+  // the result as the title, the axis as the subtitle, left-aligned as in the book's figures
+  const share = h.ref_liberal >= 50 ? Math.round(h.ref_liberal) : Math.round(100 - h.ref_liberal);
+  const side = h.ref_liberal >= 50 ? "more conservative" : "more liberal";
+  header(container, `The median ${h.ref_year} liberal would be ${side} than ${share}% of people in ${last_year}`,
+    `Percentile of the ${last_year} distribution of conservatism: group medians with 90% intervals`, left);
   const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img",
     "aria-label": `Conservatism line: the median ${h.ref_year} liberal at the ${ordinal(h.ref_liberal)} percentile of ${last_year}` });
   container.appendChild(svg);
@@ -89,21 +118,14 @@ function draw_conservatism_line(container: HTMLElement, h: Headline, last_year: 
   }
   el("text", { x: x(0), y: H - 6, class: "muted-text", "text-anchor": "start" }, svg).textContent = "← more liberal";
   el("text", { x: x(100), y: H - 6, class: "muted-text", "text-anchor": "end" }, svg).textContent = "more conservative →";
-  if (!narrow)
-    el("text", { x: x(50), y: H - 6, class: "muted-text", "text-anchor": "middle" }, svg).textContent =
-      `percentile of ${last_year} conservatism`;
 
-  // the 2024 group medians, above the line; labels staggered when two are close
-  const groups = (["Liberal", "Moderate", "Conservative"] as const).map((g) => ({ g, key: g.toLowerCase() as "liberal" }));
-  let last_label = -Infinity, row = 0;
-  for (const { g, key } of groups) {
+  // the 2024 group medians, above the line
+  for (const [k, { g, key }] of groups.entries()) {
     const p = h[key], lo = h[`${key}_lo90`], hi = h[`${key}_hi90`];
     const y = axis - 22;
     el("line", { x1: x(lo), x2: x(hi), y1: y, y2: y, stroke: COLORS[g], class: "interval" }, svg);
     const dot = el("circle", { cx: x(p), cy: y, r: 6, fill: COLORS[g], class: "mark" }, svg);
-    row = x(p) - last_label < (narrow ? 100 : 130) ? 1 - row : 0;
-    last_label = x(p);
-    el("text", { x: x(p), y: y - 14 - 16 * row, class: "label", "text-anchor": "middle" }, svg).textContent =
+    el("text", { x: x(p), y: y - 14 - 16 * label_row[k], class: "label", "text-anchor": "middle" }, svg).textContent =
       narrow ? `${g.toLowerCase()}s` : `${last_year} ${g.toLowerCase()}s`;
     hover(dot, `<b>${last_year} ${g.toLowerCase()}s</b>, median: ${ordinal(p)} percentile<br>90% interval ${lo.toFixed(1)}–${hi.toFixed(1)}`);
   }
@@ -121,14 +143,6 @@ function draw_conservatism_line(container: HTMLElement, h: Headline, last_year: 
   hover(tri, `<b>Median ${h.ref_year} liberal</b>, placed in the ${last_year} distribution: ${ordinal(p)} percentile` +
     `<br>90% interval ${lo.toFixed(1)}–${hi.toFixed(1)}<br>${h.ref_liberal_percent.toFixed(1)}% conservative responses`);
 
-  // legend: shapes, so identity isn't color alone
-  const legend = document.createElement("div");
-  legend.className = "legend";
-  legend.innerHTML =
-    `<span><svg width="14" height="14"><circle cx="7" cy="7" r="5" class="legend-mark"/></svg> ${last_year} group median</span>` +
-    `<span><svg width="14" height="14"><path d="M7 1 L13 12 L1 12 Z" class="legend-mark"/></svg> median ${h.ref_year} liberal</span>` +
-    `<span><svg width="22" height="14"><line x1="1" x2="21" y1="7" y2="7" class="legend-line"/></svg> 90% interval</span>`;
-  container.appendChild(legend);
 
   // the same numbers as a table
   const details = document.createElement("details");
