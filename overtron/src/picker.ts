@@ -1,6 +1,7 @@
 // The question picker (docs/overtron_plan.md, milestone 5, design): presets as starting points,
 // questions grouped by subject category (overton/question_categories.py) with a three-state
-// select-all box and a count per category, p48 first in each, each question's span and status,
+// select-all box and a count per category, p48 first in each and the others under a sub-heading,
+// each question's span and status,
 // and a coverage strip: how many selected questions were asked in each survey year.
 
 import type { Excerpt, Question, QuestionTable } from "./excerpt.ts";
@@ -32,7 +33,6 @@ export function years_asked(excerpt: Excerpt, names: readonly string[]): Map<str
 
 export class Picker {
   readonly selected = new Set<string>();
-  private show_all = false;
   private readonly survey_years: number[];
 
   constructor(private readonly root: HTMLElement, private readonly table: PickerTable, private readonly excerpt: Excerpt,
@@ -91,10 +91,6 @@ export class Picker {
     return { years, counts, min, dropped, thin, ref_year, last_ok: !dropped.includes(2024) };
   }
 
-  private visible(v: string) {
-    return this.show_all || this.table.questions[v].in_p48 || this.selected.has(v);
-  }
-
   render() {
     const q = this.table.questions;
     this.root.replaceChildren();
@@ -110,24 +106,12 @@ export class Picker {
       b.onclick = () => this.changed(() => this.set_preset(name));
       presets.append(b);
     }
-    const toggle = document.createElement("label");
-    toggle.className = "show-all";
-    const box = document.createElement("input");
-    box.type = "checkbox";
-    box.checked = this.show_all;
-    box.onchange = () => {
-      this.show_all = box.checked;
-      this.render();
-    };
-    toggle.append(box, ` Show the ${Object.values(q).filter((x) => !x.in_p48).length} questions outside p48`);
-    top.append(presets, toggle);
+    top.append(presets);
     this.root.append(top);
 
     for (const category of this.table.categories) {
       const names = Object.keys(q).filter((v) => q[v].category === category)
         .sort((a, b) => Number(q[b].in_p48) - Number(q[a].in_p48));
-      const shown = names.filter((v) => this.visible(v));
-      if (!shown.length) continue;
       const n_selected = names.filter((v) => this.selected.has(v)).length;
       const details = document.createElement("details");
       details.className = "category";
@@ -141,18 +125,23 @@ export class Picker {
       const summary = document.createElement("summary");
       const all = document.createElement("input");
       all.type = "checkbox";
-      const shown_selected = shown.filter((v) => this.selected.has(v)).length;
-      all.checked = shown_selected === shown.length;
-      all.indeterminate = shown_selected > 0 && shown_selected < shown.length;
-      all.setAttribute("aria-label", `Select all shown in ${category}`);
+      all.checked = n_selected === names.length;
+      all.indeterminate = n_selected > 0 && n_selected < names.length;
+      all.setAttribute("aria-label", `Select all in ${category}`);
       all.onclick = (e) => e.stopPropagation();
       all.onchange = () => this.changed(() => {
-        for (const v of shown) all.checked ? this.selected.add(v) : this.selected.delete(v);
+        for (const v of names) all.checked ? this.selected.add(v) : this.selected.delete(v);
       });
       summary.append(all, ` ${category} `, span("count", `${n_selected} of ${names.length} selected`));
       details.append(summary);
       const list = div("questions");
-      for (const v of shown) {
+      // p48 first; the others under a sub-heading, each with the reason it was left out
+      for (const [k, v] of names.entries()) {
+        if (!q[v].in_p48 && (k === 0 || q[names[k - 1]].in_p48)) {
+          const head = div("subhead");
+          head.textContent = "Not in the decided pool";
+          list.append(head);
+        }
         const row = document.createElement("label");
         row.className = "question";
         const check = document.createElement("input");
@@ -160,7 +149,7 @@ export class Picker {
         check.checked = this.selected.has(v);
         check.onchange = () => this.changed(() => (check.checked ? this.selected.add(v) : this.selected.delete(v)));
         const info = q[v];
-        const status = info.in_p48 ? "p48" : `not in p48: ${info.excluded_because.join(", ")}`;
+        const status = info.in_p48 ? "p48" : info.excluded_because.join(", ");
         row.title = String(info.question ?? "");
         row.append(check, span("desc", ` ${info.description} `), span("meta",
           `${v} · ${info.first}–${info.last}, ${info.waves} waves · ${status}`));
