@@ -9,6 +9,8 @@ project:
     - file: index.md
     - file: post1_age.md
       title: Do People Get More Conservative as They Age?
+    - file: rw2_reparameterization.md
+      title: Reparameterizing the RW2 Prior
 
 site:
   template: book-theme

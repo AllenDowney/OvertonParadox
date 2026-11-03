@@ -79,9 +79,9 @@ SCALED_FIELDS = ["slope_per_decade", "slope_lo90", "slope_hi90", "change_first_l
 
 # defaults from CultureWar time_model/settings.py and model10/settings.py
 PERIOD_SETTINGS = dict(sigma_t_scale=0.125, slope_init_scale=0.2, sigma_short_scale=0.5, target_accept=0.9,
-                       rw2_form="cumsum")
+                       rw2_form="trend")
 COHORT_SETTINGS = dict(sigma_c_scale=0.125, sigma_t_scale=0.125, slope_init_scale=0.2,
-                       sigma_short_scale=0.2, sigma_resid_scale=0.5, target_accept=0.95, rw2_form="cumsum")
+                       sigma_short_scale=0.2, sigma_resid_scale=0.5, target_accept=0.95, rw2_form="trend")
 
 
 def question_sets():
@@ -480,8 +480,8 @@ def fit(args):
         first, last = map(int, args.cohorts.split("-"))
         df = df[df["cohort"].between(first, last)]
         label.append(f"cohorts-{args.cohorts}")
-    if args.rw2_form != "cumsum":
-        PERIOD_SETTINGS["rw2_form"] = COHORT_SETTINGS["rw2_form"] = args.rw2_form
+    PERIOD_SETTINGS["rw2_form"] = COHORT_SETTINGS["rw2_form"] = args.rw2_form
+    if args.rw2_form != "trend":
         label.append(f"rw2-{args.rw2_form}")
     run = "_".join(label) + args.tag
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -558,8 +558,9 @@ def main():
     parser.add_argument("--chains", type=int, default=4)
     parser.add_argument("--seed", type=int, default=17)
     parser.add_argument("--target-accept", type=float, default=None, help="default: CultureWar's setting for the model")
-    parser.add_argument("--rw2-form", choices=["cumsum", "trend"], default="cumsum",
-                        help="RW2 coordinates; trend is the same prior (rw2), still under test")
+    parser.add_argument("--rw2-form", choices=["cumsum", "trend"], default="trend",
+                        help="RW2 coordinates; the same prior either way (rw2). trend, the default since "
+                             "2026-11-03, samples several times faster; results before then used cumsum")
     parser.add_argument("--tag", default="")
     parser.add_argument("--difficulties", choices=DIFFICULTIES, default="em")
     parser.add_argument("--sample", choices=["interviewer", "all"], default="interviewer")

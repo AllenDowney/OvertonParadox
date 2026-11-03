@@ -1067,7 +1067,23 @@ The period model's slope is −3.076 [−3.234, −2.914] with the current form 
 - **Same results, much faster.** The period–cohort fit takes 6.5× less time with the same ESS. The period fit takes 9× less time, and its ESS per second is about 4× higher. The decided specification's fits are unchanged, since they still use the current form.
 - The speed-up is smaller than in TyMC (about 20×), because nutpie's adaptation was already working well on the current form.
 - **Thread setting.** The trend form multiplies by a dense matrix, and BLAS starts its own threads in each chain. With default settings, the first attempt used about 10 cores across 70 threads, so it was stopped. Run with `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1`, locally and on Unity.
-- **Next** (Allen, 2026-11-03): test the trend form on a few birth-group and by-ideology fits before deciding whether to make it the default. They have fewer cells and may behave differently.
+- **Subgroups** (Allen, 2026-11-03: test them before deciding on the default). Four fits of different kinds, at the same settings, on this machine:
+
+| Fit | Form | Time | Steps per draw | Draws at max depth | Divergences | ESS bulk min | ESS per second | Headline (90% CI) |
+|---|---|---|---|---|---|---|---|---|
+| Period–cohort, liberals | current | 908 s | 1,023 | 39% | 0 | 1,785 | 2.0 | within-cohort slope −2.82 [−3.08, −2.57] |
+| | trend | 86 s | 72 | 0% | 0 | 1,107 | 12.9 | −2.82 [−3.08, −2.57] |
+| Period–cohort, born 1946–1964 | current | 358 s | 1,002 | 8% | 0 | 5,186 | 14.5 | within-cohort slope −0.12 [−0.34, 0.09] |
+| | trend | 31 s | 63 | 0% | 0 | 2,120 | 68 | −0.12 [−0.34, 0.09] |
+| Age, born 1946–1964 | current | 54 s | 453 | 0.01% | 4 | 3,924 | 73 | slope −0.16 [−0.42, 0.10] |
+| | trend | 16 s | 63 | 0% | 0 | 4,777 | 306 | −0.16 [−0.42, 0.10] |
+| Period, extremely liberal | current | 42 s | 354 | 1.1% | 11 | 2,299 | 54 | slope −3.37 [−4.12, −2.62] |
+| | trend | 14 s | 56 | 0% | 0 | 4,787 | 339 | −3.37 [−4.14, −2.61] |
+
+  In every subgroup the two forms agree within Monte Carlo error. The trend form has 4–7× the ESS per second, never reaches the maximum depth, and has no divergences. The current form had 4 and 11 divergences in the two smallest fits, where production had 8 and 44. The trend form's ESS is lower in two of the fits but still above 1,100.
+- **Threads, timed** (2026-11-03, quiet machine, one fit at a time; `p48` period–cohort, trend form, 4 × (1000 + 1000) at 0.99, seed 17): with BLAS limited to one thread, 25 s, peak 22 threads, load 3.0 afterwards. With the default BLAS threading, 56 s, 70 threads, about 10 cores, load 10.7. Steps per draw were nearly the same (97 and 94), so the difference is the cost of each gradient: thread synchronization on a small matrix-vector product. The limit applies on Unity too, where `-c 4` gives fewer cores to share.
+- **Decided** (Allen, 2026-11-03): the trend form is the default for new fits (`--rw2-form cumsum` selects the old one, and a run gets `_rw2-cumsum` in its name). The saved results are unchanged.
+- **Open:** the thread setting for the Unity scripts and the memo. Next is the same timing test on Unity, with more cores available.
 
 ## Next
 

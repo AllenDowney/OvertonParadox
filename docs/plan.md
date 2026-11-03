@@ -230,6 +230,7 @@ Goal (Allen, 2026-10-31): treat each respondent's estimated conservatism as the 
 | Difficulties | Weighted EM, calibrated on the 48, on the primary sample | `docs/difficulties_design.md` |
 | Score | Rasch grid, N(0, 4) prior, at least 5 answers (2 for the domain sets), reported as percent conservative responses (out of 15 before 2026-11-02) | |
 | Models | Period (national, by `polviews3`, by `polviews`), period–cohort (within-cohort slope: straight line of the standardized period component; decomposition), age model by decade of survey | lab notebook, Phase 4b |
+| RW2 coordinates (2026-11-03) | The trend form (`rw2(form="trend")`, the eigenbasis with the linear trend split out), the default for new fits. It is the same model as the double-cumsum form, which the results before 2026-11-03 used. Summaries record `rw2_form`; a summary without it used `cumsum`. | `jb/rw2_reparameterization.md`, lab notebook |
 | Reported sets | Full pool (headline); social; core economic (econA) | `docs/question_domains.md`, `docs/difficulties_design.md` |
 | Birth groups | Period–cohort within each decade of birth and generation (plus the by-age and by-year versions) | lab notebook |
 | Relative position (2026-11-02) | Replaces the Overton gap, which is dropped (it was introduced in this project, not the book). The claim is that a liberal of the 1970s would be right of center today, so the summary is a percentile: where the median 1974 liberal falls in each year's distribution of conservatism (headline: 2024), with the 2024 median moderate and conservative as reference points. Mechanism: each decade of birth's median, as a percentile of each survey year's distribution. Distributions: latent distributions estimated on the grid by weighted EM with the decided difficulties held fixed, so measurement noise and the prior don't change the spread; percentiles of the observed scores as a check. A percentile is the same on any monotone scale (logit, out of 15, percent), and medians keep it so, which is why medians and not means | lab notebook, 2026-11-02 |
@@ -302,6 +303,7 @@ Opinion questions that passed the Overton gates but aren't in CultureWar's varia
 
 ## Log
 
+- 2026-11-03: The trend form of the RW2 is the default for new fits (Allen), after tests on p48 and four subgroups (same results, 4–7× the ESS per second). The saved results are unchanged. Timed: limiting BLAS to one thread per chain makes the trend fit 2.3× faster locally. Lab notebook entry; memo `jb/rw2_reparameterization.md`.
 - 2026-11-02: Overtron milestone 3: the measurement port (`overtron/src/`), tested against both fixtures; the p48 EM stops at its 100-iteration cap (difficulties within 0.009 of converged).
 - 2026-11-02: The trend form of the RW2 in the PyMC fits (`--rw2-form trend`, same model): p48 period–cohort in 159 s against 1,026 s, with the same results. Not the default. Lab notebook entry.
 - 2026-11-02: Overtron decisions (Allen): calibrate difficulties on the reader's set; primary sample only (the excerpt dropped the other rows); v1 chooses questions only, with the decided coding; the page keeps target_accept 0.95.
