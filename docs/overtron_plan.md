@@ -162,6 +162,13 @@ To check the port step by step, export the Python pipeline's intermediate result
    - **Coverage:** a strip shows, for each survey year, how many selected questions were asked, and flags thin years. The page warns but doesn't block, and says when the headline can't be computed because the set has no question in 1974 or 2024.
    - **Out of scope, addable** (`overton/out_of_scope.py`): religious belief and practice (16 questions plus `prayer`) and guns and hunting (`owngun`, `hunt`). They're coded and scored like the 170 and shown in their own categories, marked out of scope. The excerpt now has 188 questions, 2.69 MB compressed.
    - **Open:** which questions are hidden by default: all 140 outside `p48`, or only the coverage failures.
+   - **Built (2026-11-03):** the minimal page, then post 1's figures and the picker, as designed above. For now, the picker hides all 140 questions outside `p48` until "show" is checked.
+   - **Birth-decade period–cohort fits** (Allen, 2026-11-03: keep 0.99). On `p48`, with one seed each:
+     - 0.99 with tune 1000: 131 divergences in total, at most 37 in one fit, 63 s for all 11;
+     - 0.99 with tune 2000: 156 in total, at most 79, with R-hat up to 1.019, so more tuning didn't help;
+     - 0.995: 90 in total, at most 20, about 1.5× the time.
+
+     The diagnostics panel reports divergences. The `age born` fits stay, since they're the lines of "Conservatism by age and decade of birth".
 6. **Validation pass:** the checks above, plus a few odd choices.
 7. **Publish:** host the page and link it from the blog series.
 

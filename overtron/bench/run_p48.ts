@@ -4,7 +4,7 @@
 // two worker chains at a time. Times each fit and compares the headline numbers with
 // the decided fits (results/apc/results, nutpie, 4 x (4000 + 6000) at 0.99).
 //
-//     node bench/run_p48.ts [label filter] [target_accept]
+//     node bench/run_p48.ts [label filter] [target_accept] [tune]
 //
 // e.g. node bench/run_p48.ts "pc born" 0.99 runs only the matching fits, at that target.
 //
@@ -53,8 +53,9 @@ const worker_module = new URL("./node_worker.ts", import.meta.url).href;
 const out: Record<string, unknown>[] = [];
 const began = performance.now();
 const [only, target] = [process.argv[2], process.argv[3] ? Number(process.argv[3]) : undefined];
+const settings = process.argv[4] ? { ...PAGE_SETTINGS, tune: Number(process.argv[4]) } : PAGE_SETTINGS;
 for (const job of jobs.filter((j) => !only || j.label.includes(only))) {
-  const result = await fit(job.spec, PAGE_SETTINGS, worker_module, spawn, undefined, target ?? job.target_accept);
+  const result = await fit(job.spec, settings, worker_module, spawn, undefined, target ?? job.target_accept);
   const summary = job.summarize(result.draws).summary as unknown as Record<string, unknown>;
   const path = new URL(`${job.saved}_summary.json`, decided);
   const reference = existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : {};
