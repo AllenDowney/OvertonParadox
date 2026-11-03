@@ -21,6 +21,23 @@
       th:first-child, td:first-child { text-align: left; }
       .wide { overflow-x: auto; }
       #error { color: #b00020; white-space: pre-wrap; }
+      .figure { position: relative; margin: 0.5em 0 1.5em; }
+      .figure > svg { width: 100%; height: auto; display: block; overflow: visible; }
+      .figure .axis { stroke: var(--muted); stroke-width: 1; }
+      .figure .tick, .figure .muted-text { fill: var(--muted); font-size: 13px; }
+      .figure .label { fill: var(--ink); font-size: 14px; }
+      .figure .interval { stroke-width: 2; stroke-linecap: round; }
+      .figure .mark { stroke: var(--bg); stroke-width: 2; cursor: default; }
+      .figure .mark:focus { outline: none; stroke: var(--ink); }
+      .figure .legend { display: flex; flex-wrap: wrap; gap: 16px; color: var(--muted); font-size: 13px; margin-top: 4px; }
+      .figure .legend svg { vertical-align: -2px; }
+      .figure .legend-mark { fill: var(--muted); }
+      .figure .legend-line { stroke: var(--muted); stroke-width: 2; }
+      .figure details { margin-top: 6px; font-size: 14px; }
+      .figure details table { width: auto; }
+      .tooltip { position: absolute; pointer-events: none; background: var(--bg); color: var(--ink);
+        border: 1px solid var(--rule); border-radius: 4px; padding: 6px 8px; font-size: 13px; line-height: 1.4;
+        box-shadow: 0 2px 8px rgb(0 0 0 / 0.15); white-space: nowrap; z-index: 1; }
     </style>
   </head>
   <body>

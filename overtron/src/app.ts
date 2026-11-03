@@ -4,9 +4,11 @@
 // before the picker and the figures.
 
 import { type Excerpt, load, type QuestionTable } from "./excerpt.ts";
+import { conservatism_line } from "./figures.ts";
 import { fit, PAGE_SETTINGS } from "./fits.ts";
 import { make_jobs } from "./jobs.ts";
 import { answered, code, score } from "./measure.ts";
+import type { Headline } from "./position.ts";
 import type { PositionRequest } from "./position_worker.ts";
 
 interface PresetSettings {
@@ -34,9 +36,12 @@ function spawn() {
   return new Worker(new URL("./fit_worker.ts", import.meta.url), { type: "module" });
 }
 
+// ?position runs only relative position (seconds, not minutes): for working on its figure
+const POSITION_ONLY = new URLSearchParams(location.search).has("position");
+
 const fmt = (x: number, digits = 2) => (Number.isFinite(x) ? x.toFixed(digits) : "–");
 
-function position(request: PositionRequest): Promise<{ headline: Record<string, number> }> {
+function position(request: PositionRequest): Promise<{ headline: Headline }> {
   return new Promise((resolve, reject) => {
     const worker = new Worker(new URL("./position_worker.ts", import.meta.url), { type: "module" });
     worker.onmessage = (event) => {
@@ -63,14 +68,13 @@ async function start() {
   $("position").textContent = "Running (bootstrap, in its own worker)…";
   const pos = position({ base: BASE, codes: settings.codes, difficulties: settings.difficulties,
     min_answered: settings.min_answered }).then(({ headline: h }) => {
-    $("position").innerHTML =
-      `The median ${h.ref_year} liberal would be at percentile <b>${fmt(h.ref_liberal, 1)}</b> ` +
-      `[${fmt(h.ref_liberal_lo90, 1)}, ${fmt(h.ref_liberal_hi90, 1)}] of the 2024 distribution. ` +
-      `2024 medians: liberals ${fmt(h.liberal, 1)}, moderates ${fmt(h.moderate, 1)}, conservatives ${fmt(h.conservative, 1)}.`;
+    $("position").classList.remove("muted");
+    conservatism_line($("position"), h);
   }).catch((error) => {
     $("position").textContent = `Not available: ${error.message}`;
   });
 
+  if (POSITION_ONLY) jobs.length = 0;
   const per_fit = PAGE_SETTINGS.chains * (PAGE_SETTINGS.tune + PAGE_SETTINGS.draws);
   for (const [k, job] of jobs.entries()) {
     status.textContent = `Fit ${k + 1} of ${jobs.length}: ${job.label}`;
