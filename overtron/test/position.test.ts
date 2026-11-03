@@ -6,7 +6,7 @@ import { test } from "node:test";
 import { gunzipSync } from "node:zlib";
 import { decode, type Manifest } from "../src/excerpt.ts";
 import { answered, code, score } from "../src/measure.ts";
-import { by_year, distributions } from "../src/position.ts";
+import { by_year, distributions, headline, HEADLINE_KEYS } from "../src/position.ts";
 
 const data = new URL("../public/data/v1/", import.meta.url);
 const manifest = JSON.parse(readFileSync(new URL("manifest.json", data), "utf8")) as Manifest;
@@ -48,4 +48,21 @@ test("by year: the 1974 liberal's percentile, and each year's groups", () => {
   console.log(`by year: max diff ${diff.toExponential(1)} points; 2024: the 1974 liberal at percentile ` +
     `${last.ref_liberal.toFixed(2)} (Python ${fx.table.ref_liberal[rows.length - 1].toFixed(2)})`);
   assert.ok(diff < 1e-3, `${diff}`);
+});
+
+test("headline: 2024 percentiles, with bootstrap intervals", () => {
+  const began = performance.now();
+  const h = headline(answers, excerpt, scored, d, { ref_year: fx.ref_year, last_year: fx.last_year, n_bootstrap: fx.n_bootstrap });
+  const seconds = (performance.now() - began) / 1000;
+  const py = fx.headline;
+  for (const key of HEADLINE_KEYS) {
+    console.log(`${key.padEnd(20)} ${h[key].toFixed(2)} [${h[`${key}_lo90`].toFixed(2)}, ${h[`${key}_hi90`].toFixed(2)}]` +
+      `  Python ${py[key].toFixed(2)} [${py[`${key}_lo90`].toFixed(2)}, ${py[`${key}_hi90`].toFixed(2)}]`);
+    // the point estimate is deterministic; the bootstrap draws differ from numpy's
+    assert.ok(Math.abs(h[key] - py[key]) < 1e-4, `${key}: ${h[key]} vs ${py[key]}`);
+    const width = py[`${key}_hi90`] - py[`${key}_lo90`];
+    for (const end of ["lo90", "hi90"])
+      assert.ok(Math.abs(h[`${key}_${end}`] - py[`${key}_${end}`]) < 0.25 * width, `${key}_${end}`);
+  }
+  console.log(`headline with ${fx.n_bootstrap} resamples: ${seconds.toFixed(1)} s`);
 });

@@ -313,7 +313,9 @@ def position_fixture():
                 difficulties=d.to_dict(),
                 year=year.reset_index(names="label").to_dict(orient="list"),
                 groups=groups.reset_index(names="label").to_dict(orient="list"),
-                table=table.astype(object).where(table.notna(), None).to_dict(orient="list"))
+                table=table.astype(object).where(table.notna(), None).to_dict(orient="list"),
+                headline=pd.read_csv(position.FIG_DIR / "position_headline.csv").set_index("set").loc["p48"].to_dict(),
+                n_bootstrap=position.N_BOOTSTRAP, last_year=position.LAST_YEAR)
 
 
 def main():

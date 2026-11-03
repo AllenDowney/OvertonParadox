@@ -372,15 +372,8 @@ export function series_cells(excerpt: Excerpt, s: Scored, key: ArrayLike<number>
 /** The fine grid for the latent distributions (overton/position.py, XS). */
 export const XS_FINE = Float64Array.from({ length: 121 }, (_, k) => -6 + (12 * k) / 120);
 
-/**
- * Weighted EM estimates of a normal latent distribution in each group, difficulties fixed
- * (overton/em.py, latent_normals). groups[r] is the group of rows[r], 0 to n_groups - 1.
- * All groups iterate together until every one has converged, as in Python, so a group's
- * estimate depends slightly on which other groups are fitted with it.
- */
-export function latent_normals(answers: Answers, weights: ArrayLike<number>, d: ArrayLike<number>, rows: Int32Array,
-  groups: ArrayLike<number>, n_groups: number, { xs = XS_FINE, tol = 1e-6, max_iter = 500 } = {}):
-  { mu: Float64Array; sd: Float64Array } {
+/** Each respondent's likelihood on the grid xs, normalized (rows x xs.length): the part of latent_normals that doesn't change. */
+export function grid_likelihood(answers: Answers, d: ArrayLike<number>, rows: Int32Array, xs: Float64Array = XS_FINE): Float64Array {
   const q = answers.names.length;
   const g = xs.length;
   const logp = new Float64Array(q * g);
@@ -392,7 +385,6 @@ export function latent_normals(answers: Answers, weights: ArrayLike<number>, d: 
       log1mp[j * g + k] = Math.log(1 - p);
     }
   }
-  // the likelihood doesn't change, so compute it once (normalized, as with a flat prior)
   const like = new Float64Array(rows.length * g);
   const loglike = new Float64Array(g);
   for (let r = 0; r < rows.length; r++) {
@@ -410,6 +402,21 @@ export function latent_normals(answers: Answers, weights: ArrayLike<number>, d: 
     for (let k = 0; k < g; k++) total += like[r * g + k] = Math.exp(loglike[k] - max);
     for (let k = 0; k < g; k++) like[r * g + k] /= total;
   }
+  return like;
+}
+
+/**
+ * Weighted EM estimates of a normal latent distribution in each group, difficulties fixed
+ * (overton/em.py, latent_normals), from a precomputed grid_likelihood. weights[r] and
+ * groups[r] (0 to n_groups - 1) belong to row r of the likelihood. All groups iterate
+ * together until every one has converged, as in Python, so a group's estimate depends
+ * slightly on which other groups are fitted with it. Rows with weight 0 have no effect,
+ * which is how the bootstrap resamples (a weight times a count) without recomputing.
+ */
+export function latent_normals_from(like: Float64Array, weights: ArrayLike<number>, groups: ArrayLike<number>,
+  n_groups: number, { xs = XS_FINE, tol = 1e-6, max_iter = 500 } = {}): { mu: Float64Array; sd: Float64Array } {
+  const g = xs.length;
+  const n = like.length / g;
   let mu = new Float64Array(n_groups), sd = new Float64Array(n_groups).fill(1);
   const prior = new Float64Array(n_groups * g);
   const totals = new Float64Array(n_groups * g);
@@ -422,11 +429,12 @@ export function latent_normals(answers: Answers, weights: ArrayLike<number>, d: 
       }
     }
     totals.fill(0);
-    for (let r = 0; r < rows.length; r++) {
+    for (let r = 0; r < n; r++) {
+      if (weights[r] === 0) continue;
       const c = groups[r];
       let total = 0;
       for (let k = 0; k < g; k++) total += post[k] = like[r * g + k] * prior[c * g + k];
-      const w = weights[rows[r]] / total;
+      const w = weights[r] / total;
       for (let k = 0; k < g; k++) totals[c * g + k] += w * post[k];
     }
     const m1 = new Float64Array(n_groups), next_sd = new Float64Array(n_groups);
@@ -448,4 +456,12 @@ export function latent_normals(answers: Answers, weights: ArrayLike<number>, d: 
     if (change < tol) break;
   }
   return { mu, sd };
+}
+
+/** latent_normals for the respondents in `rows` (weights indexed by excerpt row; groups by position in rows). */
+export function latent_normals(answers: Answers, weights: ArrayLike<number>, d: ArrayLike<number>, rows: Int32Array,
+  groups: ArrayLike<number>, n_groups: number, { xs = XS_FINE, tol = 1e-6, max_iter = 500 } = {}):
+  { mu: Float64Array; sd: Float64Array } {
+  const like = grid_likelihood(answers, d, rows, xs);
+  return latent_normals_from(like, Float64Array.from(rows, (i) => weights[i]), groups, n_groups, { xs, tol, max_iter });
 }

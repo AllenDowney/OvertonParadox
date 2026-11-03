@@ -5,7 +5,8 @@
 
 import { numerics } from "tymc";
 import type { Excerpt } from "./excerpt.ts";
-import { type Answers, latent_normals, type Scored } from "./measure.ts";
+import { type Answers, grid_likelihood, latent_normals, latent_normals_from, type Scored } from "./measure.ts";
+import { quantile } from "./summaries.ts";
 
 export const GROUPS = ["Liberal", "Moderate", "Conservative"] as const;
 
@@ -81,4 +82,73 @@ export function by_year(answers: Answers, excerpt: Excerpt, s: Scored, d: ArrayL
     };
   });
   return { rows, ref, ref_percent: to_percent(ref, d) };
+}
+
+/** A small seeded generator (mulberry32), for the bootstrap draws. */
+function mulberry32(seed: number): () => number {
+  let a = seed >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+export const HEADLINE_KEYS = ["ref_liberal", "ref_liberal_percent", "median_percent", "liberal", "moderate", "conservative"] as const;
+export type Headline = Record<(typeof HEADLINE_KEYS)[number], number> & Record<string, number>;
+
+/**
+ * headline in overton/position.py: the last year's percentiles, from the respondents of the
+ * reference year and the last year only, with bootstrap intervals (respondents resampled
+ * within each year, weights carried along; it ignores the GSS's clustering, so the intervals
+ * are somewhat too narrow). Each resample reweights the same rows (weight x count), so the
+ * likelihood is computed once. The draws differ from numpy's, so the intervals agree with
+ * Python's within Monte Carlo error, not exactly.
+ */
+export function headline(answers: Answers, excerpt: Excerpt, s: Scored, d: ArrayLike<number>,
+  { ref_year = 1974, last_year = 2024, n_bootstrap = 200, seed = 17 } = {}): Headline {
+  const rows = Int32Array.from(Array.from(s.rows).filter((i) => excerpt.year[i] === ref_year || excerpt.year[i] === last_year));
+  const like = grid_likelihood(answers, d, rows);
+  const base = Float64Array.from(rows, (i) => excerpt.weight[i]);
+  const year_group = Int32Array.from(rows, (i) => (excerpt.year[i] === ref_year ? 0 : 1));
+  // year x polviews3; rows without a group get weight 0 in that fit
+  const labels: string[] = [];
+  for (const y of [ref_year, last_year]) for (const g of GROUPS) labels.push(`${y}|${g}`);
+  const ideology = Int32Array.from(rows, (i) => {
+    const g = polviews3(excerpt.polviews[i]);
+    return g === null ? -1 : labels.indexOf(`${excerpt.year[i]}|${g}`);
+  });
+
+  const numbers = (weights: Float64Array) => {
+    const year = latent_normals_from(like, weights, year_group, 2);
+    const last = { mu: year.mu[1], sd: year.sd[1] };
+    const group_weights = weights.map((w, r) => (ideology[r] < 0 ? 0 : w));
+    const groups = latent_normals_from(like, group_weights, ideology.map((c) => Math.max(c, 0)), labels.length);
+    const median = (label: string) => groups.mu[labels.indexOf(label)];
+    const ref = median(`${ref_year}|Liberal`);
+    return {
+      ref_liberal: percentile(last, ref), ref_liberal_percent: to_percent(ref, d), median_percent: to_percent(last.mu, d),
+      liberal: percentile(last, median(`${last_year}|Liberal`)), moderate: percentile(last, median(`${last_year}|Moderate`)),
+      conservative: percentile(last, median(`${last_year}|Conservative`)),
+    };
+  };
+
+  const point = numbers(base);
+  const random = mulberry32(seed);
+  const by_year = [ref_year, last_year].map((y) => Array.from(rows.keys()).filter((r) => excerpt.year[rows[r]] === y));
+  const draws: ReturnType<typeof numbers>[] = [];
+  const counts = new Float64Array(rows.length);
+  for (let b = 0; b < n_bootstrap; b++) {
+    counts.fill(0);
+    for (const members of by_year) for (let k = 0; k < members.length; k++) counts[members[Math.floor(random() * members.length)]] += 1;
+    draws.push(numbers(base.map((w, r) => w * counts[r])));
+  }
+  const out: Record<string, number> = { ref_year };
+  for (const key of HEADLINE_KEYS) {
+    const values = draws.map((x) => x[key]);
+    Object.assign(out, { [key]: point[key], [`${key}_lo90`]: quantile(values, 0.05), [`${key}_hi90`]: quantile(values, 0.95) });
+  }
+  return out as Headline;
 }
