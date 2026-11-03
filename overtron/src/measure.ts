@@ -321,3 +321,131 @@ export function weighted_cells(excerpt: Excerpt, s: Scored): Cells {
   });
   return out;
 }
+
+/** The scored respondents for whom keep(i) holds (i indexes the excerpt). */
+export function subset(s: Scored, keep: (i: number) => boolean): Scored {
+  const r = [...s.rows.keys()].filter((k) => keep(s.rows[k]));
+  return {
+    rows: Int32Array.from(r, (k) => s.rows[k]), y: Float64Array.from(r, (k) => s.y[k]),
+    conservatism: Float64Array.from(r, (k) => s.conservatism[k]),
+  };
+}
+
+export interface OneWayCells {
+  readonly index: number[];
+  readonly p_weighted: number[];
+  readonly var_weighted: number[];
+  readonly n: number[];
+  readonly n_eff: number[];
+}
+
+/** Weighted mean, weighted variance, and Kish n_eff of y by one integer key (year or age), sorted by key. */
+export function series_cells(excerpt: Excerpt, s: Scored, key: ArrayLike<number>): OneWayCells {
+  const groups = new Map<number, number[]>();
+  s.rows.forEach((i, r) => {
+    const list = groups.get(key[i]);
+    if (list) list.push(r);
+    else groups.set(key[i], [r]);
+  });
+  const out: OneWayCells = { index: [], p_weighted: [], var_weighted: [], n: [], n_eff: [] };
+  for (const k of [...groups.keys()].sort((a, b) => a - b)) {
+    const members = groups.get(k)!;
+    let w = 0, w2 = 0, wy = 0;
+    for (const r of members) {
+      const wi = excerpt.weight[s.rows[r]];
+      w += wi;
+      w2 += wi * wi;
+      wy += wi * s.y[r];
+    }
+    const mean = wy / w;
+    let wv = 0;
+    for (const r of members) wv += excerpt.weight[s.rows[r]] * (s.y[r] - mean) ** 2;
+    out.index.push(k);
+    out.p_weighted.push(mean);
+    out.var_weighted.push(wv / w);
+    out.n.push(members.length);
+    out.n_eff.push((w * w) / w2);
+  }
+  return out;
+}
+
+/** The fine grid for the latent distributions (overton/position.py, XS). */
+export const XS_FINE = Float64Array.from({ length: 121 }, (_, k) => -6 + (12 * k) / 120);
+
+/**
+ * Weighted EM estimates of a normal latent distribution in each group, difficulties fixed
+ * (overton/em.py, latent_normals). groups[r] is the group of rows[r], 0 to n_groups - 1.
+ * All groups iterate together until every one has converged, as in Python, so a group's
+ * estimate depends slightly on which other groups are fitted with it.
+ */
+export function latent_normals(answers: Answers, weights: ArrayLike<number>, d: ArrayLike<number>, rows: Int32Array,
+  groups: ArrayLike<number>, n_groups: number, { xs = XS_FINE, tol = 1e-6, max_iter = 500 } = {}):
+  { mu: Float64Array; sd: Float64Array } {
+  const q = answers.names.length;
+  const g = xs.length;
+  const logp = new Float64Array(q * g);
+  const log1mp = new Float64Array(q * g);
+  for (let j = 0; j < q; j++) {
+    for (let k = 0; k < g; k++) {
+      const p = expit(xs[k] - d[j]);
+      logp[j * g + k] = Math.log(p);
+      log1mp[j * g + k] = Math.log(1 - p);
+    }
+  }
+  // the likelihood doesn't change, so compute it once (normalized, as with a flat prior)
+  const like = new Float64Array(rows.length * g);
+  const loglike = new Float64Array(g);
+  for (let r = 0; r < rows.length; r++) {
+    const i = rows[r];
+    loglike.fill(0);
+    for (let j = 0; j < q; j++) {
+      const a = answers.values[i * q + j];
+      if (a === -1) continue;
+      const table = a === 1 ? logp : log1mp;
+      for (let k = 0; k < g; k++) loglike[k] += table[j * g + k];
+    }
+    let max = -Infinity;
+    for (let k = 0; k < g; k++) if (loglike[k] > max) max = loglike[k];
+    let total = 0;
+    for (let k = 0; k < g; k++) total += like[r * g + k] = Math.exp(loglike[k] - max);
+    for (let k = 0; k < g; k++) like[r * g + k] /= total;
+  }
+  let mu = new Float64Array(n_groups), sd = new Float64Array(n_groups).fill(1);
+  const prior = new Float64Array(n_groups * g);
+  const totals = new Float64Array(n_groups * g);
+  const post = new Float64Array(g);
+  for (let iter = 0; iter < max_iter; iter++) {
+    for (let c = 0; c < n_groups; c++) {
+      for (let k = 0; k < g; k++) {
+        const z = (xs[k] - mu[c]) / sd[c];
+        prior[c * g + k] = Math.exp(-0.5 * z * z) / (sd[c] * Math.sqrt(2 * Math.PI));
+      }
+    }
+    totals.fill(0);
+    for (let r = 0; r < rows.length; r++) {
+      const c = groups[r];
+      let total = 0;
+      for (let k = 0; k < g; k++) total += post[k] = like[r * g + k] * prior[c * g + k];
+      const w = weights[rows[r]] / total;
+      for (let k = 0; k < g; k++) totals[c * g + k] += w * post[k];
+    }
+    const m1 = new Float64Array(n_groups), next_sd = new Float64Array(n_groups);
+    let change = 0;
+    for (let c = 0; c < n_groups; c++) {
+      let t = 0, s1 = 0, s2 = 0;
+      for (let k = 0; k < g; k++) {
+        const v = totals[c * g + k];
+        t += v;
+        s1 += v * xs[k];
+        s2 += v * xs[k] * xs[k];
+      }
+      m1[c] = s1 / t;
+      next_sd[c] = Math.sqrt(s2 / t - m1[c] * m1[c]);
+      change = Math.max(change, Math.abs(m1[c] - mu[c]), Math.abs(next_sd[c] - sd[c]));
+    }
+    mu = m1;
+    sd = next_sd;
+    if (change < tol) break;
+  }
+  return { mu, sd };
+}

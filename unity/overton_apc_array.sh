@@ -17,6 +17,9 @@ set -euo pipefail
 ROOT="${SLURM_SUBMIT_DIR}"
 WORK="${UNITY_WORK:?set by unity/submit.sh}"
 export TMPDIR="${WORK}/tmp"
+# one BLAS thread per chain: the trend form's matrix products are too small to split
+# (2.3x faster on the laptop, no difference on Unity; docs/lab.md, 2026-11-03)
+export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
 mkdir -p "$TMPDIR"
 source "${WORK}/miniforge3/etc/profile.d/conda.sh"
 conda activate CultureWar

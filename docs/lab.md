@@ -1088,7 +1088,8 @@ The period model's slope is −3.076 [−3.234, −2.914] with the current form 
   - At 2,000 iterations, compilation is a large share of each fit's time.
   - On Unity the default threading penalty is small or absent, unlike locally (2.3×). That may be the BLAS build or the CPU.
   - A redesign would add a warm-up fit, run at production length, and repeat each configuration in alternating order.
-- **Open:** the thread setting for the Unity scripts and the memo.
+- **Unity timing, redone (2026-11-03).** Same node type (AMD EPYC 7402), a discarded warm-up fit, then production length, 4 × (4000 + 6000), each configuration twice, the second pass in reverse order. 4 cores, one thread: 109.2 and 111.9 s. 4 cores, default: 109.5 and 109.5 s. 16 cores, one thread: 112.2 and 112.6 s. 16 cores, default: 112.7 and 115.2 s (69 threads). On Unity, neither the thread setting nor the core count matters.
+- **Decided:** always limit BLAS to one thread per chain. It helps locally and costs nothing on Unity. Set in `unity/overton_apc_array.sh`; the memo's caveat has both measurements.
 
 ## Next
 

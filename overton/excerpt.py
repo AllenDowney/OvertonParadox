@@ -27,7 +27,7 @@ period-cohort summary.
 Before writing the fixtures, the excerpt is decoded and the p48 scores are
 recomputed from it, which must reproduce results/apc/data/p48.parquet.
 
-Usage: python -m overton.excerpt
+Usage: python -m overton.excerpt [models | summaries | position]   (only that fixture)
 """
 
 import gzip
@@ -35,13 +35,15 @@ import hashlib
 import json
 import re
 import subprocess
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
 from overton import paths
-from overton.apc import (DATA_DIR as APC_DATA, ECON_A, ECON_B, ECON_C, MIN_ANSWERED, MIN_ANSWERED_BY_SET,
-                         NOT_SOCIAL, RESULTS_DIR as APC_RESULTS, calibrate, question_sets, weighted_cells)
+from overton.apc import (COHORT_SETTINGS, DATA_DIR as APC_DATA, ECON_A, ECON_B, ECON_C, MIN_ANSWERED,
+                         MIN_ANSWERED_BY_SET, NOT_SOCIAL, PERIOD_SETTINGS, RESULTS_DIR as APC_RESULTS,
+                         build_period_cohort_model, build_series_model, calibrate, question_sets, weighted_cells)
 from overton.data import CANDIDATES_PRIMARY, CONSERVATIVE_VALUES, WEIGHT_COL
 from overton.drift import estimate_with_difficulties
 from overton.larger_sets import CONFIDENCE, MIN_WAVES
@@ -200,7 +202,137 @@ def fixture(gss, name):
     )
 
 
+def model_points(m, n_points=3, seed=17):
+    """PyMC's log density (with Jacobians) at random points in the model's free variables."""
+    logp = m.compile_logp()
+    rng = np.random.default_rng(seed)
+    init = m.initial_point()
+    points = []
+    for _ in range(n_points):
+        point = {v.name: rng.normal(0, 0.5, size=init[v.name].shape) for v in m.value_vars}
+        points.append(dict(values=[point[v.name].ravel().tolist() for v in m.value_vars], logp=float(logp(point))))
+    return dict(value_vars=[v.name for v in m.value_vars], points=points)
+
+
+def models_fixture():
+    """Inputs and log densities of the period, age and period-cohort models for p48.
+
+    The points are in the current (double-cumsum) form's coordinates; the TypeScript
+    test maps them into its own eigenbasis (w = Q z, beta = v0 + sigma a'w), which
+    checks the basis and the model together. The trend form has the same log density
+    (overton/rw2_trend.py).
+    """
+    df = pd.read_parquet(APC_DATA / "p48.parquet")
+    out = {}
+    years = list(range(df["year"].min(), df["year"].max() + 1))
+    cells = weighted_cells(df, ["year"])
+    m = build_series_model(cells, "year", years, dict(PERIOD_SETTINGS, rw2_form="cumsum"))
+    out["period"] = dict(grid=years, index=cells["year"].astype(int).tolist(), **model_points(m),
+                         **cells[["p_weighted", "var_weighted", "n_eff"]].to_dict(orient="list"))
+    window = df[df["year"].between(2020, 2024)].assign(age=lambda d: d["age"].astype(int))
+    ages = list(range(window["age"].min(), window["age"].max() + 1))
+    cells = weighted_cells(window, ["age"])
+    m = build_series_model(cells, "age", ages, dict(PERIOD_SETTINGS, rw2_form="cumsum"))
+    out["age_2020-2024"] = dict(grid=ages, index=cells["age"].astype(int).tolist(), **model_points(m),
+                                **cells[["p_weighted", "var_weighted", "n_eff"]].to_dict(orient="list"))
+    cohorts = list(range(int(df["cohort"].min()), int(df["cohort"].max()) + 1))
+    cells = weighted_cells(df.assign(cohort=df["cohort"].astype(int)), ["cohort", "year"])
+    m = build_period_cohort_model(cells, years, cohorts, dict(COHORT_SETTINGS, rw2_form="cumsum"))
+    out["period_cohort"] = dict(years=years, cohorts=cohorts, cell_year=cells["year"].astype(int).tolist(),
+                                cell_cohort=cells["cohort"].astype(int).tolist(), **model_points(m),
+                                **cells[["p_weighted", "n_eff"]].to_dict(orient="list"))
+    out["settings"] = dict(period=PERIOD_SETTINGS, period_cohort=COHORT_SETTINGS)
+    return out
+
+
+SUMMARY_DRAWS = 100  # posterior draws kept in the summaries fixture, rounded to 6 decimals
+
+
+def summaries_fixture():
+    """Saved draws, thinned, and the Python summaries computed from exactly those draws.
+
+    fit_series and fit_period_cohort run with the sampler replaced by the thinned
+    draws of the saved p48 fits (liberals' period model, the 2020-2024 age window,
+    and the period-cohort model), so the TypeScript summaries can be compared exactly.
+    """
+    import tempfile
+    from types import SimpleNamespace
+
+    import xarray as xr
+
+    from overton import apc
+
+    df = pd.read_parquet(APC_DATA / "p48.parquet")
+    args = SimpleNamespace(tune=0, draws=0, chains=1, seed=17, target_accept=None)
+    out = dict(draws=SUMMARY_DRAWS)
+    real_sample = apc.sample
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            for key, run, names in [("period_liberal", "period_p48_polviews3-Liberal", ["mu"]),
+                                    ("age_2020-2024", "age_p48_window-2020-2024", ["mu"]),
+                                    ("period_cohort", "period_cohort_p48", ["alpha", "cohort", "period"])]:
+                tree = xr.open_datatree(APC_RESULTS / f"{run}_trace.nc", engine="h5netcdf")
+                post = tree["posterior"].to_dataset()
+                n = post.sizes["chain"] * post.sizes["draw"]
+                keep = np.linspace(0, n - 1, SUMMARY_DRAWS).round().astype(int)
+                draws = {v: post[v].values.reshape(n, *post[v].shape[2:])[keep].astype(float).round(6) for v in names}
+                apc.sample = lambda *a, **k: {"posterior": {v: SimpleNamespace(values=x[None]) for v, x in draws.items()}}
+                stem = Path(tmp) / key
+                if key == "period_liberal":
+                    sub = df[df["polviews3"] == "Liberal"]
+                    grid = list(range(sub["year"].min(), sub["year"].max() + 1))
+                    _, summary, _ = apc.fit_series(sub, "year", grid, apc.SCALE, stem, args)
+                    table = pd.read_csv(f"{stem}_series.csv")
+                elif key == "age_2020-2024":
+                    sub = df[df["year"].between(2020, 2024)].assign(age=lambda d: d["age"].astype(int))
+                    grid = list(range(sub["age"].min(), sub["age"].max() + 1))
+                    _, summary, _ = apc.fit_series(sub, "age", grid, apc.SCALE, stem, args)
+                    table = pd.read_csv(f"{stem}_series.csv")
+                else:
+                    _, summary, _ = apc.fit_period_cohort(df, apc.SCALE, stem, args)
+                    table = pd.read_csv(f"{stem}_components.csv")
+                    out["trajectories"] = pd.read_csv(f"{stem}_trajectories.csv").to_dict(orient="list")
+                out[key] = dict(run=run, draws={v: x.tolist() for v, x in draws.items()}, summary=summary,
+                                table=table.astype(object).where(table.notna(), None).to_dict(orient="list"))
+    finally:
+        apc.sample = real_sample
+    return out
+
+
+def position_fixture():
+    """Relative position for p48 (overton/position.py): the latent normals by year and by
+    year x polviews3, and the by-year table with the 1974 liberal's percentile."""
+    from overton import position
+
+    df, questions, d = position.load("p48")
+    year = position.distributions(df, questions, d, ["year"])
+    in_groups = df["polviews3"].isin(position.GROUPS)
+    groups = position.distributions(df[in_groups], questions[in_groups], d, ["year", "polviews3"])
+    table, ref, ref_observed = position.by_year(df, questions, d, 1974)
+    return dict(ref_year=1974, ref=float(ref), ref_observed=float(ref_observed), grid=position.XS.tolist(),
+                difficulties=d.to_dict(),
+                year=year.reset_index(names="label").to_dict(orient="list"),
+                groups=groups.reset_index(names="label").to_dict(orient="list"),
+                table=table.astype(object).where(table.notna(), None).to_dict(orient="list"))
+
+
 def main():
+    import sys
+
+    if sys.argv[1:] == ["position"]:
+        (FIXTURES / "position.json").write_text(json.dumps(position_fixture()))
+        print(FIXTURES / "position.json")
+        return
+
+    if sys.argv[1:] == ["summaries"]:
+        (FIXTURES / "summaries.json").write_text(json.dumps(summaries_fixture()))
+        print(FIXTURES / "summaries.json")
+        return
+
+    if sys.argv[1:] == ["models"]:
+        (FIXTURES / "models.json").write_text(json.dumps(models_fixture()))
+        print(FIXTURES / "models.json")
+        return
     ranking, _, _ = candidates()
     names = list(ranking.index)
     df = respondents(names)
@@ -235,6 +367,9 @@ def main():
         own_vs_ref = max(abs(fx["difficulties_own"][v] - fx["difficulties_reference"][v]) for v in fx["codes"])
         print(f"fixture {name}: {fx['respondents']} respondents, {len(fx['cells']['n'])} cells, "
               f"own vs reference calibration max diff {own_vs_ref:.3f}")
+    (FIXTURES / "models.json").write_text(json.dumps(models_fixture()))
+    (FIXTURES / "summaries.json").write_text(json.dumps(summaries_fixture()))
+    (FIXTURES / "position.json").write_text(json.dumps(position_fixture()))
 
 
 if __name__ == "__main__":

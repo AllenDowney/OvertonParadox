@@ -183,7 +183,11 @@ It took both steps, together with nutpie-style adaptation, to get the full speed
 
 ## Caveats
 
-- **Threads.** The trend form multiplies by a dense $n \times (n-2)$ matrix. With default settings, BLAS starts its own threads in every chain: one fit used about 10 cores. Set `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1`.
+- **Threads.** The trend form multiplies by a dense $n \times (n-2)$ matrix in every gradient. With default settings, BLAS may start its own threads in every chain. But the product is only about 15,000 multiply-adds, too small to be worth splitting across threads. Set `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1`.
+  - **Laptop** (12 cores): `p48` period–cohort fit, 4 × (1000 + 1000). One thread per chain took 25 s on about 3 cores. The default took 56 s with 70 threads on about 10 cores.
+  - **Unity** (AMD EPYC 7402): the same fit at production length, after a warm-up, each configuration twice. With 4 or 16 cores and one or default threads, every run took 109–115 s.
+
+  So the setting helps on one machine and costs nothing on the other. Extra cores don't speed up a single fit either: put them into more chains or more fits.
 - **Prior predictive.** `pm.Flat` and `pm.Potential` can't be forward-sampled. Draw prior predictive samples from the current form, which is the same model.
 - **Scope.** The derivation covers the Gaussian RW2 with a free initial slope. A Student-t RW2 isn't Gaussian, so the eigenbasis argument doesn't apply. A walk without the free slope has no $v_0$ to absorb $a^\top w$, so it would need its own derivation.
 - **Default since 2026-11-03.** New fits use the trend form, and `--rw2-form cumsum` selects the current form. Results fitted before then used the current form. Summaries record which form was used.

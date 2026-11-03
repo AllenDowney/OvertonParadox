@@ -2,3 +2,4 @@ node_modules/
 spike/cells_p48.json
 spike/results/
 public/data/
+bench/results/

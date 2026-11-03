@@ -140,7 +140,21 @@ To check the port step by step, export the Python pipeline's intermediate result
    - **EM speed:** about 250 ms per iteration for `p48`, which is about twice as fast as numpy. EM runs on distinct answer patterns, so small sets are nearly instant (`econA` has 72 patterns). But almost every `p48` respondent is distinct, so its calibration takes about 25 s. The page should precompute the presets' difficulties and calibrate custom sets in a Web Worker.
    - **Found:** for `p48`, the Python EM stops at its 100-iteration cap (last step 1.2e-4, tolerance 1e-4). Running to 1,000 iterations moves the difficulties by up to 0.009, mostly a shift in overall level, and the mean score by 0.002 points. The port reproduces the cap. Allen (2026-11-03): leave the cap, since the effect is negligible.
    - **`min_answered` for a reader's set** (Allen, 2026-11-03): 5, or 2 for a set of fewer than 10 questions (`measure.min_answered_for`). Presets keep their decided values: 5, and 2 for the econ and social sets.
-4. **Models:** period and age, alongside the period–cohort model from the spike; summaries and components.
+4. **Models:** period and age, alongside the period–cohort model from the spike; summaries and components. **In progress (2026-11-03):**
+   1. **Done.** `overtron/src/models.ts` has the period/age model and the period–cohort model, both in the trend form. It computes the RW2 eigenbasis in the browser (`src/linalg.ts`, cyclic Jacobi), because the walk length varies from fit to fit. Tested against PyMC (`fixtures/models.json`): points in the double-cumsum coordinates, mapped into this code's basis, reproduce PyMC's log densities within 1e-8 for the period and age models and 2.5e-7 for the period–cohort model.
+   2. **Done.** `src/summaries.ts` ports the post-processing in `fit_series` and `fit_period_cohort`: bands, slopes, decomposition, components and trajectories. Tested on the same thinned, rounded draws of the saved fits (`fixtures/summaries.json`, 100 draws each), it matches Python within 1e-5 points.
+   3. **Done.** `src/fits.ts` runs one fit in worker chains: the model travels to the workers as a small JSON spec in `ModelReference.argument`. `bench/run_p48.ts` runs the page's `p48` fits in Node, two chains at a time.
+      - **Scope** (Allen, 2026-11-03):
+        - the period model by self-identified ideology × 3;
+        - the age model by decade of surveys × 6;
+        - the period–cohort model;
+        - within each decade of birth from the 1900s to the 2000s, the age model and the period–cohort model × 11 each.
+
+        That's 32 fits, but not the social generations.
+      - **Sampler** (Allen, 2026-11-03): 2 chains × (1000 + 2000), nutpie-style adaptation. target_accept is 0.99 for every fit except the all-respondents period–cohort fit, which uses 0.95.
+      - **Result:** 149 s for all 32. The period–cohort fit takes 29 s, the small fits 1–7 s each. Every headline number is within 0.01–0.05 of the decided fits, except the 2000s birth decade (−5.69 vs −5.55, with a 90% interval about 50 points wide). The main fits have no divergences. The birth-decade period–cohort fits have up to 37, about 0.9% of draws, while production had up to 0.6%. At 0.95, the birth-decade fits had up to 217.
+   4. **Done.** `latent_normals` (`src/measure.ts`) and `src/position.ts` (`by_year`, the 1974 liberal's percentile in each year, and each year's group medians). Tested against Python (`fixtures/position.json`): latent normals within 2e-9, the by-year table within 3e-7 points. The 2024 headline is percentile 61.32. `by_year` takes about 3 s for `p48`. **Open:** the headline's bootstrap intervals (200 resamples × 2 latent fits, about 45 s of CPU time), not yet ported; and the mechanism figure by decade of birth (`by_cohort`).
+   - **Deferred (Allen, 2026-11-03):** asking TyMC's maintainer to make `numerics.eigh` public, which would replace `src/linalg.ts`. Wait to see whether other requests come up.
 5. **Page:** question picker, options, run, progress, figures, numbers, and diagnostics.
 6. **Validation pass:** the checks above, plus a few odd choices.
 7. **Publish:** host the page and link it from the blog series.

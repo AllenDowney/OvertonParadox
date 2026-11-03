@@ -303,6 +303,7 @@ Opinion questions that passed the Overton gates but aren't in CultureWar's varia
 
 ## Log
 
+- 2026-11-03: Overtron milestone 4: models (trend form, eigenbasis computed in the browser), summaries, worker fits, and relative position in TypeScript, each tested against Python. The page's p48 run (32 fits, including the decade-of-birth fits) takes 149 s in Node and reproduces the decided results. Thread setting: one BLAS thread per chain (2.3× faster locally, no difference on Unity).
 - 2026-11-03: The trend form of the RW2 is the default for new fits (Allen), after tests on p48 and four subgroups (same results, 4–7× the ESS per second). The saved results are unchanged. Timed: limiting BLAS to one thread per chain makes the trend fit 2.3× faster locally. Lab notebook entry; memo `jb/rw2_reparameterization.md`.
 - 2026-11-02: Overtron milestone 3: the measurement port (`overtron/src/`), tested against both fixtures; the p48 EM stops at its 100-iteration cap (difficulties within 0.009 of converged).
 - 2026-11-02: The trend form of the RW2 in the PyMC fits (`--rw2-form trend`, same model): p48 period–cohort in 159 s against 1,026 s, with the same results. Not the default. Lab notebook entry.
