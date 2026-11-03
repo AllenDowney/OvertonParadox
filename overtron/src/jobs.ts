@@ -1,4 +1,5 @@
 // The fits a run makes, for one scored question set: period by self-identified ideology x 3,
+// period for all respondents,
 // age by decade of surveys x 6, the period-cohort model, and, within each decade of birth
 // (1900s-2000s), the age model and the period-cohort model x 11 each (Allen, 2026-11-03).
 // Shared by the page and bench/run_p48.ts, so both make exactly the same fits.
@@ -11,7 +12,7 @@ import { summarize_period_cohort, summarize_series } from "./summaries.ts";
 export interface Job {
   readonly label: string;
   readonly saved: string; // the decided run with the same specification, for p48 (results/apc/results)
-  readonly group: "period" | "age" | "period_cohort" | "age_by_birth" | "period_cohort_by_birth";
+  readonly group: "period" | "period_all" | "age" | "period_cohort" | "age_by_birth" | "period_cohort_by_birth";
   readonly spec: FitSpec;
   readonly summarize: (draws: Record<string, unknown>) => ReturnType<typeof summarize_series> | ReturnType<typeof summarize_period_cohort>;
   readonly target_accept?: number;
@@ -63,6 +64,8 @@ export function make_jobs(excerpt: Excerpt, scored: Scored, set = "p48"): Job[] 
   for (const [g, lo, hi] of IDEOLOGY)
     jobs.push(series_job(`period ${g}`, `period_${set}_polviews3-${g}`, "period",
       (i) => excerpt.polviews[i] >= lo && excerpt.polviews[i] <= hi, excerpt.year));
+  // all respondents: the overall average in the by-decade figure (dotted)
+  jobs.push(series_job("period all", `period_${set}`, "period_all", () => true, excerpt.year));
   for (const [lo, hi] of SURVEY_DECADES)
     jobs.push(series_job(`age ${lo}-${hi}`, `age_${set}_window-${lo}-${hi}`, "age",
       (i) => excerpt.year[i] >= lo && excerpt.year[i] <= hi, excerpt.age));

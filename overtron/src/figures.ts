@@ -156,3 +156,167 @@ function draw_conservatism_line(container: HTMLElement, h: Headline, last_year: 
     `</tbody></table>`;
   container.appendChild(details);
 }
+
+export interface Series {
+  readonly label: string;
+  readonly color: string;
+  readonly x: readonly number[];
+  readonly mean: readonly number[];
+  readonly lo?: readonly number[]; // band (84% in post 1's figures)
+  readonly hi?: readonly number[];
+  readonly dotted?: boolean;
+  readonly width?: number;
+  readonly label_at?: "start" | "end" | null; // where the direct label goes; null for none
+  readonly plate?: boolean; // label on a background plate (trajectories)
+}
+
+export interface LineChartOptions {
+  readonly title: string;
+  readonly subtitle?: string;
+  readonly kind: string; // the figure type, right-aligned in the header, as in the book's figures
+  readonly xlabel: string;
+  readonly xdomain: readonly [number, number];
+  readonly ydomain: readonly [number, number];
+  readonly xstep: number;
+  readonly series: readonly Series[];
+  readonly hover?: "all" | "nearest"; // the tooltip lists every series at x, or only the nearest line
+}
+
+/** Lines with bands over a continuous x, labeled directly, in the book's style. */
+export function line_chart(container: HTMLElement, options: LineChartOptions) {
+  redraw_on_resize(container, () => draw_line_chart(container, options));
+}
+
+/** Spread labels apart vertically (min gap), keeping their order: a few passes of pairwise pushes. */
+function spread(ys: number[], gap: number, lo: number, hi: number): number[] {
+  const order = ys.map((y, i) => [y, i] as const).sort((a, b) => a[0] - b[0]).map(([, i]) => i);
+  const out = [...ys];
+  for (let pass = 0; pass < 50; pass++) {
+    let moved = false;
+    for (let k = 1; k < order.length; k++) {
+      const a = order[k - 1], b = order[k];
+      const overlap = gap - (out[b] - out[a]);
+      if (overlap > 0.01) {
+        out[a] -= overlap / 2;
+        out[b] += overlap / 2;
+        moved = true;
+      }
+    }
+    for (const i of order) out[i] = Math.min(Math.max(out[i], lo), hi);
+    if (!moved) break;
+  }
+  return out;
+}
+
+function draw_line_chart(container: HTMLElement, o: LineChartOptions) {
+  container.replaceChildren();
+  container.classList.add("figure");
+  const W = Math.max(320, Math.round(container.clientWidth || 800));
+  const narrow = W < 560;
+  const H = Math.round(Math.min(Math.max(W * 0.55, 280), 440));
+  // room at the right for the longest label at a line's end
+  const end_chars = Math.max(0, ...o.series.filter((s) => s.label_at === "end").map((s) => s.label.length));
+  const m = { left: 34, right: end_chars ? end_chars * 8 + 12 : 12, top: 10, bottom: 44 };
+  const x = (v: number) => m.left + ((v - o.xdomain[0]) / (o.xdomain[1] - o.xdomain[0])) * (W - m.left - m.right);
+  const y = (v: number) => m.top + (1 - (v - o.ydomain[0]) / (o.ydomain[1] - o.ydomain[0])) * (H - m.top - m.bottom);
+  const head = header_split(container, o.title, o.subtitle ?? "Percent conservative responses", narrow ? "" : o.kind, m.left);
+  void head;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": o.title });
+  container.appendChild(svg);
+  const clip = `clip-${Math.random().toString(36).slice(2)}`;
+  const defs = el("defs", {}, svg);
+  el("rect", { x: m.left, y: m.top, width: W - m.left - m.right, height: H - m.top - m.bottom },
+    el("clipPath", { id: clip }, defs));
+
+  // grid and axes: recessive
+  for (let v = o.ydomain[0]; v <= o.ydomain[1] + 1e-9; v += 10) {
+    el("line", { x1: m.left, x2: W - m.right, y1: y(v), y2: y(v), class: "grid" }, svg);
+    el("text", { x: m.left - 6, y: y(v) + 4, class: "tick", "text-anchor": "end" }, svg).textContent = String(v);
+  }
+  const first_tick = Math.ceil(o.xdomain[0] / o.xstep) * o.xstep;
+  const step = narrow && (o.xdomain[1] - o.xdomain[0]) / o.xstep > 6 ? 2 * o.xstep : o.xstep;
+  for (let v = first_tick; v <= o.xdomain[1]; v += step) {
+    el("line", { x1: x(v), x2: x(v), y1: m.top, y2: H - m.bottom, class: "grid" }, svg);
+    el("text", { x: x(v), y: H - m.bottom + 18, class: "tick", "text-anchor": "middle" }, svg).textContent = String(v);
+  }
+  el("text", { x: (m.left + W - m.right) / 2, y: H - 6, class: "axis-label", "text-anchor": "middle" }, svg).textContent = o.xlabel;
+
+  // bands, then lines, clipped to the plot
+  const plot = el("g", { "clip-path": `url(#${clip})` }, svg);
+  const path = (xs: readonly number[], ys: readonly number[]) => xs.map((v, i) => `${i ? "L" : "M"}${x(v)},${y(ys[i])}`).join("");
+  for (const s of o.series) {
+    if (!s.lo || !s.hi) continue;
+    const d = path(s.x, s.hi) + [...s.x].reverse().map((v, i) => `L${x(v)},${y(s.lo![s.x.length - 1 - i])}`).join("") + "Z";
+    el("path", { d, style: `fill:${s.color}`, class: "band" }, plot);
+  }
+  for (const s of o.series)
+    el("path", { d: path(s.x, s.mean), style: `stroke:${s.color}`, class: s.dotted ? "line dotted" : "line",
+      "stroke-width": s.width ?? 2.5 }, plot);
+
+  // direct labels at the line ends, spread apart so they don't collide
+  for (const side of ["start", "end"] as const) {
+    const labeled = o.series.filter((s) => s.label_at === side && s.x.length > 0);
+    const k = (s: Series) => (side === "start" ? 0 : s.x.length - 1);
+    const ys = spread(labeled.map((s) => y(s.mean[k(s)])), 15, m.top + 6, H - m.bottom - 2);
+    labeled.forEach((s, i) => {
+      const px = x(s.x[k(s)]) + (side === "start" ? -5 : 5);
+      const anchor = side === "start" ? "end" : "start";
+      if (s.plate) {
+        const w = s.label.length * 7 + 6;
+        el("rect", { x: anchor === "end" ? px - w + 2 : px - 2, y: ys[i] - 8, width: w, height: 15, rx: 3, class: "plate" }, svg);
+      }
+      el("text", { x: px, y: ys[i] + 4, class: s.plate ? "label small" : "label", "text-anchor": anchor }, svg).textContent = s.label;
+    });
+  }
+
+  // hover: a crosshair at the nearest x, and the values there
+  const tip = document.createElement("div");
+  tip.className = "tooltip";
+  tip.hidden = true;
+  container.appendChild(tip);
+  const cross = el("line", { y1: m.top, y2: H - m.bottom, class: "crosshair", visibility: "hidden" }, svg);
+  const overlay = el("rect", { x: m.left, y: m.top, width: W - m.left - m.right, height: H - m.top - m.bottom,
+    fill: "transparent", "pointer-events": "all", tabindex: 0 }, svg);
+  const xs = [...new Set(o.series.flatMap((s) => s.x))].sort((a, b) => a - b);
+  const show = (px: number, py: number, cx: number, cy: number) => {
+    const xv = xs.reduce((best, v) => (Math.abs(x(v) - px) < Math.abs(x(best) - px) ? v : best), xs[0]);
+    let rows = o.series.map((s) => {
+      const i = s.x.indexOf(xv);
+      return i < 0 ? null : { s, v: s.mean[i], lo: s.lo?.[i], hi: s.hi?.[i] };
+    }).filter((r): r is NonNullable<typeof r> => r !== null);
+    if (o.hover === "nearest") rows = rows.sort((a, b) => Math.abs(y(a.v) - py) - Math.abs(y(b.v) - py)).slice(0, 1);
+    else rows.sort((a, b) => b.v - a.v);
+    if (!rows.length) return;
+    cross.setAttribute("x1", String(x(xv)));
+    cross.setAttribute("x2", String(x(xv)));
+    cross.setAttribute("visibility", "visible");
+    tip.innerHTML = `<b>${o.xlabel} ${xv}</b>` + rows.map((r) =>
+      `<div><span class="swatch" style="background:${r.s.color}"></span>${r.s.label || "all"}: ${r.v.toFixed(1)}` +
+      (r.lo !== undefined && r.hi !== undefined ? ` <span class="muted">[${r.lo.toFixed(1)}, ${r.hi.toFixed(1)}]</span>` : "") + "</div>").join("");
+    tip.hidden = false;
+    const box = container.getBoundingClientRect();
+    const left = cx - box.left + 14;
+    tip.style.left = `${left + tip.offsetWidth > box.width ? cx - box.left - tip.offsetWidth - 14 : left}px`;
+    tip.style.top = `${Math.max(cy - box.top - tip.offsetHeight / 2, 0)}px`;
+  };
+  overlay.addEventListener("pointermove", (e) => {
+    const r = svg.getBoundingClientRect();
+    const scale = W / r.width;
+    show((e.clientX - r.left) * scale, (e.clientY - r.top) * scale, e.clientX, e.clientY);
+  });
+  overlay.addEventListener("pointerleave", () => {
+    tip.hidden = true;
+    cross.setAttribute("visibility", "hidden");
+  });
+}
+
+/** The book's header with the figure type right-aligned on the title row. */
+function header_split(container: HTMLElement, title: string, subtitle: string, kind: string, indent: number) {
+  header(container, title, subtitle, indent);
+  if (!kind) return;
+  const head = container.querySelector(".figure-header") as HTMLElement;
+  const right = document.createElement("div");
+  right.className = "figure-kind";
+  right.innerHTML = `${kind}<br>GSS`;
+  head.appendChild(right);
+}

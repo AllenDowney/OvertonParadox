@@ -29,7 +29,21 @@
       .figure .interval { stroke-width: 2; stroke-linecap: round; }
       .figure .mark { stroke: var(--bg); stroke-width: 2; cursor: default; }
       .figure .mark:focus { outline: none; stroke: var(--ink); }
-      .figure-header { margin-bottom: 4px; }
+      :root { --series-gray: #404040; }
+      @media (prefers-color-scheme: dark) { :root { --series-gray: #c8c8c8; } }
+      .figure-header { margin-bottom: 4px; position: relative; }
+      .figure-kind { position: absolute; right: 4px; top: 0; text-align: right; color: var(--muted); font-size: 14px; line-height: 1.3; }
+      .figure .grid { stroke: var(--rule); stroke-width: 1; }
+      .figure .axis-label { fill: var(--ink); font-size: 14px; }
+      .figure .band { opacity: 0.3; }
+      .figure .line { fill: none; stroke-linejoin: round; stroke-linecap: round; }
+      .figure .line.dotted { stroke-dasharray: 1 5; }
+      .figure .crosshair { stroke: var(--muted); stroke-width: 1; }
+      .figure .plate { fill: var(--bg); }
+      .figure .label.small { font-size: 12px; fill: var(--muted); }
+      .tooltip .swatch { display: inline-block; width: 12px; height: 3px; margin-right: 6px; vertical-align: middle; }
+      .tooltip .muted { color: var(--muted); }
+      .waiting { color: var(--muted); font-size: 14px; padding: 1em 0; }
       .figure-title { font-weight: 700; font-size: 17px; line-height: 1.3; }
       .figure-subtitle { color: var(--muted); font-size: 14px; }
       .figure details { margin-top: 6px; font-size: 14px; }
@@ -42,7 +56,7 @@
   <body>
     <main>
       <h1>The Overtron</h1>
-      <p class="muted">Minimal page (milestone 5, step 1): run the Overton pipeline in your browser for a preset question set.</p>
+      <p class="muted">Run the Overton pipeline in your browser for a preset question set.</p>
       <div class="controls">
         <label>Questions <select id="preset"></select></label>
         <button id="run" disabled>Run</button>
@@ -50,12 +64,14 @@
       </div>
       <progress id="progress" max="1" value="0"></progress>
       <div id="error"></div>
-      <h2>Relative position</h2>
       <div id="position" class="muted">Not run yet.</div>
-      <h2>Fits</h2>
-      <div class="wide"><table id="fits"><thead><tr>
-        <th>Fit</th><th>Time (s)</th><th>R-hat max</th><th>ESS min</th><th>Divergences</th><th>Slope per decade [90%]</th>
-      </tr></thead><tbody></tbody></table></div>
+      <div id="figures"></div>
+      <details>
+        <summary>Diagnostics</summary>
+        <div class="wide"><table id="fits"><thead><tr>
+          <th>Fit</th><th>Time (s)</th><th>R-hat max</th><th>ESS min</th><th>Divergences</th><th>Slope per decade [90%]</th>
+        </tr></thead><tbody></tbody></table></div>
+      </details>
       <p id="total" class="muted"></p>
     </main>
     <script type="module" src="./src/app.ts"></script>

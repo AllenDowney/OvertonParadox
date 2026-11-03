@@ -7,6 +7,7 @@ import { type Excerpt, load, type QuestionTable } from "./excerpt.ts";
 import { conservatism_line } from "./figures.ts";
 import { fit, PAGE_SETTINGS } from "./fits.ts";
 import { make_jobs } from "./jobs.ts";
+import { type Done, draw_figures, FIGURES } from "./post_figures.ts";
 import { answered, code, score } from "./measure.ts";
 import type { Headline } from "./position.ts";
 import type { PositionRequest } from "./position_worker.ts";
@@ -38,6 +39,8 @@ function spawn() {
 
 // ?position runs only relative position (seconds, not minutes): for working on its figure
 const POSITION_ONLY = new URLSearchParams(location.search).has("position");
+// ?quick: short chains (300 + 300), for working on the figures; not for results
+const SETTINGS = new URLSearchParams(location.search).has("quick") ? { ...PAGE_SETTINGS, tune: 300, draws: 300 } : PAGE_SETTINGS;
 
 const fmt = (x: number, digits = 2) => (Number.isFinite(x) ? x.toFixed(digits) : "–");
 
@@ -75,16 +78,28 @@ async function start() {
   });
 
   if (POSITION_ONLY) jobs.length = 0;
-  const per_fit = PAGE_SETTINGS.chains * (PAGE_SETTINGS.tune + PAGE_SETTINGS.draws);
+  const figures = $("figures");
+  figures.replaceChildren();
+  const containers: Record<string, HTMLElement> = {};
+  for (const { id } of FIGURES) {
+    containers[id] = document.createElement("div");
+    figures.appendChild(containers[id]);
+  }
+  const done: Done = new Map();
+  draw_figures(containers, jobs, done);
+  const per_fit = SETTINGS.chains * (SETTINGS.tune + SETTINGS.draws);
   for (const [k, job] of jobs.entries()) {
     status.textContent = `Fit ${k + 1} of ${jobs.length}: ${job.label}`;
-    const done = new Map<number, number>();
-    const result = await fit(job.spec, PAGE_SETTINGS, "overtron:fits", spawn as never, (e) => {
-      done.set(e.chain, e.iteration);
-      const iterations = [...done.values()].reduce((a, b) => a + b, 0);
+    const chains = new Map<number, number>();
+    const result = await fit(job.spec, SETTINGS, "overtron:fits", spawn as never, (e) => {
+      chains.set(e.chain, e.iteration);
+      const iterations = [...chains.values()].reduce((a, b) => a + b, 0);
       progress.value = (k + Math.min(iterations / per_fit, 1)) / jobs.length;
     }, job.target_accept);
-    const s = job.summarize(result.draws).summary as unknown as Record<string, number>;
+    const summarized = job.summarize(result.draws);
+    done.set(job, summarized);
+    draw_figures(containers, jobs, done);
+    const s = summarized.summary as unknown as Record<string, number>;
     const [m, lo, hi] = "period_slope_per_decade" in s
       ? [s.period_slope_per_decade, s.period_slope_lo90, s.period_slope_hi90]
       : [s.slope_per_decade, s.slope_lo90, s.slope_hi90];
