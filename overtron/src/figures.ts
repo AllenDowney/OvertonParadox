@@ -175,7 +175,7 @@ export interface LineChartOptions {
   readonly subtitle?: string;
   readonly kind: string; // the figure type, right-aligned in the header, as in the book's figures
   readonly xlabel: string;
-  readonly xdomain: readonly [number, number];
+  readonly xdomain?: readonly [number, number]; // default: the data's range (labels go in the margins)
   readonly ydomain: readonly [number, number];
   readonly xstep: number;
   readonly series: readonly Series[];
@@ -208,7 +208,9 @@ function spread(ys: number[], gap: number, lo: number, hi: number): number[] {
   return out;
 }
 
-function draw_line_chart(container: HTMLElement, o: LineChartOptions) {
+function draw_line_chart(container: HTMLElement, options: LineChartOptions) {
+  const all_x = options.series.flatMap((s) => s.x);
+  const o = { ...options, xdomain: options.xdomain ?? [Math.min(...all_x), Math.max(...all_x)] as const };
   container.replaceChildren();
   container.classList.add("figure");
   const W = Math.max(320, Math.round(container.clientWidth || 800));

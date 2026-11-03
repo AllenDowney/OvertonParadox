@@ -82,7 +82,7 @@ export function draw_figures(containers: Record<string, HTMLElement>, jobs: read
           x: [lib.x[0], lib.x[lib.x.length - 1]], mean: [lib.mean[i], lib.mean[i]] });
       }
       line_chart(container, { title: "Conservatism by self-identified ideology", kind: "time series",
-        xlabel: "Survey year", xdomain: [1972, 2026], xstep: 10, ydomain: domain([20, 80], series), series });
+        xlabel: "Survey year", xstep: 10, ydomain: domain([20, 80], series), series });
     } else if (id === "age_series") {
       const jobs_ = group("age");
       const series = jobs_.map((j) => {
@@ -91,7 +91,7 @@ export function draw_figures(containers: Record<string, HTMLElement>, jobs: read
         return from_rows(out<SeriesOut>(j).rows, `${Math.floor(lo / 10) * 10}s`, survey_decade(decade / 5), "end");
       });
       line_chart(container, { title: "Conservatism by age", kind: "age series", xlabel: "Age",
-        xdomain: [16, 92], xstep: 10, ydomain: domain([30, 80], series), series });
+        xstep: 10, ydomain: domain([30, 80], series), series });
     } else if (id === "age_by_decade") {
       const series = group("age_by_birth").map((j) => {
         const d = Number(j.label.match(/\d{4}/)![0]);
@@ -100,7 +100,7 @@ export function draw_figures(containers: Record<string, HTMLElement>, jobs: read
         return from_rows(out<SeriesOut>(j).rows, `${d}s`, birth_color(k / 10), k < 4 ? "start" : "end");
       });
       line_chart(container, { title: "Conservatism by age and decade of birth", kind: "age series", xlabel: "Age",
-        xdomain: [12, 92], xstep: 10, ydomain: domain([30, 70], series), series });
+        xstep: 10, ydomain: domain([30, 70], series), series });
     } else if (id === "trajectories") {
       const pc = out<CohortOut>(group("period_cohort")[0]);
       const rows = pc.trajectories.filter((r) => r.cohort >= 1900);
@@ -116,15 +116,15 @@ export function draw_figures(containers: Record<string, HTMLElement>, jobs: read
           x: rs.map((r) => r.year), mean: rs.map((r) => r.mean) };
       });
       line_chart(container, { title: "Conservatism by birth year", kind: "cohort trajectories", xlabel: "Survey year",
-        xdomain: [1970, 2031], xstep: 10, ydomain: domain([30, 70], series), series, hover: "nearest" });
+        xstep: 10, ydomain: domain([30, 70], series), series, hover: "nearest" });
     } else if (id === "cohort_component" || id === "period_component") {
       const which = id === "cohort_component" ? "cohort" : "period";
       const series = [component(out<CohortOut>(group("period_cohort")[0]), which, "", GRAY, null)];
       line_chart(container, which === "cohort"
         ? { title: "Conservatism by birth cohort", kind: "cohort component", xlabel: "Birth cohort",
-          xdomain: [1895, 2012], xstep: 20, ydomain: domain([30, 70], series), series }
+          xstep: 20, ydomain: domain([30, 70], series), series }
         : { title: "Conservatism within cohorts", kind: "period component", xlabel: "Survey year",
-          xdomain: [1970, 2026], xstep: 10, ydomain: domain([30, 70], series), series });
+          xstep: 10, ydomain: domain([30, 70], series), series });
     } else if (id === "pc_by_decade") {
       const series: Series[] = [];
       const all = group("period_all")[0];
@@ -140,7 +140,7 @@ export function draw_figures(containers: Record<string, HTMLElement>, jobs: read
         series.push(component(out<CohortOut>(j), "period", `${d}s`, birth_color(k / 10), k < 6 ? "end" : "start"));
       }
       line_chart(container, { title: "Conservatism within cohorts, by decade of birth", kind: "period component",
-        xlabel: "Survey year", xdomain: [1965, 2031], xstep: 10, ydomain: domain([30, 70], series), series });
+        xlabel: "Survey year", xstep: 10, ydomain: domain([30, 70], series), series });
     }
   }
 }
