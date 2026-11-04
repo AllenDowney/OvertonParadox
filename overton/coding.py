@@ -30,7 +30,7 @@ import re
 import numpy as np
 import pandas as pd
 
-from overton.candidates import PRIMARY
+from overton.candidates import INTERVIEWER
 from overton.data import CONSERVATIVE_VALUES, WEIGHT_COL
 from overton.pipeline import FIG_DIR
 
@@ -122,7 +122,7 @@ def main():
     scope = pd.read_csv(FIG_DIR / "candidates_scope.csv", index_col=0)
     scope = scope[scope["scope"] == "opinion"]
 
-    gss = pd.read_hdf(PRIMARY, "gss")
+    gss = pd.read_hdf(INTERVIEWER, "gss")
     gss["w"] = gss[WEIGHT_COL]
     recode = {1: "Liberal", 2: "Liberal", 3: "Liberal", 4: "Moderate"}
     gss["polviews3"] = gss["polviews"].map(lambda x: recode.get(x, "Conservative") if pd.notna(x) else np.nan)

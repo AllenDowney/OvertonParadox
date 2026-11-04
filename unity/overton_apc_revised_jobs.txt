@@ -1,0 +1,89 @@
+# Fits of the revised selection (2026-11-03): the set primary (53 questions; docs/item_drift_review.md), with each
+# fit's settings from the 2026-11-02 refit list (p48 -> primary), plus social and econA (recalibrated on primary),
+# and the four main fits of the sensitivity set with_confidence.
+--model age --set primary --cohorts 1883-1927 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --cohorts 1900-1909 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --cohorts 1910-1919 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --cohorts 1920-1929 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --cohorts 1928-1945 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --cohorts 1930-1939 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --cohorts 1940-1949 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --cohorts 1946-1964 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --cohorts 1950-1959 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --cohorts 1960-1969 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --cohorts 1965-1980 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --cohorts 1970-1979 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --cohorts 1980-1989 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --cohorts 1981-1996 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --cohorts 1990-1999 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --cohorts 1997-2012 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --cohorts 2000-2009 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --window 1972-1979 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --window 1980-1989 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --window 1990-1999 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --window 2000-2009 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --window 2010-2019 --tune 4000 --draws 6000 --target-accept 0.99
+--model age --set primary --window 2020-2024 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set econA --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set primary --cohorts 1883-1927 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set primary --cohorts 1900-1909 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set primary --cohorts 1910-1919 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set primary --cohorts 1920-1929 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set primary --cohorts 1928-1945 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set primary --cohorts 1930-1939 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set primary --cohorts 1940-1949 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set primary --cohorts 1946-1964 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set primary --cohorts 1950-1959 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set primary --cohorts 1960-1969 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set primary --cohorts 1965-1980 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set primary --cohorts 1970-1979 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set primary --cohorts 1980-1989 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set primary --cohorts 1981-1996 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set primary --cohorts 1990-1999 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set primary --cohorts 1997-2012 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set primary --cohorts 2000-2009 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --set primary --by polviews3=Conservative --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set primary --by polviews3=Liberal --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set primary --by polviews3=Moderate --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set primary --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set social --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set econA --by polviews3=Conservative --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set econA --by polviews3=Liberal --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set econA --by polviews3=Moderate --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set econA --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --cohorts 1883-1927 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --cohorts 1900-1909 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --cohorts 1910-1919 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --cohorts 1920-1929 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --cohorts 1928-1945 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --cohorts 1930-1939 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --cohorts 1940-1949 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --cohorts 1946-1964 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --cohorts 1950-1959 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --cohorts 1960-1969 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --cohorts 1965-1980 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --cohorts 1970-1979 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --cohorts 1980-1989 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --cohorts 1981-1996 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --cohorts 1990-1999 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --cohorts 1997-2012 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --cohorts 2000-2009 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --by polviews=1 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --by polviews=2 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --by polviews=3 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --by polviews=4 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --by polviews=5 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --by polviews=6 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --by polviews=7 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --by polviews3=Conservative --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --by polviews3=Liberal --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --by polviews3=Moderate --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set social --by polviews3=Conservative --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set social --by polviews3=Liberal --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set social --by polviews3=Moderate --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set social --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set with_confidence --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set with_confidence --tune 4000 --draws 6000 --target-accept 0.99 --by polviews3=Liberal
+--model period --set with_confidence --tune 4000 --draws 6000 --target-accept 0.99 --by polviews3=Moderate
+--model period --set with_confidence --tune 4000 --draws 6000 --target-accept 0.99 --by polviews3=Conservative

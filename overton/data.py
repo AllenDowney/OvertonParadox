@@ -9,7 +9,7 @@ sampling weight.
 The book used wtssall, filled with wtssps where wtssall is missing
 (2021 and later); in the new extract that's wtsmerge.
 
-Also writes the primary sample (docs/mode_design.md, decided 2026-11-01):
+Also writes the interviewer sample (docs/mode_design.md, decided 2026-11-01):
 the candidate extract with 2021 dropped and only interviewer-administered
 respondents (in person or by phone) in 2022 and 2024, the mode the GSS used
 through 2018. In those two years, wtssps and wtssnrps are replaced by
@@ -19,7 +19,7 @@ group, sex, race/ethnicity, education, region); NORC's weights are kept as
 extract, so both projects use the same respondents and weights.
 
 Usage: python -m overton.data
-       python -c "from overton.data import make_candidates_primary; make_candidates_primary()"
+       python -c "from overton.data import make_candidates_interviewer; make_candidates_interviewer()"
 """
 
 import shutil
@@ -35,10 +35,10 @@ EXTRACT = DATA_DIR / "gss_extract_2024_r3a.hdf"
 RESAMPLED = DATA_DIR / "gss_overton_resampled_2024.hdf"
 CANDIDATES = DATA_DIR / "gss_overton_candidates_r3a.hdf"
 CANDIDATES_RESAMPLED = DATA_DIR / "gss_overton_candidates_resampled.hdf"
-CANDIDATES_PRIMARY = DATA_DIR / "gss_overton_candidates_r3a_interviewer.hdf"
+CANDIDATES_INTERVIEWER = DATA_DIR / "gss_overton_candidates_r3a_interviewer.hdf"
 CW_INTERVIEWER = Path.home() / "CultureWar/notebooks/gss_extract_2024_r3a_interviewer.hdf"
 
-# the primary sample: interviewer-administered responses (same rule as CultureWar)
+# the interviewer sample: interviewer-administered responses (same rule as CultureWar)
 DROPPED_YEARS = (2021,)
 MIXED_MODE_YEARS = (2022, 2024)
 INTERVIEWER_MODES = (1, 2)  # in person, phone
@@ -46,7 +46,7 @@ RAKED_WEIGHTS = ("wtssps", "wtssnrps")
 
 # The analysis weight (decided 2026-11-01, consistent with CultureWar and NORC's
 # guidance): NORC's post-stratification weight for every year, "recommended above
-# all other previous GSS weights". In the primary sample, raked in 2022 and 2024.
+# all other previous GSS weights". In the interviewer sample, raked in 2022 and 2024.
 # Before 2026-11-01: wtssall, or wtssps where it's missing.
 WEIGHT_COL = "wtssps"
 
@@ -139,8 +139,8 @@ def make_candidates_resampled():
     print(f"Wrote {CANDIDATES_RESAMPLED}")
 
 
-def make_candidates_primary():
-    """The candidate extract restricted to the primary sample, with raked weights."""
+def make_candidates_interviewer():
+    """The candidate extract restricted to the interviewer sample, with raked weights."""
     gss = pd.read_hdf(CANDIDATES, "gss")
     keep = ~gss["year"].isin(DROPPED_YEARS) & (
         ~gss["year"].isin(MIXED_MODE_YEARS) | gss["mode"].isin(INTERVIEWER_MODES))
@@ -148,16 +148,16 @@ def make_candidates_primary():
     raked = pd.read_hdf(CW_INTERVIEWER, "gss")[["year", "id", *RAKED_WEIGHTS]]
     merged = gss[["year", "id"]].merge(raked, on=["year", "id"], how="left", validate="one_to_one")
     assert len(raked) == len(gss) and merged[list(RAKED_WEIGHTS)].notna().any(axis=1).all(), \
-        "primary sample doesn't match CultureWar's interviewer extract"
+        "interviewer sample doesn't match CultureWar's interviewer extract"
     for col in RAKED_WEIGHTS:
         gss[f"{col}_norc"] = gss[col]
         gss[col] = merged[col].values
     unchanged = ~gss["year"].isin(MIXED_MODE_YEARS)
     assert np.allclose(gss.loc[unchanged, "wtssps"], gss.loc[unchanged, "wtssps_norc"], equal_nan=True)
-    if CANDIDATES_PRIMARY.exists():
-        CANDIDATES_PRIMARY.unlink()
-    gss.to_hdf(CANDIDATES_PRIMARY, key="gss", complevel=7)
-    print(f"Wrote {CANDIDATES_PRIMARY}: {len(gss):,} rows")
+    if CANDIDATES_INTERVIEWER.exists():
+        CANDIDATES_INTERVIEWER.unlink()
+    gss.to_hdf(CANDIDATES_INTERVIEWER, key="gss", complevel=7)
+    print(f"Wrote {CANDIDATES_INTERVIEWER}: {len(gss):,} rows")
     print(gss.groupby("year").size().loc[[2018, 2022, 2024]].to_dict())
 
 

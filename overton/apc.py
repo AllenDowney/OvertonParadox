@@ -21,8 +21,9 @@ extract, not resampled. n_eff is Kish's effective sample size.
 
 Difficulties (--difficulties):
 - "heuristic": the book's -logit of weighted prevalence (default);
-- "em": weighted EM (overton/em.py) calibrated on the primary pool (p43);
-  questions outside it (the confidence questions in the s{N} sets, natfare
+- "em": weighted EM (overton/em.py) calibrated on the primary questions (the set
+  `primary`; p43 before 2026-11-02, p48 before 2026-11-03);
+  questions outside it (the confidence questions in with_confidence, natfare
   in v1) are estimated with the primary difficulties held fixed. The
   production choice after review (docs/difficulties_design.md, 2026-11-01);
 - "em66": weighted EM calibrated on all 66 candidates (sensitivity);
@@ -66,7 +67,7 @@ ECON_A = ["helppoor", "helpnot", "helpsick", "eqwlth"]
 ECON_B = ECON_A + ["natenvir", "nateduc", "natmass", "natpark", "tax", "getahead", "natsoc", "natroad"]
 ECON_C = ECON_B + ["helpblk", "natdrug"]
 # "neither": defense and foreign aid (review, 2026-10-31); trust, which entered the pool when the
-# selection was rerun on the primary sample (2026-11-01; docs/question_domains.md)
+# selection was rerun on the interviewer sample (2026-11-01; docs/question_domains.md)
 NOT_SOCIAL = ECON_C + ["natarms", "nataid", "trust", "natspac"]
 # excluded case by case after the item-drift diagnostic (Allen, 2026-11-03; docs/item_drift_review.md)
 DRIFT_EXCLUDED = ["librac", "natspac", "colrac", "spkrac"]  # colrac, spkrac: the whole topic (civil liberties: racist)
@@ -87,19 +88,20 @@ COHORT_SETTINGS = dict(sigma_c_scale=0.125, sigma_t_scale=0.125, slope_init_scal
 
 
 def question_sets():
-    """v1, v2, and the nested top-N sets from the ranked pool.
+    """v1, v2, the decided pool and its sensitivity versions, and nested top-N sets.
 
-    p{N}: primary specification, the top N after the stability rule
-    (reversals of at least 5 points, revised 2026-11-03) and without the
-    confidence-in-institutions questions (construct rule). s{N}: sensitivity,
-    the same with the confidence questions that pass the stability rule.
-    o{N}: sensitivity, the whole primary pool under the previous stability
-    rule (sign change or fading, 2026-10-31); o48 is the previous selection.
-    DRIFT_EXCLUDED, decided case by case in the item-drift review, are left
-    out of the p and s sets before the topic rule. Sizes run
-    in steps of 5 up to the whole pool. econA, econB, econC, social: domain
-    subsets of the primary pool (core, broad, and inclusive economic; social
-    without the "both" and "neither" questions).
+    primary: the decided pool (the "primary questions"): the ranked candidates
+    after the stability rule (reversals of at least 5 points, revised
+    2026-11-03), without the confidence-in-institutions questions (construct
+    rule) and the questions excluded in the item-drift review
+    (DRIFT_EXCLUDED), which are left out before the topic rule.
+    with_confidence: sensitivity, the same with the confidence questions that
+    pass the stability rule. previous48: sensitivity, the selection under the
+    previous stability rule (sign change or fading, 2026-10-31), formerly p48.
+    p{N}, s{N}: the top N of primary and with_confidence, in steps of 5 (for
+    the by-size curves; the whole pool has only its name). econA, econB,
+    econC, social: domain subsets of the primary pool (core, broad, and
+    inclusive economic; social without the "both" and "neither" questions).
     """
     from overton.larger_sets import CONFIDENCE, codes_for, ranked_questions
     from overton.question_sets import SETS
@@ -109,34 +111,30 @@ def question_sets():
     stability = pd.read_csv(paths.FIG_DIR / "candidates_stability.csv", index_col=0)
     sets = dict(SETS)
     previous = ranked_questions(CONFIDENCE, drop=unstable(stability, "2026-10-31"))
-    sets[f"o{len(previous)}"] = codes_for(previous)
-    for prefix, exclude_confidence in [("p", True), ("s", False)]:
-        drop = unstable(stability) | set(DRIFT_EXCLUDED)
+    assert len(previous) == 48
+    sets["previous48"] = codes_for(previous)
+    drop = unstable(stability) | set(DRIFT_EXCLUDED)
+    for full, prefix, exclude_confidence in [("primary", "p", True), ("with_confidence", "s", False)]:
         ranked = ranked_questions(CONFIDENCE if exclude_confidence else None, drop=drop)
         codes = codes_for(ranked)
         names = list(ranked.index)
-        sizes = list(range(15, len(names), 5)) + [len(names)]
-        for n in sizes:
+        sets[full] = codes
+        for n in range(15, len(names), 5):
             sets[f"{prefix}{n}"] = {v: codes[v] for v in names[:n]}
 
     # social and economic subsets of the primary pool, prespecified after review
     # (docs/question_domains.md, 2026-10-31)
-    pool = sets[f"p{len(names_primary(sets))}"]
+    pool = sets["primary"]
     for name, members in DOMAIN_SETS.items():
         members = members or [v for v in pool if v not in NOT_SOCIAL]
         sets[name] = {v: pool[v] for v in members}
     return sets
 
 
-def names_primary(sets):
-    """Names of the full primary pool (the largest p{N} set)."""
-    return max((v for k, v in sets.items() if k.startswith("p")), key=len)
-
-
 def data_name(name, difficulties="em", sample="interviewer"):
     """Name of a set's data and results.
 
-    The decided specification (EM difficulties, primary sample) has plain
+    The decided specification (EM difficulties, interviewer sample) has plain
     names (e.g. p43); variations get suffixes (e.g. p43-heuristic-all).
     Results from before 2026-11-01 used plain names for the heuristic and all
     modes; they're in results/apc_exploratory.
@@ -175,7 +173,7 @@ def reference_difficulties(gss, sets, difficulties):
     from overton.irt import question_sets as irt_sets
     from overton.pipeline import make_questions
 
-    base = sets[f"p{len(names_primary(sets))}"] if difficulties == "em" else irt_sets()["pool"]
+    base = sets["primary"] if difficulties == "em" else irt_sets()["pool"]
     d = calibrate(gss, make_questions(gss, base), MIN_ANSWERED)
     used = {v: c for codes in sets.values() for v, c in codes.items()}
     if set(used) - set(d.index):
@@ -186,15 +184,15 @@ def reference_difficulties(gss, sets, difficulties):
 def prepare(names=None, difficulties="em", sample="interviewer"):
     """Weighted grid estimates for each question set, on the original (not resampled) data.
 
-    sample: "interviewer", the primary sample (overton/data.py), or "all",
+    sample: "interviewer", the interviewer sample (overton/data.py), or "all",
     every respondent with NORC's weights.
     """
-    from overton.data import CANDIDATES, CANDIDATES_PRIMARY, WEIGHT_COL
+    from overton.data import CANDIDATES, CANDIDATES_INTERVIEWER, WEIGHT_COL
     from overton.drift import estimate_with_difficulties
     from overton.pipeline import RECODE_POLVIEWS, estimate_conservatism, make_questions
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
-    gss = pd.read_hdf(CANDIDATES_PRIMARY if sample == "interviewer" else CANDIDATES, "gss")
+    gss = pd.read_hdf(CANDIDATES_INTERVIEWER if sample == "interviewer" else CANDIDATES, "gss")
     gss["year"] = gss["year"].astype(int)
     gss["weight"] = gss[WEIGHT_COL]
     sets = question_sets()

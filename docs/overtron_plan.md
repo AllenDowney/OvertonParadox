@@ -12,7 +12,7 @@ A web page that runs the whole Overton pipeline in the browser, with [TyMC](http
 
 ## What the page does
 
-1. **Loads a data excerpt** from this repo: every GSS respondent in the primary sample, with the raw responses to all 170 candidate questions, plus year, age, birth year, self-identified ideology (`polviews`), and the weight. Also a metadata file: question wording, value labels, the default conservative coding, and the selection statistics (rank, separation, waves, stability, topic, domain).
+1. **Loads a data excerpt** from this repo: every GSS respondent in the interviewer sample, with the raw responses to all 170 candidate questions, plus year, age, birth year, self-identified ideology (`polviews`), and the weight. Also a metadata file: question wording, value labels, the default conservative coding, and the selection statistics (rank, separation, waves, stability, topic, domain).
 2. **Lets the reader choose the questions.**
    - Presets: the decided pool (`p48`), social, core economic (`econA`), and the book's 15.
    - Or any subset of the 170, in a searchable table sorted by rank. Each row shows the question, its coding, its separation between liberals and conservatives, its years, and flags (failed the stability rule, in-person only since 2022, confidence question, outside the scope rule).
@@ -52,7 +52,7 @@ Later (not v1): within-cohort slopes by decade of birth and generation (17 more 
   - `respondents.bin`: column store, int8 responses (−1 for missing), 170 columns × 68,005 rows. About 11.6 MB raw, 2.7 MB gzipped (measured 2026-11-02). Plus year, age, cohort, polviews as int16, and the weight as float32.
   - `questions.json`: per question, the wording, value labels, default coding, ranking and stability statistics, flags, and domain, plus the presets.
   - `manifest.json`: version, source extract (R3a), sample rule, the git hash, column offsets and dtypes, checksums.
-- Build from `data/gss_overton_candidates_r3a_interviewer.hdf` (the primary sample, with raked weights in 2022 and 2024). Primary sample only (decision 5).
+- Build from `data/gss_overton_candidates_r3a_interviewer.hdf` (the interviewer sample, with raked weights in 2022 and 2024). Interviewer sample only (decision 5).
 - The excerpt isn't committed to `main` (`data/` and outputs stay out of git). The `jb/` build runs `python -m overton.excerpt` and copies the excerpt next to the page, so `ghp-import` publishes it on `gh-pages`. Deploying needs the local `data/`. If others should be able to build the page from a clone, commit the excerpt or host it as a release asset (which could also serve the notebook's data, `docs/plan.md`).
 - The version is in the path (`data/v1/…`), so a page built against one excerpt doesn't break when the excerpt changes.
 - GSS data can be redistributed with a citation (NORC). The manifest and the page carry the citation.
@@ -121,7 +121,7 @@ To check the port step by step, export the Python pipeline's intermediate result
 2. **Hosting:** GitHub Pages, through the `jb/` deploy above. TyMC doesn't appear to need cross-origin isolation headers, which GitHub Pages can't set (see TyMC facts). Confirm in the spike.
 3. **TyMC dependency:** it isn't on npm, so pin a commit of pymc-labs/tymc and build it, until there's a release.
 4. **Difficulties for a reader's set:** **decided (Allen, 2026-11-02): calibrate on the chosen set**, as the decided spec does for `p48`. (For `econA`, this moves difficulties by up to 0.93 from the `p48` reference.)
-5. **All modes:** **decided (Allen, 2026-11-02): no.** The excerpt holds the primary sample only.
+5. **All modes:** **decided (Allen, 2026-11-02): no.** The excerpt holds the interviewer sample only.
 6. **Coding edits:** **decided (Allen, 2026-11-02): v1 lets readers choose questions only**, with the decided coding.
 
 ## Milestones
@@ -129,7 +129,7 @@ To check the port step by step, export the Python pipeline's intermediate result
 1. **Spike:** port the period–cohort model to TyMC in Node, on cells exported from Python for `p48`. Time it, and compare the summaries with the saved trace. This decides whether the browser plan is feasible as written. Settings (Allen, 2026-11-02): light only, 4 chains × (1000 tune + 1000 draws) at target_accept 0.95, run locally in Node with two worker chains at a time. **Done (2026-11-02):** the same model (log densities agree with PyMC to about 2.5e-7) and the same results (within-cohort slope −0.843 [−1.007, −0.681] against −0.843 [−1.007, −0.682]). But it took 638 s on two cores: every draw is near the maximum tree depth. Next: discuss ways to shorten the trajectories before building the page (lab notebook, 2026-11-02). **Then (2026-11-02):** a reparameterization of the same model (the RW2 in its prior's eigenbasis, with the linear trend split out), plus TyMC's nutpie adaptation, brings the period–cohort fit to about 30 s for 2 chains × (1000 + 2000) on two cores, with R-hat max 1.008 and the headline numbers within 0.01–0.03 points of the saved fit.
 2. **Excerpt and fixtures:** `overton/excerpt.py`, the manifest, and the fixtures. **Done (2026-11-02):**
    - **The excerpt** (`overtron/public/data/v1/`, gitignored; rebuild with `python -m overton.excerpt`, about 80 s):
-     - the 68,005 respondents of the primary sample and the 170 candidates, 2.47 MB gzipped, with the analysis weight (decision 5);
+     - the 68,005 respondents of the interviewer sample and the 170 candidates, 2.47 MB gzipped, with the analysis weight (decision 5);
      - `questions.json`: wording, value labels, default coding, ranking statistics, domain, and why each question is in or out of `p48` (coverage 49, topic 29, unstable 40, wording 12, confidence 13; several have more than one).
    - **Check:** decoded, the excerpt reproduces the decided `p48` scores of all 64,610 respondents (max difference 3e-16).
    - **Fixtures** (`overtron/fixtures/p48.json`, `econA.json`): codings, both calibrations, sampled scores, yearly means, cells, and the decided summary.
@@ -160,7 +160,7 @@ To check the port step by step, export the Python pipeline's intermediate result
    - **Layout:** one column. Controls first, then Run and progress, then the results in post 1's order, each with the decided value for comparison.
    - **Picker:** the questions are grouped in subject categories (`overton/question_categories.py`; review table `docs/overtron_categories.md`). Each category has a select-all box with three states (all, none, some) and a count, and each question has its own box. In each category, the `p48` questions come first. Presets (`p48`, social, econ A, the book's 15) set the boxes as a starting point. Each question shows its span (first and last year, number of waves) and its status: `p48`, or why it was excluded.
    - **Coverage:** a strip shows, for each survey year, how many selected questions were asked, and flags thin years. The page warns but doesn't block, and says when the headline can't be computed because the set has no question in 1974 or 2024.
-   - **The pool will change** (2026-11-03): the revised stability rule (`docs/stability_review.md`, section 8) replaces `p48`. The excerpt, question table, presets, fixtures, and the page's `p48` naming are regenerated from the new selection; the code takes the pool's name from the question table where it can.
+   - **The pool will change** (2026-11-03): the revised stability rule and the item-drift review (`docs/stability_review.md`, section 8; `docs/item_drift_review.md`) replace `p48` with the set `primary` (53 questions); "primary sample" is now the interviewer sample. Rename `in_p48`, the presets, fixtures, and `run_p48.ts` with the regeneration. The excerpt, question table, presets, fixtures, and the page's `p48` naming are regenerated from the new selection; the code takes the pool's name from the question table where it can.
    - **Out of scope, addable** (`overton/out_of_scope.py`): religious belief and practice (16 questions plus `prayer`) and guns and hunting (`owngun`, `hunt`). They're coded and scored like the 170 and shown in their own categories, marked out of scope. The excerpt now has 188 questions, 2.69 MB compressed.
    - **Hidden by default:** nothing. An opened category shows all its questions: the `p48` questions first, then the rest under "Not in the decided pool", each with its reason. A category's select-all box takes every question in it. A global "show the 140 outside p48" toggle was tried first and dropped (Allen, 2026-11-03), because opening a category showed only the 7 selected questions.
    - **Built (2026-11-03):** the minimal page, then post 1's figures and the picker, as designed above.

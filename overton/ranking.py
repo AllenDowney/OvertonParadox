@@ -28,7 +28,7 @@ import statsmodels.formula.api as smf
 from scipy.optimize import brentq
 from scipy.stats import multivariate_normal, norm
 
-from overton.candidates import EXTRACT, PRIMARY
+from overton.candidates import EXTRACT, INTERVIEWER
 from overton.data import CONSERVATIVE_VALUES, WEIGHT_COL
 from overton.pipeline import FIG_DIR
 
@@ -36,7 +36,7 @@ MIN_OVERLAP = 200
 
 
 def load():
-    gss = pd.read_hdf(PRIMARY, "gss")
+    gss = pd.read_hdf(INTERVIEWER, "gss")
     gss["w"] = gss[WEIGHT_COL]
     gss["w"] /= gss["w"].mean()
     return gss

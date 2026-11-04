@@ -24,7 +24,7 @@ import numpy as np
 import pandas as pd
 
 from overton.coding import NOT_A_POSITION, best_cut, parse_labels, response_differences
-from overton.data import CANDIDATES_PRIMARY, EXTRACT, WEIGHT_COL
+from overton.data import CANDIDATES_INTERVIEWER, EXTRACT, WEIGHT_COL
 from overton.pipeline import FIG_DIR
 from overton.ranking import code_responses, score
 
@@ -53,8 +53,8 @@ MIN_PER_WAVE = 100  # as overton/candidates.py
 
 
 def load():
-    """The primary sample with attend merged in, the ranking's weights, and polviews3."""
-    gss = pd.read_hdf(CANDIDATES_PRIMARY, "gss")
+    """The interviewer sample with attend merged in, the ranking's weights, and polviews3."""
+    gss = pd.read_hdf(CANDIDATES_INTERVIEWER, "gss")
     attend = pd.read_hdf(EXTRACT, "gss")[["year", "id", "attend"]]
     gss = gss.merge(attend, on=["year", "id"], how="left", validate="one_to_one")
     gss["w"] = gss[WEIGHT_COL] / gss[WEIGHT_COL].mean()

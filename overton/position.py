@@ -43,12 +43,12 @@ from scipy.special import expit
 from scipy.stats import norm
 
 from overton.apc import DATA_DIR, question_sets
-from overton.data import CANDIDATES_PRIMARY
+from overton.data import CANDIDATES_INTERVIEWER
 from overton.drift import estimate_with_difficulties
 from overton.em import latent_normals
 from overton.pipeline import FIG_DIR, make_questions
 
-SETS = ["p48", "social", "econA"]
+SETS = ["primary", "social", "econA"]
 XS = np.linspace(-6, 6, 121)  # finer than the scoring grid
 LAST_YEAR = 2024
 MIN_CELL = 100  # respondents in a year x decade-of-birth cell
@@ -70,7 +70,7 @@ def load(name):
     """The prepared respondents, their 1/0/NaN answers, and the difficulties."""
     df = pd.read_parquet(DATA_DIR / f"{name}.parquet")
     d = pd.read_csv(DATA_DIR / "difficulties.csv", index_col=0)[name].dropna()
-    gss = pd.read_hdf(CANDIDATES_PRIMARY, "gss")
+    gss = pd.read_hdf(CANDIDATES_INTERVIEWER, "gss")
     gss = gss.assign(year=gss["year"].astype(int)).set_index(["year", "id"])
     questions = make_questions(gss, question_sets()[name])[list(d.index)]
     questions = questions.loc[list(zip(df["year"], df["id"]))]

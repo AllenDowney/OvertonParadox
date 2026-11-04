@@ -4,7 +4,7 @@ The decided specification calibrates the difficulties with the latent
 distribution fixed at the scoring prior, Normal(0, 4). Over 50 years with
 uneven question coverage, a fixed distribution could push changes over time
 into the difficulties (second review of the difficulties,
-docs/difficulties_design.md). This compares, on the primary sample and the
+docs/difficulties_design.md). This compares, on the interviewer sample and the
 48-question pool:
 - fixed: the decided specification;
 - empirical: one distribution, estimated (Bock and Aitkin);
@@ -27,8 +27,8 @@ Usage: python -m overton.latent_check
 import numpy as np
 import pandas as pd
 
-from overton.apc import MIN_ANSWERED, SCALE, names_primary, question_sets
-from overton.data import CANDIDATES_PRIMARY, WEIGHT_COL
+from overton.apc import MIN_ANSWERED, SCALE, question_sets
+from overton.data import CANDIDATES_INTERVIEWER, WEIGHT_COL
 from overton.drift import estimate_with_difficulties
 from overton.em import em_difficulties
 from overton.pipeline import FIG_DIR, RECODE_POLVIEWS, XS, make_questions, weighted_means
@@ -45,9 +45,9 @@ def yearly(score, gss):
 
 
 def main():
-    gss = pd.read_hdf(CANDIDATES_PRIMARY, "gss")
+    gss = pd.read_hdf(CANDIDATES_INTERVIEWER, "gss")
     gss["year"] = gss["year"].astype(int)
-    codes = question_sets()[f"p{len(names_primary(question_sets()))}"]
+    codes = question_sets()["primary"]
     questions = make_questions(gss, codes)
     keep = questions.notna().sum(axis=1) >= MIN_ANSWERED
     gss, questions = gss[keep], questions[keep]

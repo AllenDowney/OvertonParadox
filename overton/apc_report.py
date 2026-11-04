@@ -20,7 +20,7 @@ def load_summaries():
     return pd.DataFrame(rows)
 
 
-REPORTED_SETS = ["p48", "social", "econA"]  # the decided specification (docs/plan.md)
+REPORTED_SETS = ["primary", "social", "econA"]  # the decided specification (docs/plan.md)
 
 
 def series(run):
@@ -53,14 +53,14 @@ def results_table(summaries):
     return pd.DataFrame(rows)
 
 
-def birth_group_table(summaries, name="p48"):
+def birth_group_table(summaries, name="primary"):
     """Within-cohort slope from the period-cohort model fit within each birth group."""
     pc = summaries[(summaries["model"] == "period_cohort") & (summaries["set"] == name) & summaries["cohorts"].notna()]
     return pc[["cohorts", "period_slope_per_decade", "period_slope_lo90", "period_slope_hi90",
                "respondents", "divergences"]].sort_values("cohorts")
 
 
-def age_table(summaries, name="p48"):
+def age_table(summaries, name="primary"):
     """Slope of conservatism vs age, per decade of age, within each decade of surveys."""
     age = summaries[(summaries["model"] == "age") & (summaries["set"] == name) & summaries["cohorts"].isna()]
     return age[["window", "slope_per_decade", "slope_lo90", "slope_hi90", "respondents"]].sort_values("window")

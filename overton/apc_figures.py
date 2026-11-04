@@ -54,9 +54,9 @@ Y_AXIS = "Percent conservative responses"
 # zoomed to the data, the same for every figure of a set, so they can be compared
 # by eye (docs/plan.md, Decisions, 2026-11-02); legends go above the lines
 HEIGHT_FACTOR = 1.2
-YLIMS = {"p48": (20, 80), "social": (20, 80), "econA": (10, 60)}
+YLIMS = {"primary": (20, 80), "social": (20, 80), "econA": (10, 60)}
 # the age and cohort figures (blog post 1) share a narrower range; a few bands at the extremes are cut off
-COHORT_YLIMS = {"p48": (30, 70)}
+COHORT_YLIMS = {"primary": (30, 70)}
 
 
 def cohort_ylim(name):
@@ -227,7 +227,7 @@ def trajectories(name):
            labels="", ylim=cohort_ylim(name))
 
 
-FIGURE_SETS = ["p48", "social", "econA"]
+FIGURE_SETS = ["primary", "social", "econA"]
 DECADES = [(f"{d}s", f"{d}-{d + 9}") for d in range(1900, 2001, 10)]
 GENERATIONS = [("Greatest", "1883-1927"), ("Silent", "1928-1945"), ("Boomers", "1946-1964"),
                ("Gen X", "1965-1980"), ("Millennials", "1981-1996"), ("Gen Z", "1997-2012")]

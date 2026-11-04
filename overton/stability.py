@@ -35,7 +35,7 @@ Usage: python -m overton.stability
 import numpy as np
 import pandas as pd
 
-from overton.candidates import PRIMARY
+from overton.candidates import INTERVIEWER
 from overton.data import WEIGHT_COL
 from overton.pipeline import FIG_DIR, RECODE_POLVIEWS
 
@@ -105,7 +105,7 @@ def unstable(table, rule="reversal"):
 def main():
     ranking = pd.read_csv(FIG_DIR / "candidates_ranking.csv", index_col=0)
     coded = pd.read_hdf(FIG_DIR / "candidates_coded.hdf", "coded")
-    gss = pd.read_hdf(PRIMARY, "gss")
+    gss = pd.read_hdf(INTERVIEWER, "gss")
     weight = gss[WEIGHT_COL]
     alignment = gss["polviews"].replace(RECODE_POLVIEWS)
     decade = (gss["year"] // 10 * 10).astype(int)

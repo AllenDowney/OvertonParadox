@@ -17,21 +17,21 @@ CultureWar variable catalog (selected values, where available).
 
 No trends are computed here.
 
-Primary sample (decided 2026-11-01): the selection is run on the primary
+Interviewer sample (decided 2026-11-01): the selection is run on the interviewer
 sample (overton/data.py: 2021 dropped, interviewer-administered respondents
-only in 2022 and 2024). `--primary` recomputes the pass-1 table from that
-sample, using the extract above (every variable that can pass on the primary
+only in 2022 and 2024). `--interviewer` recomputes the pass-1 table from that
+sample, using the extract above (every variable that can pass on the interviewer
 sample passed on the full file, except, in principle, one whose number of
 distinct values drops to MAX_VALUES or below without the dropped
 respondents). Downstream steps (scope, coding, ranking, stability) read the
-primary sample.
+interviewer sample.
 
 Writes:
 - ../data/gss_overton_candidates_r3a.hdf (key "gss")
 - figs/candidates_pass1.csv
 
 Usage: python -m overton.candidates            # full file: pass 1 and 2, the extract
-       python -m overton.candidates --primary  # pass-1 table from the primary sample
+       python -m overton.candidates --interviewer  # pass-1 table from the interviewer sample
 """
 
 import gzip
@@ -54,7 +54,7 @@ GSSRDOC = CULTUREWAR / "codebook/extracted/gssrdoc_dict_flat.json"
 CATALOG = CULTUREWAR / "notebooks/variable_metadata/variables.yaml"
 DATA_DIR = paths.DATA_DIR
 EXTRACT = DATA_DIR / "gss_overton_candidates_r3a.hdf"
-PRIMARY = DATA_DIR / "gss_overton_candidates_r3a_interviewer.hdf"  # overton/data.py
+INTERVIEWER = DATA_DIR / "gss_overton_candidates_r3a_interviewer.hdf"  # overton/data.py
 
 MIN_WAVES = 8
 MIN_SPAN = 15
@@ -172,14 +172,14 @@ def main():
     print("in CultureWar catalog and passing:", (table["passes"] & table["in_culturewar"]).sum())
 
 
-def main_primary():
-    by_year, values = first_pass_extract(pd.read_hdf(PRIMARY, "gss"))
+def main_interviewer():
+    by_year, values = first_pass_extract(pd.read_hdf(INTERVIEWER, "gss"))
     table = add_metadata(apply_gates(by_year, values))
     table.to_csv(FIG_DIR / "candidates_pass1.csv")
-    print(f"primary sample: {len(table)} variables; {table['passes'].sum()} pass the gates")
+    print(f"interviewer sample: {len(table)} variables; {table['passes'].sum()} pass the gates")
 
 
 if __name__ == "__main__":
     import sys
 
-    main_primary() if "--primary" in sys.argv else main()
+    main_interviewer() if "--interviewer" in sys.argv else main()

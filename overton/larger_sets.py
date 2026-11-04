@@ -29,7 +29,7 @@ from overton.sensitivity import add_conservatism, summarize
 from overton.topics import topic
 from overton.utils import make_lowess
 
-# at least half the survey years with polviews: 16 of the 32 in the primary sample
+# at least half the survey years with polviews: 16 of the 32 in the interviewer sample
 # (2021 dropped, 2026-11-01); 17 of 33 before
 MIN_WAVES = 16
 SIZES = [15, 20, 25, 30, 35, 40, 45, 50, 55, 60]

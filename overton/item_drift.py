@@ -34,8 +34,8 @@ import pandas as pd
 import statsmodels.api as sm
 from scipy.special import expit
 
-from overton.apc import MIN_ANSWERED, calibrate, names_primary, question_sets
-from overton.data import CANDIDATES_PRIMARY, WEIGHT_COL
+from overton.apc import MIN_ANSWERED, calibrate, question_sets
+from overton.data import CANDIDATES_INTERVIEWER, WEIGHT_COL
 from overton.pipeline import FIG_DIR, PRIOR, XS, make_questions
 
 THRESHOLD = 0.5  # logits
@@ -68,8 +68,8 @@ def decade_effects(y, score, decade, w):
 
 def main(only=()):
     sets = question_sets()
-    codes = names_primary(sets)
-    gss = pd.read_hdf(CANDIDATES_PRIMARY, "gss")
+    codes = sets["primary"]
+    gss = pd.read_hdf(CANDIDATES_INTERVIEWER, "gss")
     gss["year"] = gss["year"].astype(int)
     gss["weight"] = gss[WEIGHT_COL]
     questions = make_questions(gss, codes)

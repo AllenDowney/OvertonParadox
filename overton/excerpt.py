@@ -1,7 +1,7 @@
 """Data excerpt and reference fixtures for the Overtron (docs/overtron_plan.md, milestone 2).
 
 The excerpt is what the browser page loads: every respondent in the decided
-primary sample of the candidate extract (GSS 1972-2024, R3a), with the raw
+interviewer sample of the candidate extract (GSS 1972-2024, R3a), with the raw
 responses to the 170 candidate questions, and the metadata the question picker
 shows.
 
@@ -13,7 +13,7 @@ shows.
   decided pool; plus the presets (p48, social, econA, the book's 15).
 - manifest.json: version, source, sample rule, git commit, columns, and checksums.
 
-The primary sample drops 2021 and, in 2022 and 2024, keeps interviewer-administered
+The interviewer sample drops 2021 and, in 2022 and 2024, keeps interviewer-administered
 respondents only; `weight` is its analysis weight (wtssps, raked in 2022 and
 2024; overton/data.py). The page offers no all-modes variation (Allen, 2026-11-02).
 
@@ -45,7 +45,7 @@ from overton.apc import (COHORT_SETTINGS, DATA_DIR as APC_DATA, ECON_A, ECON_B, 
                          MIN_ANSWERED_BY_SET, NOT_SOCIAL, PERIOD_SETTINGS, RESULTS_DIR as APC_RESULTS,
                          build_period_cohort_model, build_series_model, calibrate, question_sets, weighted_cells)
 from overton import out_of_scope, question_categories
-from overton.data import CANDIDATES_PRIMARY, CONSERVATIVE_VALUES, EXTRACT, WEIGHT_COL
+from overton.data import CANDIDATES_INTERVIEWER, CONSERVATIVE_VALUES, EXTRACT, WEIGHT_COL
 from overton.drift import estimate_with_difficulties
 from overton.larger_sets import CONFIDENCE, MIN_WAVES
 from overton.pipeline import IN_PERSON_ONLY, ORDER, make_questions
@@ -85,9 +85,9 @@ def domain(v):
 
 
 def respondents(names):
-    """The primary sample of the candidate extract, with its analysis weight, and attend
+    """The interviewer sample of the candidate extract, with its analysis weight, and attend
     (an out-of-scope question readers can add back) from the full extract."""
-    df = pd.read_hdf(CANDIDATES_PRIMARY, "gss").rename(columns={WEIGHT_COL: "weight"})
+    df = pd.read_hdf(CANDIDATES_INTERVIEWER, "gss").rename(columns={WEIGHT_COL: "weight"})
     if "attend" in names:
         attend = pd.read_hdf(EXTRACT, "gss")[["year", "id", "attend"]]
         df = df.merge(attend, on=["year", "id"], how="left", validate="one_to_one")
