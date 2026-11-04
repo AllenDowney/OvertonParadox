@@ -1,14 +1,14 @@
-// The page's v1 run for p48 in Node: period by self-identified ideology x 3, age by decade
+// The page's v1 run for primary in Node: period by self-identified ideology x 3, age by decade
 // of surveys x 6, period-cohort x 1, and, within each decade of birth (1900s-2000s), the
 // age model and the period-cohort model x 11 each; with the page's sampler settings,
 // two worker chains at a time. Times each fit and compares the headline numbers with
 // the decided fits (results/apc/results, nutpie, 4 x (4000 + 6000) at 0.99).
 //
-//     node bench/run_p48.ts [label filter] [target_accept] [tune]
+//     node bench/run_primary.ts [label filter] [target_accept] [tune]
 //
-// e.g. node bench/run_p48.ts "pc born" 0.99 runs only the matching fits, at that target.
+// e.g. node bench/run_primary.ts "pc born" 0.99 runs only the matching fits, at that target.
 //
-// Writes bench/results/p48.json (gitignored).
+// Writes bench/results/primary.json (gitignored).
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { Worker } from "node:worker_threads";
@@ -22,12 +22,12 @@ const data = new URL("../public/data/v1/", import.meta.url);
 const manifest = JSON.parse(readFileSync(new URL("manifest.json", data), "utf8")) as Manifest;
 const raw = gunzipSync(readFileSync(new URL("respondents.bin.gz", data)));
 const excerpt = decode(raw.buffer.slice(raw.byteOffset, raw.byteOffset + raw.byteLength) as ArrayBuffer, manifest);
-const p48 = JSON.parse(readFileSync(new URL("../fixtures/p48.json", import.meta.url), "utf8"));
+const primary = JSON.parse(readFileSync(new URL("../fixtures/primary.json", import.meta.url), "utf8"));
 const decided = new URL("../../results/apc/results/", import.meta.url);
 
 // the presets' difficulties are precomputed (the page won't run EM for them)
-const answers = code(excerpt, p48.codes);
-const scored = score(excerpt, answers, answered(answers), answers.names.map((v) => p48.difficulties_reference[v]), p48.min_answered);
+const answers = code(excerpt, primary.codes);
+const scored = score(excerpt, answers, answered(answers), answers.names.map((v) => primary.difficulties_reference[v]), primary.min_answered);
 
 function spawn() {
   const worker = new Worker(new URL("./node_worker.ts", import.meta.url));
@@ -69,4 +69,4 @@ for (const job of jobs.filter((j) => !only || j.label.includes(only))) {
 }
 console.log(`total ${((performance.now() - began) / 1000).toFixed(1)} s`);
 mkdirSync(new URL("./results/", import.meta.url), { recursive: true });
-writeFileSync(new URL(`./results/p48${only ? `_${only.replace(/ /g, "-")}_${target ?? "default"}` : ""}.json`, import.meta.url), JSON.stringify(out, null, 1));
+writeFileSync(new URL(`./results/primary${only ? `_${only.replace(/ /g, "-")}_${target ?? "default"}` : ""}.json`, import.meta.url), JSON.stringify(out, null, 1));

@@ -1,6 +1,6 @@
 // The question picker (docs/overtron_plan.md, milestone 5, design): presets as starting points,
 // questions grouped by subject category (overton/question_categories.py) with a three-state
-// select-all box and a count per category, p48 first in each and the others under a sub-heading,
+// select-all box and a count per category, primary first in each and the others under a sub-heading,
 // each question's span and status,
 // and a coverage strip: how many selected questions were asked in each survey year.
 
@@ -8,7 +8,7 @@ import type { Excerpt, Question, QuestionTable } from "./excerpt.ts";
 import { min_answered_for } from "./measure.ts";
 
 export const PRESET_NAMES: Record<string, string> = {
-  p48: "Decided pool (48)", social: "Social", econA: "Core economic (econ A)", book15: "The book's 15",
+  primary: "Primary questions", social: "Social", econA: "Core economic (econ A)", book15: "The book's 15",
 };
 const THIN = 5; // fewer selected questions than this in a survey year is flagged
 const MIN_RESPONDENTS = 100; // a question counts as asked in a year with at least this many answers
@@ -38,7 +38,7 @@ export class Picker {
   constructor(private readonly root: HTMLElement, private readonly table: PickerTable, private readonly excerpt: Excerpt,
     private readonly asked: Map<string, Set<number>>, private readonly on_change: () => void) {
     this.survey_years = [...new Set([...asked.values()].flatMap((s) => [...s]))].sort((a, b) => a - b);
-    this.set_preset("p48");
+    this.set_preset("primary");
   }
 
   /** The preset whose questions are exactly the selection, if any. */
@@ -111,7 +111,7 @@ export class Picker {
 
     for (const category of this.table.categories) {
       const names = Object.keys(q).filter((v) => q[v].category === category)
-        .sort((a, b) => Number(q[b].in_p48) - Number(q[a].in_p48));
+        .sort((a, b) => Number(q[b].in_primary) - Number(q[a].in_primary));
       const n_selected = names.filter((v) => this.selected.has(v)).length;
       const details = document.createElement("details");
       details.className = "category";
@@ -135,11 +135,11 @@ export class Picker {
       summary.append(all, ` ${category} `, span("count", `${n_selected} of ${names.length} selected`));
       details.append(summary);
       const list = div("questions");
-      // p48 first; the others under a sub-heading, each with the reason it was left out
+      // primary first; the others under a sub-heading, each with the reason it was left out
       for (const [k, v] of names.entries()) {
-        if (!q[v].in_p48 && (k === 0 || q[names[k - 1]].in_p48)) {
+        if (!q[v].in_primary && (k === 0 || q[names[k - 1]].in_primary)) {
           const head = div("subhead");
-          head.textContent = "Not in the decided pool";
+          head.textContent = "Not in the primary questions";
           list.append(head);
         }
         const row = document.createElement("label");
@@ -149,7 +149,7 @@ export class Picker {
         check.checked = this.selected.has(v);
         check.onchange = () => this.changed(() => (check.checked ? this.selected.add(v) : this.selected.delete(v)));
         const info = q[v];
-        const status = info.in_p48 ? "p48" : info.excluded_because.join(", ");
+        const status = info.in_primary ? "primary" : info.excluded_because.join(", ");
         row.title = String(info.question ?? "");
         row.append(check, span("desc", ` ${info.description} `), span("meta",
           `${v} · ${info.first}–${info.last}, ${info.waves} waves · ${status}`));

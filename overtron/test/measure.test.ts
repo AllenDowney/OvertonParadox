@@ -24,7 +24,7 @@ function max_diff(a: ArrayLike<number>, b: ArrayLike<number>): number {
   return m;
 }
 
-for (const set of ["p48", "econA"]) {
+for (const set of ["primary", "econA"]) {
   const fx = JSON.parse(readFileSync(new URL(`../fixtures/${set}.json`, import.meta.url), "utf8"));
   const answers = code(excerpt, fx.codes);
   const count = answered(answers);

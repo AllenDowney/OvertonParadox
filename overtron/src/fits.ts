@@ -33,7 +33,7 @@ export interface SamplerSettings {
  */
 export const PAGE_SETTINGS: SamplerSettings = { chains: 2, tune: 1000, draws: 2000, target_accept: 0.99, seed: 17, concurrency: 2 };
 
-/** target_accept for the all-respondents period-cohort fit: about 30 s at 0.95, with no divergences in p48. */
+/** target_accept for the all-respondents period-cohort fit: about 30 s at 0.95, with no divergences in primary. */
 export const MAIN_PERIOD_COHORT_TARGET = 0.95;
 
 /** The deterministics each kind of summary needs. */

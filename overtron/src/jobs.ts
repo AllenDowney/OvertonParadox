@@ -2,7 +2,7 @@
 // period for all respondents,
 // age by decade of surveys x 6, the period-cohort model, and, within each decade of birth
 // (1900s-2000s), the age model and the period-cohort model x 11 each (Allen, 2026-11-03).
-// Shared by the page and bench/run_p48.ts, so both make exactly the same fits.
+// Shared by the page and bench/run_primary.ts, so both make exactly the same fits.
 
 import type { Excerpt } from "./excerpt.ts";
 import { type FitSpec, MAIN_PERIOD_COHORT_TARGET } from "./fits.ts";
@@ -11,7 +11,7 @@ import { summarize_period_cohort, summarize_series } from "./summaries.ts";
 
 export interface Job {
   readonly label: string;
-  readonly saved: string; // the decided run with the same specification, for p48 (results/apc/results)
+  readonly saved: string; // the decided run with the same specification, for primary (results/apc/results)
   readonly group: "period" | "period_all" | "age" | "period_cohort" | "age_by_birth" | "period_cohort_by_birth";
   readonly spec: FitSpec;
   readonly summarize: (draws: Record<string, unknown>) => ReturnType<typeof summarize_series> | ReturnType<typeof summarize_period_cohort>;
@@ -28,7 +28,7 @@ export const SURVEY_DECADES = [[1972, 1979], [1980, 1989], [1990, 1999], [2000, 
 export const BIRTH_DECADES = Array.from({ length: 11 }, (_, k) => 1900 + 10 * k);
 const IDEOLOGY = [["Liberal", 1, 3], ["Moderate", 4, 4], ["Conservative", 5, 7]] as const;
 
-export function make_jobs(excerpt: Excerpt, scored: Scored, set = "p48"): Job[] {
+export function make_jobs(excerpt: Excerpt, scored: Scored, set = "primary"): Job[] {
   // a subgroup needs respondents in at least three cells to fit (a reader's set may leave it empty)
   const enough = (n: number) => n >= 3;
 

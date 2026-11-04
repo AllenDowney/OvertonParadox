@@ -2,7 +2,7 @@
 
 Update the Chapter 12 analysis (the Overton paradox) with GSS data through 2024, reconsider how questions are selected, compare with Ricardo Vieira's model, and possibly replicate with ANES.
 
-**Board:** Task 9 in `PROJECT_BOARD.md`.
+**Board:** `PROJECT_BOARD.md` in this repo (new tasks get their own planning documents; this plan keeps the overall specification, decisions, and log). Earlier: Tasks 9–11 on the ProbablyOverthinkingIt board.
 
 **Deliverables**
 
@@ -225,7 +225,7 @@ Goal (Allen, 2026-10-31): treat each respondent's estimated conservatism as the 
 
 - Lab notebook (started 2026-10-30): `notebooks/docs/lab.md`, a Markdown document with figures from `notebooks/overton/lab_figs.py`. A dated log of analyses and results, not polished; add an entry for each new analysis. Kept off the site (decided 2026-10-30).
 
-- Technical appendix notebook: data, selection, model, comparisons, sensitivity.
+- Technical appendix notebook: Task 1 on the board (`PROJECT_BOARD.md`); plan in `docs/appendix_plan.md`.
 - Blog article: stand-alone canonical presentation of the paradox. Use `related-articles` skill to find earlier posts to link.
 
 ## Decisions

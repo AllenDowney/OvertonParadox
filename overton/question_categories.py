@@ -74,16 +74,16 @@ def main():
         "",
         "Subject categories for the Overtron's question picker, assigned by hand (2026-11-03), from "
         "`overton/question_categories.py`. They're for browsing only and don't enter any analysis. "
-        "Status: **p48** if the question is in the decided pool, otherwise the reasons it was excluded. "
-        "In each category, the p48 questions come first, as in the picker.",
+        "Status: **primary** if the question is one of the primary questions, otherwise the reasons it was excluded. "
+        "In each category, the primary questions come first, as in the picker.",
         "",
     ]
     for name, names in CATEGORIES.items():
-        n_p48 = sum(table[v]["in_p48"] for v in names)
-        lines += [f"## {name} ({len(names)} questions, {n_p48} in p48)", "", "| Question | Description | Status |", "|---|---|---|"]
-        for v in sorted(names, key=lambda v: not table[v]["in_p48"]):  # p48 first, as the picker shows them
+        n_primary = sum(table[v]["in_primary"] for v in names)
+        lines += [f"## {name} ({len(names)} questions, {n_primary} primary)", "", "| Question | Description | Status |", "|---|---|---|"]
+        for v in sorted(names, key=lambda v: not table[v]["in_primary"]):  # primary first, as the picker shows them
             q = table[v]
-            status = "**p48**" if q["in_p48"] else ", ".join(q["excluded_because"])
+            status = "**primary**" if q["in_primary"] else ", ".join(q["excluded_because"])
             lines.append(f"| `{v}` | {q['description']} | {status} |")
         lines.append("")
     out = paths.ROOT / "docs/overtron_categories.md"

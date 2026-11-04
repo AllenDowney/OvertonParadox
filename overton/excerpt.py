@@ -10,7 +10,7 @@ shows.
   values are -1 in the integer columns and NaN in the weights.
 - questions.json: for each candidate, the wording, value labels, default coding,
   ranking and stability statistics, and the reasons it is in or out of the
-  decided pool; plus the presets (p48, social, econA, the book's 15).
+  decided pool; plus the presets (primary, social, econA, the book's 15).
 - manifest.json: version, source, sample rule, git commit, columns, and checksums.
 
 The interviewer sample drops 2021 and, in 2022 and 2024, keeps interviewer-administered
@@ -18,14 +18,14 @@ respondents only; `weight` is its analysis weight (wtssps, raked in 2022 and
 2024; overton/data.py). The page offers no all-modes variation (Allen, 2026-11-02).
 
 The fixtures (overtron/fixtures/{set}.json) are the Python pipeline's
-intermediate results for p48 and econA, so each step of the TypeScript port
+intermediate results for primary and econA, so each step of the TypeScript port
 can be tested against them: codings, EM difficulties (the decided reference
 calibration and a calibration on the set itself), scores for a sample of
 respondents, yearly means, the weighted cohort x year cells, and the decided
 period-cohort summary.
 
-Before writing the fixtures, the excerpt is decoded and the p48 scores are
-recomputed from it, which must reproduce results/apc/data/p48.parquet.
+Before writing the fixtures, the excerpt is decoded and the primary scores are
+recomputed from it, which must reproduce results/apc/data/primary.parquet.
 
 Usage: python -m overton.excerpt [models | summaries | position]   (only that fixture)
 """
@@ -41,13 +41,14 @@ import numpy as np
 import pandas as pd
 
 from overton import paths
-from overton.apc import (COHORT_SETTINGS, DATA_DIR as APC_DATA, ECON_A, ECON_B, ECON_C, MIN_ANSWERED,
+from overton.apc import (COHORT_SETTINGS, DATA_DIR as APC_DATA, DRIFT_EXCLUDED, ECON_A, ECON_B, ECON_C, MIN_ANSWERED,
                          MIN_ANSWERED_BY_SET, NOT_SOCIAL, PERIOD_SETTINGS, RESULTS_DIR as APC_RESULTS,
                          build_period_cohort_model, build_series_model, calibrate, question_sets, weighted_cells)
 from overton import out_of_scope, question_categories
 from overton.data import CANDIDATES_INTERVIEWER, CONSERVATIVE_VALUES, EXTRACT, WEIGHT_COL
 from overton.drift import estimate_with_difficulties
 from overton.larger_sets import CONFIDENCE, MIN_WAVES
+from overton.stability import unstable
 from overton.pipeline import IN_PERSON_ONLY, ORDER, make_questions
 from overton.question_categories import CATEGORIES, CATEGORY_OF
 from overton.topics import topic
@@ -56,7 +57,7 @@ VERSION = "v1"
 SITE = paths.ROOT / "overtron"
 OUT = SITE / "public" / "data" / VERSION
 FIXTURES = SITE / "fixtures"
-FIXTURE_SETS = ["p48", "econA"]
+FIXTURE_SETS = ["primary", "econA"]
 SAMPLE_EVERY = 50  # respondents kept in the score fixtures
 
 
@@ -133,15 +134,17 @@ def question_table(names, added):
     """The candidates and the out-of-scope questions readers can add back (overton/out_of_scope.py)."""
     ranking, scope, stability = candidates()
     sets = question_sets()
-    pool = set(sets["p48"])
-    unstable = stability["sign_change"].fillna(False) | stability["fades_any"].fillna(False)
+    pool = set(sets["primary"])
+    reversal = unstable(stability.dropna(subset=["reversal"]))
     out = {}
     for v in names:
         reasons = []
         if re.match(CONFIDENCE, v):
             reasons.append("confidence")
-        if unstable[v]:
+        if v in reversal:
             reasons.append("unstable")
+        if v in DRIFT_EXCLUDED:
+            reasons.append("drift")
         if ranking.loc[v, "waves"] < MIN_WAVES:
             reasons.append("coverage")
         if v.startswith("nat") and v.endswith("y"):
@@ -155,7 +158,7 @@ def question_table(names, added):
             rank=int(ranking.loc[v, "rank"]), separation=float(ranking.loc[v, "separation"]),
             polviews_param=float(ranking.loc[v, "param"]), waves=int(ranking.loc[v, "waves"]),
             first=int(ranking.loc[v, "first"]), last=int(ranking.loc[v, "last"]),
-            topic=topic(v), domain=domain(v), in_p48=v in pool, excluded_because=reasons,
+            topic=topic(v), domain=domain(v), in_primary=v in pool, excluded_because=reasons,
             in_person_only_since_2022=v in IN_PERSON_ONLY, in_book_15=v in ORDER,
             gap_by_decade=stability.loc[v, "gaps"] if pd.notna(stability.loc[v, "gaps"]) else None)
     for v, row in added.iterrows():
@@ -164,11 +167,11 @@ def question_table(names, added):
             description=row["description"], question=row["question"], value_labels=value_labels(row["value_labels"]),
             conservative=row["conservative"], rank=None, separation=row["separation"],
             polviews_param=row["polviews_param"], waves=int(row["waves"]), first=int(row["first"]), last=int(row["last"]),
-            topic=v, domain="social", in_p48=False, excluded_because=reasons,
+            topic=v, domain="social", in_primary=False, excluded_because=reasons,
             in_person_only_since_2022=None, in_book_15=False, gap_by_decade=None)
     for v in out:
         out[v]["category"] = CATEGORY_OF[v]
-    presets = {name: list(sets[name]) for name in ["p48", "social", "econA"]}
+    presets = {name: list(sets[name]) for name in ["primary", "social", "econA"]}
     presets["book15"] = list(ORDER)
     book_codes = {v: [int(c) for c in CONSERVATIVE_VALUES[v]] for v in ORDER}
     return out, presets, book_codes, list(CATEGORIES)
@@ -176,7 +179,7 @@ def question_table(names, added):
 
 def preset_settings(df, questions, presets, book_codes):
     """Each preset's codes, minimum answers, and difficulties calibrated on the preset itself
-    (decision 4), so the page needn't run EM for a preset. For p48 this is the decided calibration."""
+    (decision 4), so the page needn't run EM for a preset. For primary this is the decided calibration."""
     out = {}
     for name, names in presets.items():
         codes = {v: book_codes[v] if name == "book15" else questions[v]["conservative"] for v in names}
@@ -187,14 +190,14 @@ def preset_settings(df, questions, presets, book_codes):
 
 
 def check_scores(gss):
-    """Recompute the decided p48 scores from the decoded excerpt; they must match the parquet."""
-    codes = question_sets()["p48"]
-    d = pd.read_csv(APC_DATA / "difficulties.csv", index_col=0)["p48"].dropna()
+    """Recompute the decided primary scores from the decoded excerpt; they must match the parquet."""
+    codes = question_sets()["primary"]
+    d = pd.read_csv(APC_DATA / "difficulties.csv", index_col=0)["primary"].dropna()
     questions = make_questions(gss, codes)
     con = estimate_with_difficulties(questions, d[questions.columns].values)
     keep = (questions.notna().sum(axis=1) >= MIN_ANSWERED) & gss["cohort"].notna() & gss["age"].notna()
     mine = pd.DataFrame(dict(year=gss["year"], id=gss["id"], y=con / len(codes)))[keep]
-    ref = pd.read_parquet(APC_DATA / "p48.parquet")[["year", "id", "y"]]
+    ref = pd.read_parquet(APC_DATA / "primary.parquet")[["year", "id", "y"]]
     both = ref.merge(mine, on=["year", "id"], suffixes=("_ref", "_excerpt"), validate="one_to_one")
     assert len(both) == len(ref) == len(mine), (len(both), len(ref), len(mine))
     diff = float((both["y_ref"] - both["y_excerpt"]).abs().max())
@@ -244,14 +247,14 @@ def model_points(m, n_points=3, seed=17):
 
 
 def models_fixture():
-    """Inputs and log densities of the period, age and period-cohort models for p48.
+    """Inputs and log densities of the period, age and period-cohort models for primary.
 
     The points are in the current (double-cumsum) form's coordinates; the TypeScript
     test maps them into its own eigenbasis (w = Q z, beta = v0 + sigma a'w), which
     checks the basis and the model together. The trend form has the same log density
     (overton/rw2_trend.py).
     """
-    df = pd.read_parquet(APC_DATA / "p48.parquet")
+    df = pd.read_parquet(APC_DATA / "primary.parquet")
     out = {}
     years = list(range(df["year"].min(), df["year"].max() + 1))
     cells = weighted_cells(df, ["year"])
@@ -281,7 +284,7 @@ def summaries_fixture():
     """Saved draws, thinned, and the Python summaries computed from exactly those draws.
 
     fit_series and fit_period_cohort run with the sampler replaced by the thinned
-    draws of the saved p48 fits (liberals' period model, the 2020-2024 age window,
+    draws of the saved primary fits (liberals' period model, the 2020-2024 age window,
     and the period-cohort model), so the TypeScript summaries can be compared exactly.
     """
     import tempfile
@@ -291,15 +294,15 @@ def summaries_fixture():
 
     from overton import apc
 
-    df = pd.read_parquet(APC_DATA / "p48.parquet")
+    df = pd.read_parquet(APC_DATA / "primary.parquet")
     args = SimpleNamespace(tune=0, draws=0, chains=1, seed=17, target_accept=None)
     out = dict(draws=SUMMARY_DRAWS)
     real_sample = apc.sample
     try:
         with tempfile.TemporaryDirectory() as tmp:
-            for key, run, names in [("period_liberal", "period_p48_polviews3-Liberal", ["mu"]),
-                                    ("age_2020-2024", "age_p48_window-2020-2024", ["mu"]),
-                                    ("period_cohort", "period_cohort_p48", ["alpha", "cohort", "period"])]:
+            for key, run, names in [("period_liberal", "period_primary_polviews3-Liberal", ["mu"]),
+                                    ("age_2020-2024", "age_primary_window-2020-2024", ["mu"]),
+                                    ("period_cohort", "period_cohort_primary", ["alpha", "cohort", "period"])]:
                 tree = xr.open_datatree(APC_RESULTS / f"{run}_trace.nc", engine="h5netcdf")
                 post = tree["posterior"].to_dataset()
                 n = post.sizes["chain"] * post.sizes["draw"]
@@ -329,11 +332,11 @@ def summaries_fixture():
 
 
 def position_fixture():
-    """Relative position for p48 (overton/position.py): the latent normals by year and by
+    """Relative position for primary (overton/position.py): the latent normals by year and by
     year x polviews3, and the by-year table with the 1974 liberal's percentile."""
     from overton import position
 
-    df, questions, d = position.load("p48")
+    df, questions, d = position.load("primary")
     year = position.distributions(df, questions, d, ["year"])
     in_groups = df["polviews3"].isin(position.GROUPS)
     groups = position.distributions(df[in_groups], questions[in_groups], d, ["year", "polviews3"])
@@ -343,7 +346,7 @@ def position_fixture():
                 year=year.reset_index(names="label").to_dict(orient="list"),
                 groups=groups.reset_index(names="label").to_dict(orient="list"),
                 table=table.astype(object).where(table.notna(), None).to_dict(orient="list"),
-                headline=pd.read_csv(position.FIG_DIR / "position_headline.csv").set_index("set").loc["p48"].to_dict(),
+                headline=pd.read_csv(position.FIG_DIR / "position_headline.csv").set_index("set").loc["primary"].to_dict(),
                 n_bootstrap=position.N_BOOTSTRAP, last_year=position.LAST_YEAR)
 
 
@@ -371,7 +374,7 @@ def main():
     spec = columns_spec(names)
     raw, table = encode(df, spec)
     n_checked, diff = check_scores(decode(raw, table))
-    print(f"excerpt reproduces the p48 scores of {n_checked} respondents (max diff {diff:.1e})")
+    print(f"excerpt reproduces the primary scores of {n_checked} respondents (max diff {diff:.1e})")
 
     OUT.mkdir(parents=True, exist_ok=True)
     gz = gzip.compress(raw, compresslevel=9, mtime=0)
@@ -379,9 +382,9 @@ def main():
     questions, presets, book_codes, categories = question_table(list(ranking.index), added)
     question_categories.check(questions)
     preset_info = preset_settings(df, questions, presets, book_codes)
-    reference = pd.read_csv(APC_DATA / "difficulties.csv", index_col=0)["p48"].dropna()
-    p48_diff = max(abs(preset_info["p48"]["difficulties"][v] - reference[v]) for v in presets["p48"])
-    assert p48_diff < 1e-9, p48_diff  # p48 calibrated on itself is the decided calibration
+    reference = pd.read_csv(APC_DATA / "difficulties.csv", index_col=0)["primary"].dropna()
+    primary_diff = max(abs(preset_info["primary"]["difficulties"][v] - reference[v]) for v in presets["primary"])
+    assert primary_diff < 1e-9, primary_diff  # primary calibrated on itself is the decided calibration
     (OUT / "questions.json").write_text(json.dumps(dict(questions=questions, presets=presets, book_codes=book_codes,
                                                          categories=categories, preset_settings=preset_info)))
     commit = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True, cwd=paths.ROOT).stdout.strip()
@@ -389,7 +392,7 @@ def main():
         version=VERSION, rows=len(df), source="GSS 1972-2024 cumulative file, release 3a (NORC), via the CultureWar extract",
         citation="Davern, Michael; Bautista, Rene; Freese, Jeremy; Herd, Pamela; and Morgan, Stephen L.; General Social "
                  "Survey 1972-2024. NORC at the University of Chicago. gss.norc.org",
-        primary_sample="2021 dropped; in 2022 and 2024, interviewer-administered respondents only (in person, phone), "
+        interviewer_sample="2021 dropped; in 2022 and 2024, interviewer-administered respondents only (in person, phone), "
                        "with wtssps raked to the full sample's margins (docs/mode_design.md)",
         weight="wtssps, raked to the full sample's margins in 2022 and 2024",
         missing="-1 in integer columns, NaN in weights", byte_order="little", commit=commit,

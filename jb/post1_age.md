@@ -26,44 +26,23 @@ If someone says the people get more conservative with age, what do they mean? I 
 
 For the book, I searched the General Social Survey (GSS) for the questions that most distinguish liberals and conservatives, and then I curated a list of 15 that cover a variety of topics and were asked often over the course of the survey. That worked well enough, but curating involves judgment calls, which is where researcher bias can sneak in.
 
-This time I replaced curation with a set of rules, applied one step at a time.
+This time I replaced curation with a mostly automated section process that starts with 6,943 variables in the GSS dataset and selects 53 questions that meet the requirements (described at the end of this article).
 
-1. **Start with everything.** The GSS cumulative file has 6,943 variables. I kept the ones that record responses to questions asked in at least 8 waves over a span of at least 15 years, with between 2 and 7 possible answers. That leaves 432.
+To combine responses to 53 questions into a single measure, I use a Bayesian IRT (item response theory) model to estimate a latent factor of conservatism for each of 64,632 respondents from 1972 to 2024 who were asked and answered at least five questions.
+This model makes it possible to compare people who answered different sets of questions, even in cases where there is no overlap.
+More details about the process are in [this technical appendix]().
 
-2. **Keep the opinions.** From those, I kept the questions that ask for an opinion about a public issue or a social norm. I left out demographics (like age and income), behavior (like smoking or owning a gun), personal circumstances (like happiness and health), and, as I did for the book, religious belief and practice (we'll revisit that one). I also left out questions about party and voting, which would make the measure circular. That leaves about 170 questions.
+Finally, for each respondent, we express their estimated conservatism as a percentage, which you can think of as the number of conservative responses they would give to a hypothetical pool of 100 questions.
 
-3. **Identify the conservative answers.** For each question, I split the answers into two groups at the point that best separates people who identify as conservative from people who identify as liberal. The answers conservatives choose more often are the conservative side. For example, if the question is "Do you favor or oppose the death penalty for persons convicted of murder?", the conservative answer is "Favor".
-
-4. **Measure how well each question separates them.** For each question, I estimated how strongly the conservative answer is associated with self-identified ideology, controlling for the year of the survey and the respondent's year of birth.
-
-5. **Apply the requirements.** Then I removed questions that didn't meet these requirements:
-
-   * *Coverage:* For the final list, a question had to be asked in at least half of the survey years (16 of 32). That's because the measure compares people surveyed decades apart, and it can only do that through the questions they were asked. Long-running questions that overlap in time tie the years together; if too many questions were short-lived, people surveyed in different years would be measured by different questions, and changes over time would mix real changes in beliefs with changes in the questions.
-
-   * *Stability:* The difference between conservatives and liberals had to persist. Questions where it reversed or faded away are excluded, because the method assumes that the conservative answer doesn't change. For example, one question asks, "If your party nominated a woman for President, would you vote for her if she were qualified for the job?" In the 1970s, conservatives were about 9 percentage points more likely than liberals to say no. By 2010, the last year it was asked, the difference had faded to about 2 points. So "no" stopped distinguishing conservatives from liberals.
-
-% REVISE (2026-11-03): after the consultation (docs/stability_review.md, section 8), fading no longer excludes a
-% question (fepres is the example of why: near consensus, a stable question's gap shrinks). Stability becomes a
-% reversal rule with a size threshold, plus a drift diagnostic for inspection. Rewrite this bullet, the counts
-% (48), and the figures after the selection is rerun. Also state the definition: a fixed collection of positions
-% historically associated with self-identified conservatism.
-
-   * *No duplicates:* Some questions were asked with two different wordings, on different versions of the survey, so I kept one of each pair. And when several questions cover the same topic, like the seven versions of the abortion question, I kept the one that best separates conservatives and liberals, from step 4.
-
-   * *No confidence questions:* I left out 13 questions about confidence in institutions, like the press, organized religion, and the military, because they evaluate institutions rather than take a position on an issue. I made this decision after seeing results that included them, so in a later article I'll show what difference they make.
-
-That leaves 48 questions. There's no cutoff based on how strongly a question separates conservatives and liberals; every question that passes the requirements is in.
-
-I wrote these rules down before looking at how the answers to any question changed over time (except for the confidence questions, as I said). And none of the steps uses the trends in the answers, only the differences between conservatives and liberals, so the selection can't favor questions that tell a particular story. In a later article, I'll describe the process in more detail and show how much the results depend on it.
-
-To combine responses to 48 questions into a single measure, I use a statistical model that accounts for the fact that not every respondent was asked every question. For each respondent, it estimates the percentage of the 48 questions where they would give a conservative answer if they were asked all of them. I'll call that measure "percent conservative responses". The analysis includes about 65,000 respondents from 1972 to 2024 who answered at least five of the questions.
-
-% Sample: 2021 is dropped and, in 2022 and 2024, only interviewer-administered respondents are
-% included (mode; maybe a sentence or a footnote here, details in a later post).
+Now let's see some results.
 
 ## Older people are more conservative
 
-The following figure shows percent conservative responses as a function of age, with one line for each decade of the survey, from the 1970s to the 2020s.
+If you think about the people you know, it's likely that the older ones are more conservative, on average, than the younger ones.
+
+To see what that difference looks like in the data, I divided the respondents by the decade when they were interviewed and computed the average percentage of conservative responses as a function of age.
+
+The following figure shows the results, with one line for each decade of the survey from the 1970s to the 2020s.
 
 ```{figure} figs/age_series_p48.png
 :name: fig-age-series
@@ -72,13 +51,16 @@ The following figure shows percent conservative responses as a function of age, 
 Percent conservative responses by age, for each decade of surveys.
 ```
 
-In every decade, older people give more conservative answers than younger people. In the 1970s, conservatism increased by about 3.9 percentage points per decade of age. Since then the slope has been a little smaller, about 2.9 points per decade in the 1980s and 1990s, and 2.1 to 2.4 points per decade since 2000. But in every decade, the oldest respondents are 15 to 25 points more conservative than the youngest.
+We can see two trends:
 
-The figure also shows that every line is lower than the one before. At every age, people surveyed in the 2020s are more liberal than people the same age surveyed in the 1970s. Keep that in mind; it will be important.
+1. In every decade, older people give more conservative answers than younger people. In the 1970s, conservatism increased by about 3.9 percentage points per decade of age. Since then the slope has been a little smaller, about 2.9 points per decade in the 1980s and 1990s, and 2.1 to 2.4 points per decade since 2000. But in every decade, the oldest respondents are 15 to 25 points more conservative than the youngest.
 
-So the first half of the quip is right: older people are more conservative. But that doesn't mean that people *become* more conservative as they get older.
+2. The figure also shows that every line is lower than the one before. At every age, people surveyed in the 2020s are more liberal than people the same age surveyed in the 1970s. Keep that in mind; it will be important.
 
-## But people don't get more conservative
+So the first half of the quip is right: older people are more conservative.
+But that doesn't mean that people *become* more conservative as they get older.
+
+## People don't get more conservative
 
 To see why, let's group people by decade of birth. The following figure shows percent conservative responses as a function of age again, but this time each line represents a decade of birth, from the 1900s to the 2000s.
 
@@ -192,3 +174,24 @@ The answer, as I suggested in [*The Center Moves Faster Than You*](https://www.a
 % Possibly mention the Overtron here once it is live: "If you want to see how the results depend
 % on which questions count as conservative, you can choose your own and run the analysis in your
 % browser."
+
+
+## Question selection
+
+1. **Start with everything.** The GSS cumulative file has 6,943 variables. I kept the ones that record responses to questions asked in at least 8 waves over a span of at least 15 years, with between 2 and 7 possible answers. That leaves 432.
+
+2. **Keep the opinions.** From those, I kept the questions that ask for an opinion about a public issue or a social norm. I left out demographics (like age and income), behavior (like smoking or owning a gun), personal circumstances (like happiness and health), and, as I did for the book, religious belief and practice (we'll revisit that one). I also left out questions about party and voting, which would make the measure circular. That leaves about 170 questions.
+
+3. **Identify the conservative answers.** For each question, I split the answers into two groups at the point that best separates people who identify as conservative from people who identify as liberal. The answers conservatives choose more often are the conservative side. For example, if the question is "Do you favor or oppose the death penalty for persons convicted of murder?", the conservative answer is "Favor".
+
+4. **Measure how well each question separates them.** For each question, I estimated how strongly the conservative answer is associated with self-identified ideology, controlling for the year of the survey and the respondent's year of birth.
+
+5. **Coverage.** For the final list, a question had to be asked in at least half of the survey years (16 of 32). That's because the measure compares people surveyed decades apart, se we need long-running questions that overlap in time. If too many questions are short-lived, people surveyed in different years would be measured by different questions, and changes over time would mix real changes in beliefs with changes in the questions.
+
+6. **Stability.** The difference between conservatives and liberals couldn't reverse. If the same answer was given more often by conservatives in one decade and by liberals in another, the question is not a stable indicator a conservatism.
+   
+7. **No duplicates.** Some questions were asked with two different wordings, on different versions of the survey, so I kept one of each pair. And when several questions cover the same topic, I kept the one that best separates conservatives and liberals, from step 4.
+
+8. **No confidence questions.** I left out 13 questions about confidence in institutions -- like the press, organized religion, and the military -- because they evaluate institutions rather than take a position on an issue. I made this decision after seeing results that included them, so in a later article I'll show what difference they make.
+
+9. **Check for drift.** A question "drifts" if its connection to conservatism changes over time. This step ended up excluding only two questions, so it doesn't have much impact on the results. I'll skip the details.

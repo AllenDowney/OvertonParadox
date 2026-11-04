@@ -754,7 +754,13 @@ def _label_color(color, max_lightness: float = 55.0):
     """Line color for a direct label, darkened when light so the text stays legible."""
     from matplotlib.colors import to_hex, to_rgb
 
-    from composite_palette import lightness
+    def lightness(h):
+        """CIE L* of a hex color (from CultureWar's palette module, which moved)."""
+        c = np.array(to_rgb(h))
+        c = np.where(c <= 0.04045, c / 12.92, ((c + 0.055) / 1.055) ** 2.4)
+        y = c @ np.array([0.2126, 0.7152, 0.0722])
+        f = np.cbrt(y) if y > 0.008856 else 7.787 * y + 16 / 116
+        return 116 * f - 16
 
     rgb = to_rgb(color)
     for _ in range(12):

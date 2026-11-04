@@ -1,5 +1,5 @@
 // The summaries against Python's, computed from the same thinned draws of the saved
-// p48 fits (overtron/fixtures/summaries.json). The respondents are rebuilt from the
+// primary fits (overtron/fixtures/summaries.json). The respondents are rebuilt from the
 // excerpt with the decided difficulties; the excerpt's float32 weights are why the
 // comparisons allow about 1e-5 points instead of exact equality.
 
@@ -15,11 +15,11 @@ const data = new URL("../public/data/v1/", import.meta.url);
 const manifest = JSON.parse(readFileSync(new URL("manifest.json", data), "utf8")) as Manifest;
 const raw = gunzipSync(readFileSync(new URL("respondents.bin.gz", data)));
 const excerpt = decode(raw.buffer.slice(raw.byteOffset, raw.byteOffset + raw.byteLength) as ArrayBuffer, manifest);
-const p48 = JSON.parse(readFileSync(new URL("../fixtures/p48.json", import.meta.url), "utf8"));
+const primary = JSON.parse(readFileSync(new URL("../fixtures/primary.json", import.meta.url), "utf8"));
 const fx = JSON.parse(readFileSync(new URL("../fixtures/summaries.json", import.meta.url), "utf8"));
 
-const answers = code(excerpt, p48.codes);
-const scored = score(excerpt, answers, answered(answers), answers.names.map((v) => p48.difficulties_reference[v]), p48.min_answered);
+const answers = code(excerpt, primary.codes);
+const scored = score(excerpt, answers, answered(answers), answers.names.map((v) => primary.difficulties_reference[v]), primary.min_answered);
 
 const TOL = 1e-5; // points, on the 0-100 scale
 

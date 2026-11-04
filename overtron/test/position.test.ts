@@ -12,12 +12,12 @@ const data = new URL("../public/data/v1/", import.meta.url);
 const manifest = JSON.parse(readFileSync(new URL("manifest.json", data), "utf8")) as Manifest;
 const raw = gunzipSync(readFileSync(new URL("respondents.bin.gz", data)));
 const excerpt = decode(raw.buffer.slice(raw.byteOffset, raw.byteOffset + raw.byteLength) as ArrayBuffer, manifest);
-const p48 = JSON.parse(readFileSync(new URL("../fixtures/p48.json", import.meta.url), "utf8"));
+const primary = JSON.parse(readFileSync(new URL("../fixtures/primary.json", import.meta.url), "utf8"));
 const fx = JSON.parse(readFileSync(new URL("../fixtures/position.json", import.meta.url), "utf8"));
 
-const answers = code(excerpt, p48.codes);
-const d = answers.names.map((v) => p48.difficulties_reference[v]);
-const scored = score(excerpt, answers, answered(answers), d, p48.min_answered);
+const answers = code(excerpt, primary.codes);
+const d = answers.names.map((v) => primary.difficulties_reference[v]);
+const scored = score(excerpt, answers, answered(answers), d, primary.min_answered);
 
 test("latent normals by year", () => {
   const year = distributions(answers, excerpt, scored, d, (i) => String(excerpt.year[i]));

@@ -28,7 +28,7 @@ export interface Question {
   readonly rank: number;
   readonly domain: string;
   readonly topic: string;
-  readonly in_p48: boolean;
+  readonly in_primary: boolean;
   readonly excluded_because: readonly string[];
   readonly [key: string]: unknown;
 }

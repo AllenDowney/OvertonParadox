@@ -20,54 +20,7 @@ Numbers below are from the decided specification (lab notebook, 2026-11-01, "Res
 
 **Point:** In every decade of surveys, older people hold more conservative beliefs. But following the same people over time, their beliefs don't get more conservative; they get a little more liberal.
 
-**Outline:**
-- This is an update of the analysis in Chapter 12:
-  - new data (GSS through 2024);
-  - better methods (developed for YWCN).
-- Question: do people get more conservative as they get older?
-- Method:
-  - Core claim: conservative beliefs are the ones where liberals and conservatives differ.
-  - What I did for the book.
-  - What we did this time: selection process and rationale.
-- If you observe people over an interval of time, the older ones have more conservative beliefs.
-- But in their beliefs, people don't get more conservative over time:
-  - aggregate by decade of birth;
-  - aggregate by social generation;
-  - period–cohort analysis.
-- First metric: the slope of the period (within-cohort) component.
-
-**Key results:**
-- Age slope, percentage points per decade of age: +3.9 (1970s), +2.9 (1980s, 1990s), +2.1–2.4 (since 2000).
-- Within-cohort slope: −0.84 [−1.01, −0.68] percentage points per decade.
-- Decomposition of the total change (−17.0 points): generational replacement −12.0, changing minds −4.9 (71% replacement).
-- Every birth group's within-cohort slope is negative or about zero; none moves toward conservative.
-
-**Key figures:**
-1. [age_series_p48](../figs/apc/age_series_p48.png): older is more conservative, in every decade of surveys. The setup.
-2. [age_by_decade_p48](../figs/apc/age_by_decade_p48.png): the updated version of the book's figure (`overton5`: conservatism by age, grouped by decade of birth). Each decade of birth is flat or declining as it ages. Then explain the bias (below).
-3. [trajectories_p48](../figs/apc/trajectories_p48.png): the period–cohort model's trajectory for each birth year, before aggregating (as in YWCN's cohort-trajectory figures).
-4. [cohort_component_p48](../figs/apc/cohort_component_p48.png) and [period_component_p48](../figs/apc/period_component_p48.png): the trajectories decomposed. The cohort component is where each birth year starts (later birth years are more liberal); the period component is how everyone moves together (the within-cohort change). The first metric is the slope of a line through the period component. All respondents (the versions with liberals, moderates, and conservatives are `*_component_by_group_p48`).
-5. [pc_by_decade_p48](../figs/apc/pc_by_decade_p48.png), then [pc_by_generation_p48](../figs/apc/pc_by_generation_p48.png): the same model fit within each decade of birth, then each generation, with each group's mix of birth years held fixed; every group moves toward liberal.
-
-**Notes:**
-- Within-cohort change combines aging and the times (age–period–cohort identification); phrase the claim that way.
-- **Why the book's figure is biased.** A group spans many birth years (a decade, or 16–19 years for a generation), and its mix of birth years changes as you follow it:
-  - **Against survey year:** over time, the oldest members die and drop out (and, for recent groups, the youngest age into the survey), so the group shifts toward later, more liberal birth years. The line falls even if no one changes their mind: biased down.
-  - **Against age (the book's `overton5`):** at older ages only the group's earliest, more conservative birth years have been observed. The line rises with age even if no one changes: biased up. Figure 2 is the by-age version, so its bias works against its conclusion: the lines are flat or declining despite a bias that pushes them up. The by-year versions ([year_by_decade_p48](../figs/apc/year_by_decade_p48.png), [year_by_generation_p48](../figs/apc/year_by_generation_p48.png)) are biased the other way.
-  - **The fix (YWCN):** the period–cohort model estimates each birth year's trajectory (figure 3), then aggregates with the group's mix of birth years held fixed (figure 5), so the composition can't move the line.
-  - **The trajectories are parallel by construction:** on the logit scale, each birth year's line is the same period curve shifted by its cohort effect (no age term, no cohort × period interaction). So figure 3 shows the model's structure, not separate evidence for each cohort; the evidence is that the period component is estimated from cells that follow each cohort over time. Say so in the post. It also means the direction is easier to read from the period component (figure 4) than from the trajectories: every birth year's line has the same shape on the logit scale.
-  - **Caution:** those are the directions composition pushes, assuming later birth years are more liberal; they aren't bounds. With the decided specification, the period–cohort slope falls between the by-age and by-year slopes for only 11 of 17 groups (10 of 17 before the 2026-11-02 refit, 15 of 17 in the exploratory run), and for the 1950s, 1960s, and 1970s the by-age slope is the more negative one. So the post shouldn't promise that the truth lies between the two.
-- By generation instead of decade of birth: [age_by_generation_p48](../figs/apc/age_by_generation_p48.png).
-- Decided (2026-11-02): post 1 doesn't mention the core economic exception (+1.6 points per decade within cohorts); it first appears in post 4.
-
-**Related posts** (`related-articles`, 2026-11-02):
-- [The Overton Paradox](https://www.allendowney.com/blog/2023/04/24/the-overton-paradox/) (2023-04-24): the book excerpt this post updates.
-- [The Overton Paradox in Three Graphs](https://www.allendowney.com/blog/2023/09/19/the-overton-paradox-in-three-graphs/) (2023-09-19): the short version of the original argument.
-- [The Center Moves Faster Than You](https://www.allendowney.com/blog/2024/01/04/the-center-moves-faster-than-you/) (2024-01-04): the mechanism; the natural lead-in to post 2.
-- [Simpson's Paradox and Age Effects](https://www.allendowney.com/blog/2021/05/03/simpsons-paradox-and-age-effects/) (2021-05-03): older people look more conservative because of cohort, not age; the same argument with GSS data.
-- [Sexual morality](https://www.allendowney.com/blog/2026/05/28/sexual-morality/) (2026-05-28) or [Confidence in Institutions](https://www.allendowney.com/blog/2026/05/19/confidence-in-institutions/) (2026-05-19): recent posts that use the same period–cohort model; link one as the method's introduction.
-- [You Would Choose Now](https://www.allendowney.com/blog/2026/06/16/you-would-choose-now/) (2026-06-16): the book where the methods were developed.
-- Optional: [Chasing the Overton Window](https://www.allendowney.com/blog/2022/11/09/chasing-the-overton-window/) (2022-11-09, the PyData NYC talk); [Old optimists and young pessimists](https://www.allendowney.com/blog/2021/04/27/old-optimists-and-young-pessimists/) (2021-04-27, Simpson's paradox in the GSS).
+Task 3 on the board (`PROJECT_BOARD.md`); outline, figures, notes, related posts, and tasks in `docs/post1_plan.md`. Draft: `jb/post1_age.md`.
 
 ---
 
