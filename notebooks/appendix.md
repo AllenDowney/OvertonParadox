@@ -22,6 +22,15 @@ This notebook shows the whole analysis behind the articles in this series, from 
 
 Where the production analysis did something the notebook can't (it started from the full GSS file, and ran longer MCMC samples), the notebook loads the saved results and checks that its own computations agree with them.
 
+On Colab, upgrade the sampling stack before importing PyMC: Colab ships an older PyMC, and installing nutpie alone can pull in ArviZ 1.x and break the imports.
+
+```python
+import sys
+
+if "google.colab" in sys.modules:
+    %pip install -q "pymc>=6" "arviz>=1.1" nutpie
+```
+
 ```python
 import gzip
 import json
@@ -827,7 +836,8 @@ The within-cohort slope and the decomposition, compared with the production fit:
 ```python
 keys = ["period_slope_per_decade", "period_slope_lo90", "period_slope_hi90", "total_change",
         "generational_replacement", "changing_minds"]
-pd.DataFrame(dict(here=[pc_summary[k] for k in keys], production=saved.loc["period_cohort_primary", keys])).round(2)
+pd.DataFrame(dict(here=[pc_summary[k] for k in keys],
+                  production=saved.loc["period_cohort_primary", keys].astype(float))).round(2)
 ```
 
 ### By decade of birth

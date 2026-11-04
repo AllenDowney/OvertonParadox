@@ -17,9 +17,9 @@ The overall plan, decided specification, and log are in `docs/plan.md`; the date
 **Checklist:**
 - [x] Regenerate the excerpt for the `primary` pool (with Task 2)
 - [x] Open questions: self-contained code, `notebooks/appendix.ipynb` with stored outputs, shorter fits compared with the saved results (2026-11-04)
-- [ ] Release `data-v1` (staged locally; upload pending)
+- [x] Release `data-v1`
 - [x] Write the notebook (draft; runs locally, all checks pass)
-- [ ] Run on Colab; build in jb
+- [x] Run on Colab; build in jb
 - [ ] Link from posts 1 and 3
 
 **Related:** `docs/plan.md` (Phase 6), `docs/blog_series.md`, `overton/excerpt.py`, `jb/`
