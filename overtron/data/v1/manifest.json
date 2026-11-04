@@ -1,0 +1,1187 @@
+{
+ "version": "v1",
+ "rows": 68005,
+ "source": "GSS 1972-2024 cumulative file, release 3a (NORC), via the CultureWar extract",
+ "citation": "Davern, Michael; Bautista, Rene; Freese, Jeremy; Herd, Pamela; and Morgan, Stephen L.; General Social Survey 1972-2024. NORC at the University of Chicago. gss.norc.org",
+ "interviewer_sample": "2021 dropped; in 2022 and 2024, interviewer-administered respondents only (in person, phone), with wtssps raked to the full sample's margins (docs/mode_design.md)",
+ "weight": "wtssps, raked to the full sample's margins in 2022 and 2024",
+ "missing": "-1 in integer columns, NaN in weights",
+ "byte_order": "little",
+ "commit": "1270d18",
+ "columns": [
+  {
+   "name": "year",
+   "dtype": "int16",
+   "offset": 0,
+   "length": 68005
+  },
+  {
+   "name": "id",
+   "dtype": "int16",
+   "offset": 136012,
+   "length": 68005
+  },
+  {
+   "name": "age",
+   "dtype": "int8",
+   "offset": 272024,
+   "length": 68005
+  },
+  {
+   "name": "cohort",
+   "dtype": "int16",
+   "offset": 340032,
+   "length": 68005
+  },
+  {
+   "name": "polviews",
+   "dtype": "int8",
+   "offset": 476044,
+   "length": 68005
+  },
+  {
+   "name": "mode",
+   "dtype": "int8",
+   "offset": 544052,
+   "length": 68005
+  },
+  {
+   "name": "weight",
+   "dtype": "float32",
+   "offset": 612060,
+   "length": 68005
+  },
+  {
+   "name": "homosex",
+   "dtype": "int8",
+   "offset": 884080,
+   "length": 68005
+  },
+  {
+   "name": "helppoor",
+   "dtype": "int8",
+   "offset": 952088,
+   "length": 68005
+  },
+  {
+   "name": "helpnot",
+   "dtype": "int8",
+   "offset": 1020096,
+   "length": 68005
+  },
+  {
+   "name": "pillok",
+   "dtype": "int8",
+   "offset": 1088104,
+   "length": 68005
+  },
+  {
+   "name": "sexeduc",
+   "dtype": "int8",
+   "offset": 1156112,
+   "length": 68005
+  },
+  {
+   "name": "helpsick",
+   "dtype": "int8",
+   "offset": 1224120,
+   "length": 68005
+  },
+  {
+   "name": "wrkwayup",
+   "dtype": "int8",
+   "offset": 1292128,
+   "length": 68005
+  },
+  {
+   "name": "natarmsy",
+   "dtype": "int8",
+   "offset": 1360136,
+   "length": 68005
+  },
+  {
+   "name": "abany",
+   "dtype": "int8",
+   "offset": 1428144,
+   "length": 68005
+  },
+  {
+   "name": "goveqinc",
+   "dtype": "int8",
+   "offset": 1496152,
+   "length": 68005
+  },
+  {
+   "name": "grass",
+   "dtype": "int8",
+   "offset": 1564160,
+   "length": 68005
+  },
+  {
+   "name": "teensex",
+   "dtype": "int8",
+   "offset": 1632168,
+   "length": 68005
+  },
+  {
+   "name": "abdefect",
+   "dtype": "int8",
+   "offset": 1700176,
+   "length": 68005
+  },
+  {
+   "name": "eqwlth",
+   "dtype": "int8",
+   "offset": 1768184,
+   "length": 68005
+  },
+  {
+   "name": "natracey",
+   "dtype": "int8",
+   "offset": 1836192,
+   "length": 68005
+  },
+  {
+   "name": "abnomore",
+   "dtype": "int8",
+   "offset": 1904200,
+   "length": 68005
+  },
+  {
+   "name": "natenviy",
+   "dtype": "int8",
+   "offset": 1972208,
+   "length": 68005
+  },
+  {
+   "name": "premarsx",
+   "dtype": "int8",
+   "offset": 2040216,
+   "length": 68005
+  },
+  {
+   "name": "helpblk",
+   "dtype": "int8",
+   "offset": 2108224,
+   "length": 68005
+  },
+  {
+   "name": "abpoor",
+   "dtype": "int8",
+   "offset": 2176232,
+   "length": 68005
+  },
+  {
+   "name": "abrape",
+   "dtype": "int8",
+   "offset": 2244240,
+   "length": 68005
+  },
+  {
+   "name": "natarms",
+   "dtype": "int8",
+   "offset": 2312248,
+   "length": 68005
+  },
+  {
+   "name": "absingle",
+   "dtype": "int8",
+   "offset": 2380256,
+   "length": 68005
+  },
+  {
+   "name": "abhlth",
+   "dtype": "int8",
+   "offset": 2448264,
+   "length": 68005
+  },
+  {
+   "name": "letin1a",
+   "dtype": "int8",
+   "offset": 2516272,
+   "length": 68005
+  },
+  {
+   "name": "xmarsex",
+   "dtype": "int8",
+   "offset": 2584280,
+   "length": 68005
+  },
+  {
+   "name": "cappun",
+   "dtype": "int8",
+   "offset": 2652288,
+   "length": 68005
+  },
+  {
+   "name": "natfarey",
+   "dtype": "int8",
+   "offset": 2720296,
+   "length": 68005
+  },
+  {
+   "name": "natenvir",
+   "dtype": "int8",
+   "offset": 2788304,
+   "length": 68005
+  },
+  {
+   "name": "natrace",
+   "dtype": "int8",
+   "offset": 2856312,
+   "length": 68005
+  },
+  {
+   "name": "racdif1",
+   "dtype": "int8",
+   "offset": 2924320,
+   "length": 68005
+  },
+  {
+   "name": "natfare",
+   "dtype": "int8",
+   "offset": 2992328,
+   "length": 68005
+  },
+  {
+   "name": "jobsall",
+   "dtype": "int8",
+   "offset": 3060336,
+   "length": 68005
+  },
+  {
+   "name": "marblk",
+   "dtype": "int8",
+   "offset": 3128344,
+   "length": 68005
+  },
+  {
+   "name": "prayer",
+   "dtype": "int8",
+   "offset": 3196352,
+   "length": 68005
+  },
+  {
+   "name": "affrmact",
+   "dtype": "int8",
+   "offset": 3264360,
+   "length": 68005
+  },
+  {
+   "name": "fefam",
+   "dtype": "int8",
+   "offset": 3332368,
+   "length": 68005
+  },
+  {
+   "name": "fehelp",
+   "dtype": "int8",
+   "offset": 3400376,
+   "length": 68005
+  },
+  {
+   "name": "advfront",
+   "dtype": "int8",
+   "offset": 3468384,
+   "length": 68005
+  },
+  {
+   "name": "pornmorl",
+   "dtype": "int8",
+   "offset": 3536392,
+   "length": 68005
+  },
+  {
+   "name": "spanking",
+   "dtype": "int8",
+   "offset": 3604400,
+   "length": 68005
+  },
+  {
+   "name": "divlaw",
+   "dtype": "int8",
+   "offset": 3672408,
+   "length": 68005
+  },
+  {
+   "name": "natheal",
+   "dtype": "int8",
+   "offset": 3740416,
+   "length": 68005
+  },
+  {
+   "name": "suicide4",
+   "dtype": "int8",
+   "offset": 3808424,
+   "length": 68005
+  },
+  {
+   "name": "suicide2",
+   "dtype": "int8",
+   "offset": 3876432,
+   "length": 68005
+  },
+  {
+   "name": "fejobaff",
+   "dtype": "int8",
+   "offset": 3944440,
+   "length": 68005
+  },
+  {
+   "name": "natcityy",
+   "dtype": "int8",
+   "offset": 4012448,
+   "length": 68005
+  },
+  {
+   "name": "pornlaw",
+   "dtype": "int8",
+   "offset": 4080456,
+   "length": 68005
+  },
+  {
+   "name": "suicide3",
+   "dtype": "int8",
+   "offset": 4148464,
+   "length": 68005
+  },
+  {
+   "name": "letdie1",
+   "dtype": "int8",
+   "offset": 4216472,
+   "length": 68005
+  },
+  {
+   "name": "busing",
+   "dtype": "int8",
+   "offset": 4284480,
+   "length": 68005
+  },
+  {
+   "name": "natchld",
+   "dtype": "int8",
+   "offset": 4352488,
+   "length": 68005
+  },
+  {
+   "name": "conpress",
+   "dtype": "int8",
+   "offset": 4420496,
+   "length": 68005
+  },
+  {
+   "name": "gunlaw",
+   "dtype": "int8",
+   "offset": 4488504,
+   "length": 68005
+  },
+  {
+   "name": "marhisp",
+   "dtype": "int8",
+   "offset": 4556512,
+   "length": 68005
+  },
+  {
+   "name": "fehire",
+   "dtype": "int8",
+   "offset": 4624520,
+   "length": 68005
+  },
+  {
+   "name": "suicide1",
+   "dtype": "int8",
+   "offset": 4692528,
+   "length": 68005
+  },
+  {
+   "name": "nathealy",
+   "dtype": "int8",
+   "offset": 4760536,
+   "length": 68005
+  },
+  {
+   "name": "courts",
+   "dtype": "int8",
+   "offset": 4828544,
+   "length": 68005
+  },
+  {
+   "name": "marasian",
+   "dtype": "int8",
+   "offset": 4896552,
+   "length": 68005
+  },
+  {
+   "name": "colhomo",
+   "dtype": "int8",
+   "offset": 4964560,
+   "length": 68005
+  },
+  {
+   "name": "conlabor",
+   "dtype": "int8",
+   "offset": 5032568,
+   "length": 68005
+  },
+  {
+   "name": "popular",
+   "dtype": "int8",
+   "offset": 5100576,
+   "length": 68005
+  },
+  {
+   "name": "nateducy",
+   "dtype": "int8",
+   "offset": 5168584,
+   "length": 68005
+  },
+  {
+   "name": "racdif3",
+   "dtype": "int8",
+   "offset": 5236592,
+   "length": 68005
+  },
+  {
+   "name": "discaffw",
+   "dtype": "int8",
+   "offset": 5304600,
+   "length": 68005
+  },
+  {
+   "name": "racdif4",
+   "dtype": "int8",
+   "offset": 5372608,
+   "length": 68005
+  },
+  {
+   "name": "discaff",
+   "dtype": "int8",
+   "offset": 5440616,
+   "length": 68005
+  },
+  {
+   "name": "fepol",
+   "dtype": "int8",
+   "offset": 5508624,
+   "length": 68005
+  },
+  {
+   "name": "commun",
+   "dtype": "int8",
+   "offset": 5576632,
+   "length": 68005
+  },
+  {
+   "name": "obey",
+   "dtype": "int8",
+   "offset": 5644640,
+   "length": 68005
+  },
+  {
+   "name": "fechld",
+   "dtype": "int8",
+   "offset": 5712648,
+   "length": 68005
+  },
+  {
+   "name": "pornrape",
+   "dtype": "int8",
+   "offset": 5780656,
+   "length": 68005
+  },
+  {
+   "name": "fepresch",
+   "dtype": "int8",
+   "offset": 5848664,
+   "length": 68005
+  },
+  {
+   "name": "usun",
+   "dtype": "int8",
+   "offset": 5916672,
+   "length": 68005
+  },
+  {
+   "name": "racpush",
+   "dtype": "int8",
+   "offset": 5984680,
+   "length": 68005
+  },
+  {
+   "name": "nateduc",
+   "dtype": "int8",
+   "offset": 6052688,
+   "length": 68005
+  },
+  {
+   "name": "racopen",
+   "dtype": "int8",
+   "offset": 6120696,
+   "length": 68005
+  },
+  {
+   "name": "natcity",
+   "dtype": "int8",
+   "offset": 6188704,
+   "length": 68005
+  },
+  {
+   "name": "conclerg",
+   "dtype": "int8",
+   "offset": 6256712,
+   "length": 68005
+  },
+  {
+   "name": "colcom",
+   "dtype": "int8",
+   "offset": 6324720,
+   "length": 68005
+  },
+  {
+   "name": "spkhomo",
+   "dtype": "int8",
+   "offset": 6392728,
+   "length": 68005
+  },
+  {
+   "name": "libmslm",
+   "dtype": "int8",
+   "offset": 6460736,
+   "length": 68005
+  },
+  {
+   "name": "libhomo",
+   "dtype": "int8",
+   "offset": 6528744,
+   "length": 68005
+  },
+  {
+   "name": "colmslm",
+   "dtype": "int8",
+   "offset": 6596752,
+   "length": 68005
+  },
+  {
+   "name": "wirtap",
+   "dtype": "int8",
+   "offset": 6664760,
+   "length": 68005
+  },
+  {
+   "name": "fepres",
+   "dtype": "int8",
+   "offset": 6732768,
+   "length": 68005
+  },
+  {
+   "name": "natdrugy",
+   "dtype": "int8",
+   "offset": 6800776,
+   "length": 68005
+  },
+  {
+   "name": "colath",
+   "dtype": "int8",
+   "offset": 6868784,
+   "length": 68005
+  },
+  {
+   "name": "natmass",
+   "dtype": "int8",
+   "offset": 6936792,
+   "length": 68005
+  },
+  {
+   "name": "discaffm",
+   "dtype": "int8",
+   "offset": 7004800,
+   "length": 68005
+  },
+  {
+   "name": "nataidy",
+   "dtype": "int8",
+   "offset": 7072808,
+   "length": 68005
+  },
+  {
+   "name": "libath",
+   "dtype": "int8",
+   "offset": 7140816,
+   "length": 68005
+  },
+  {
+   "name": "fehome",
+   "dtype": "int8",
+   "offset": 7208824,
+   "length": 68005
+  },
+  {
+   "name": "conbus",
+   "dtype": "int8",
+   "offset": 7276832,
+   "length": 68005
+  },
+  {
+   "name": "spkmslm",
+   "dtype": "int8",
+   "offset": 7344840,
+   "length": 68005
+  },
+  {
+   "name": "natcrimy",
+   "dtype": "int8",
+   "offset": 7412848,
+   "length": 68005
+  },
+  {
+   "name": "conarmy",
+   "dtype": "int8",
+   "offset": 7480856,
+   "length": 68005
+  },
+  {
+   "name": "liveblks",
+   "dtype": "int8",
+   "offset": 7548864,
+   "length": 68005
+  },
+  {
+   "name": "racseg",
+   "dtype": "int8",
+   "offset": 7616872,
+   "length": 68005
+  },
+  {
+   "name": "workblks",
+   "dtype": "int8",
+   "offset": 7684880,
+   "length": 68005
+  },
+  {
+   "name": "natsci",
+   "dtype": "int8",
+   "offset": 7752888,
+   "length": 68005
+  },
+  {
+   "name": "racchng",
+   "dtype": "int8",
+   "offset": 7820896,
+   "length": 68005
+  },
+  {
+   "name": "thnkself",
+   "dtype": "int8",
+   "offset": 7888904,
+   "length": 68005
+  },
+  {
+   "name": "libcom",
+   "dtype": "int8",
+   "offset": 7956912,
+   "length": 68005
+  },
+  {
+   "name": "natpark",
+   "dtype": "int8",
+   "offset": 8024920,
+   "length": 68005
+  },
+  {
+   "name": "coneduc",
+   "dtype": "int8",
+   "offset": 8092928,
+   "length": 68005
+  },
+  {
+   "name": "marwht",
+   "dtype": "int8",
+   "offset": 8160936,
+   "length": 68005
+  },
+  {
+   "name": "getahead",
+   "dtype": "int8",
+   "offset": 8228944,
+   "length": 68005
+  },
+  {
+   "name": "colmil",
+   "dtype": "int8",
+   "offset": 8296952,
+   "length": 68005
+  },
+  {
+   "name": "nataid",
+   "dtype": "int8",
+   "offset": 8364960,
+   "length": 68005
+  },
+  {
+   "name": "racmar",
+   "dtype": "int8",
+   "offset": 8432968,
+   "length": 68005
+  },
+  {
+   "name": "spkcom",
+   "dtype": "int8",
+   "offset": 8500976,
+   "length": 68005
+  },
+  {
+   "name": "polescap",
+   "dtype": "int8",
+   "offset": 8568984,
+   "length": 68005
+  },
+  {
+   "name": "world1",
+   "dtype": "int8",
+   "offset": 8636992,
+   "length": 68005
+  },
+  {
+   "name": "tax",
+   "dtype": "int8",
+   "offset": 8705000,
+   "length": 68005
+  },
+  {
+   "name": "confinan",
+   "dtype": "int8",
+   "offset": 8773008,
+   "length": 68005
+  },
+  {
+   "name": "libmil",
+   "dtype": "int8",
+   "offset": 8841016,
+   "length": 68005
+  },
+  {
+   "name": "polhitok",
+   "dtype": "int8",
+   "offset": 8909024,
+   "length": 68005
+  },
+  {
+   "name": "hitrobbr",
+   "dtype": "int8",
+   "offset": 8977032,
+   "length": 68005
+  },
+  {
+   "name": "polabuse",
+   "dtype": "int8",
+   "offset": 9045040,
+   "length": 68005
+  },
+  {
+   "name": "hitbeatr",
+   "dtype": "int8",
+   "offset": 9113048,
+   "length": 68005
+  },
+  {
+   "name": "racpres",
+   "dtype": "int8",
+   "offset": 9181056,
+   "length": 68005
+  },
+  {
+   "name": "contv",
+   "dtype": "int8",
+   "offset": 9249064,
+   "length": 68005
+  },
+  {
+   "name": "spkath",
+   "dtype": "int8",
+   "offset": 9317072,
+   "length": 68005
+  },
+  {
+   "name": "polattak",
+   "dtype": "int8",
+   "offset": 9385080,
+   "length": 68005
+  },
+  {
+   "name": "pornout",
+   "dtype": "int8",
+   "offset": 9453088,
+   "length": 68005
+  },
+  {
+   "name": "porninf",
+   "dtype": "int8",
+   "offset": 9521096,
+   "length": 68005
+  },
+  {
+   "name": "wlthwhts",
+   "dtype": "int8",
+   "offset": 9589104,
+   "length": 68005
+  },
+  {
+   "name": "natsoc",
+   "dtype": "int8",
+   "offset": 9657112,
+   "length": 68005
+  },
+  {
+   "name": "consci",
+   "dtype": "int8",
+   "offset": 9725120,
+   "length": 68005
+  },
+  {
+   "name": "fework",
+   "dtype": "int8",
+   "offset": 9793128,
+   "length": 68005
+  },
+  {
+   "name": "workhard",
+   "dtype": "int8",
+   "offset": 9861136,
+   "length": 68005
+  },
+  {
+   "name": "librac",
+   "dtype": "int8",
+   "offset": 9929144,
+   "length": 68005
+  },
+  {
+   "name": "intlwhts",
+   "dtype": "int8",
+   "offset": 9997152,
+   "length": 68005
+  },
+  {
+   "name": "natdrug",
+   "dtype": "int8",
+   "offset": 10065160,
+   "length": 68005
+  },
+  {
+   "name": "spkmil",
+   "dtype": "int8",
+   "offset": 10133168,
+   "length": 68005
+  },
+  {
+   "name": "livewhts",
+   "dtype": "int8",
+   "offset": 10201176,
+   "length": 68005
+  },
+  {
+   "name": "toofast",
+   "dtype": "int8",
+   "offset": 10269184,
+   "length": 68005
+  },
+  {
+   "name": "helpoth",
+   "dtype": "int8",
+   "offset": 10337192,
+   "length": 68005
+  },
+  {
+   "name": "anomia5",
+   "dtype": "int8",
+   "offset": 10405200,
+   "length": 68005
+  },
+  {
+   "name": "trust",
+   "dtype": "int8",
+   "offset": 10473208,
+   "length": 68005
+  },
+  {
+   "name": "colrac",
+   "dtype": "int8",
+   "offset": 10541216,
+   "length": 68005
+  },
+  {
+   "name": "usintl",
+   "dtype": "int8",
+   "offset": 10609224,
+   "length": 68005
+  },
+  {
+   "name": "wlthblks",
+   "dtype": "int8",
+   "offset": 10677232,
+   "length": 68005
+  },
+  {
+   "name": "nextgen",
+   "dtype": "int8",
+   "offset": 10745240,
+   "length": 68005
+  },
+  {
+   "name": "hitok",
+   "dtype": "int8",
+   "offset": 10813248,
+   "length": 68005
+  },
+  {
+   "name": "natspac",
+   "dtype": "int8",
+   "offset": 10881256,
+   "length": 68005
+  },
+  {
+   "name": "anomia6",
+   "dtype": "int8",
+   "offset": 10949264,
+   "length": 68005
+  },
+  {
+   "name": "meovrwrk",
+   "dtype": "int8",
+   "offset": 11017272,
+   "length": 68005
+  },
+  {
+   "name": "spkrac",
+   "dtype": "int8",
+   "offset": 11085280,
+   "length": 68005
+  },
+  {
+   "name": "natspacy",
+   "dtype": "int8",
+   "offset": 11153288,
+   "length": 68005
+  },
+  {
+   "name": "aged",
+   "dtype": "int8",
+   "offset": 11221296,
+   "length": 68005
+  },
+  {
+   "name": "racdif2",
+   "dtype": "int8",
+   "offset": 11289304,
+   "length": 68005
+  },
+  {
+   "name": "intlblks",
+   "dtype": "int8",
+   "offset": 11357312,
+   "length": 68005
+  },
+  {
+   "name": "workwhts",
+   "dtype": "int8",
+   "offset": 11425320,
+   "length": 68005
+  },
+  {
+   "name": "hitmarch",
+   "dtype": "int8",
+   "offset": 11493328,
+   "length": 68005
+  },
+  {
+   "name": "conlegis",
+   "dtype": "int8",
+   "offset": 11561336,
+   "length": 68005
+  },
+  {
+   "name": "hitdrunk",
+   "dtype": "int8",
+   "offset": 11629344,
+   "length": 68005
+  },
+  {
+   "name": "confed",
+   "dtype": "int8",
+   "offset": 11697352,
+   "length": 68005
+  },
+  {
+   "name": "anomia7",
+   "dtype": "int8",
+   "offset": 11765360,
+   "length": 68005
+  },
+  {
+   "name": "polmurdr",
+   "dtype": "int8",
+   "offset": 11833368,
+   "length": 68005
+  },
+  {
+   "name": "natcrime",
+   "dtype": "int8",
+   "offset": 11901376,
+   "length": 68005
+  },
+  {
+   "name": "conjudge",
+   "dtype": "int8",
+   "offset": 11969384,
+   "length": 68005
+  },
+  {
+   "name": "racfew",
+   "dtype": "int8",
+   "offset": 12037392,
+   "length": 68005
+  },
+  {
+   "name": "conmedic",
+   "dtype": "int8",
+   "offset": 12105400,
+   "length": 68005
+  },
+  {
+   "name": "fair",
+   "dtype": "int8",
+   "offset": 12173408,
+   "length": 68005
+  },
+  {
+   "name": "helpful",
+   "dtype": "int8",
+   "offset": 12241416,
+   "length": 68005
+  },
+  {
+   "name": "natroad",
+   "dtype": "int8",
+   "offset": 12309424,
+   "length": 68005
+  },
+  {
+   "name": "hitchild",
+   "dtype": "int8",
+   "offset": 12377432,
+   "length": 68005
+  },
+  {
+   "name": "attend",
+   "dtype": "int8",
+   "offset": 12445440,
+   "length": 68005
+  },
+  {
+   "name": "pray",
+   "dtype": "int8",
+   "offset": 12513448,
+   "length": 68005
+  },
+  {
+   "name": "reliten",
+   "dtype": "int8",
+   "offset": 12581456,
+   "length": 68005
+  },
+  {
+   "name": "fund",
+   "dtype": "int8",
+   "offset": 12649464,
+   "length": 68005
+  },
+  {
+   "name": "bible",
+   "dtype": "int8",
+   "offset": 12717472,
+   "length": 68005
+  },
+  {
+   "name": "god",
+   "dtype": "int8",
+   "offset": 12785480,
+   "length": 68005
+  },
+  {
+   "name": "postlife",
+   "dtype": "int8",
+   "offset": 12853488,
+   "length": 68005
+  },
+  {
+   "name": "reborn",
+   "dtype": "int8",
+   "offset": 12921496,
+   "length": 68005
+  },
+  {
+   "name": "savesoul",
+   "dtype": "int8",
+   "offset": 12989504,
+   "length": 68005
+  },
+  {
+   "name": "relpersn",
+   "dtype": "int8",
+   "offset": 13057512,
+   "length": 68005
+  },
+  {
+   "name": "sprtprsn",
+   "dtype": "int8",
+   "offset": 13125520,
+   "length": 68005
+  },
+  {
+   "name": "popespks",
+   "dtype": "int8",
+   "offset": 13193528,
+   "length": 68005
+  },
+  {
+   "name": "mapa",
+   "dtype": "int8",
+   "offset": 13261536,
+   "length": 68005
+  },
+  {
+   "name": "mastersp",
+   "dtype": "int8",
+   "offset": 13329544,
+   "length": 68005
+  },
+  {
+   "name": "judgeluv",
+   "dtype": "int8",
+   "offset": 13397552,
+   "length": 68005
+  },
+  {
+   "name": "frndking",
+   "dtype": "int8",
+   "offset": 13465560,
+   "length": 68005
+  },
+  {
+   "name": "owngun",
+   "dtype": "int8",
+   "offset": 13533568,
+   "length": 68005
+  },
+  {
+   "name": "hunt",
+   "dtype": "int8",
+   "offset": 13601576,
+   "length": 68005
+  }
+ ],
+ "bytes": 13669584,
+ "sha256": "6e3b341af1ca0c1fe090d0db5c41cb92589ad588a191accbdb0555011ba78906",
+ "gz_bytes": 2693581,
+ "gz_sha256": "019b202db723d6590b1554c1315a113e37aa9c1732c9ff3f765bf65b1398bd3e"
+}

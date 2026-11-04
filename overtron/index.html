@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Overtron</title>
+    <style>:root{--ink:#1b1b1b;--muted:#666;--rule:#ddd;--bg:#fff;--accent:#2b5d9a}@media (prefers-color-scheme:dark){:root{--ink:#e8e8e8;--muted:#aaa;--rule:#444;--bg:#161616;--accent:#7fa8de}}body{background:var(--bg);color:var(--ink);margin:0;font:16px/1.5 system-ui,sans-serif}main{max-width:960px;margin:0 auto;padding:16px}h1{margin:.2em 0}.muted{color:var(--muted)}.controls{flex-wrap:wrap;align-items:center;gap:12px;margin:1em 0;display:flex}button{font:inherit;padding:.4em 1.2em}progress{width:100%}table{border-collapse:collapse;font-variant-numeric:tabular-nums;width:100%;font-size:14px}th,td{text-align:right;border-bottom:1px solid var(--rule);padding:2px 8px}th:first-child,td:first-child{text-align:left}.wide{overflow-x:auto}#error{color:#b00020;white-space:pre-wrap}.figure{margin:.5em 0 1.5em;position:relative}.figure>svg{width:100%;height:auto;display:block;overflow:visible}.figure .axis{stroke:var(--muted);stroke-width:1px}.figure .tick,.figure .muted-text{fill:var(--muted);font-size:13px}.figure .label{fill:var(--ink);font-size:14px}.figure .interval{stroke-width:2px;stroke-linecap:round}.figure .mark{stroke:var(--bg);stroke-width:2px;cursor:default}.figure .mark:focus{stroke:var(--ink);outline:none}:root{--series-gray:#404040}@media (prefers-color-scheme:dark){:root{--series-gray:#c8c8c8}}.figure-header{margin-bottom:4px;position:relative}.figure-kind{text-align:right;color:var(--muted);font-size:14px;line-height:1.3;position:absolute;top:0;right:4px}.figure .grid{stroke:var(--rule);stroke-width:1px}.figure .axis-label{fill:var(--ink);font-size:14px}.figure .band{opacity:.3}.figure .line{fill:none;stroke-linejoin:round;stroke-linecap:round}.figure .line.dotted{stroke-dasharray:1 5}.figure .crosshair{stroke:var(--muted);stroke-width:1px}.figure .plate{fill:var(--bg)}.figure .label.small{fill:var(--muted);font-size:12px}.tooltip .swatch{vertical-align:middle;width:12px;height:3px;margin-right:6px;display:inline-block}.tooltip .muted{color:var(--muted)}.figure-intro{margin:.4em 0 .2em}.waiting{color:var(--muted);padding:1em 0;font-size:14px}h2{margin:1.2em 0 .3em;font-size:20px}.picker-top{flex-wrap:wrap;align-items:center;gap:8px 16px;margin:.5em 0;font-size:14px;display:flex}.presets{flex-wrap:wrap;align-items:center;gap:6px;display:flex}.preset{border:1px solid var(--rule);background:var(--bg);color:var(--ink);cursor:pointer;border-radius:999px;padding:.25em .8em;font-size:14px}.preset.active{border-color:var(--accent);color:var(--accent);font-weight:600}.show-all{color:var(--muted)}.category{border-top:1px solid var(--rule)}.category summary{cursor:pointer;padding:6px 0;font-weight:600}.category summary input{margin-right:4px}.category .count{color:var(--muted);font-size:14px;font-weight:400}.questions{gap:2px;padding:0 0 8px 24px;display:grid}.question{cursor:pointer;padding:2px 0;font-size:14px;line-height:1.35;display:block}.question .meta{color:var(--muted);font-size:12px}.questions .subhead{color:var(--muted);border-top:1px dashed var(--rule);margin-top:6px;padding-top:4px;font-size:13px}.coverage{border-top:1px solid var(--rule);margin-top:4px;padding-top:8px;font-size:14px}.coverage svg{width:100%;max-width:640px;height:auto;display:block}.coverage .bar{fill:var(--muted);opacity:.6}.coverage .bar.thin{fill:#c77c02;opacity:1}.coverage .bar.dropped{fill:#b3261e;opacity:1}.coverage .tick{fill:var(--muted);font-size:11px}.coverage-note{color:var(--muted)}.coverage-note.warn{color:#a55f00}@media (prefers-color-scheme:dark){.coverage .bar.thin{fill:#e0a23a}.coverage .bar.dropped{fill:#f2867d}.coverage-note.warn{color:#e0a23a}}.figure-title{font-size:17px;font-weight:700;line-height:1.3}.figure-subtitle{color:var(--muted);font-size:14px}.figure details{margin-top:6px;font-size:14px}.figure details table{width:auto}.tooltip{pointer-events:none;background:var(--bg);color:var(--ink);border:1px solid var(--rule);white-space:nowrap;z-index:1;border-radius:4px;padding:6px 8px;font-size:13px;line-height:1.4;position:absolute;box-shadow:0 2px 8px #00000026}</style>
+    <script type="module" crossorigin src="./assets/index-C7i5CBIG.js"></script>
+  </head>
+  <body>
+    <main>
+      <h1>The Overtron</h1>
+      <p>This page runs the analysis from the article <span id="article">"Do People Get More Conservative as They Age?"</span> in your browser. The article measures conservatism with 53 questions from the General Social Survey, chosen by a set of rules, and asks how people's answers change as they get older. But what counts as conservative depends on which questions you ask. Here you can choose your own, run the same models, and see whether the results change.</p>
+      <p class="muted">The figures appear in the same order as in the article, each as soon as its fits finish. A full run takes a few minutes. Each figure has a sentence about what the article found with the primary questions, so you can compare.</p>
+      <h2>Choose the questions</h2>
+      <p class="muted">What counts as "getting more conservative" depends on which questions you ask. Start from a preset, then add or remove questions; hover over a question for its wording.</p>
+      <div id="picker"></div>
+      <div class="controls">
+        <button id="run" disabled>Run</button>
+        <span id="status" class="muted">Loading data…</span>
+      </div>
+      <progress id="progress" max="1" value="0"></progress>
+      <div id="error"></div>
+      <div id="position" class="muted"></div>
+      <div id="figures"></div>
+      <details>
+        <summary>Diagnostics</summary>
+        <div class="wide"><table id="fits"><thead><tr>
+          <th>Fit</th><th>Time (s)</th><th>R-hat max</th><th>ESS min</th><th>Divergences</th><th>Slope per decade [90%]</th>
+        </tr></thead><tbody></tbody></table></div>
+      </details>
+      <p id="total" class="muted"></p>
+    </main>
+  </body>
+</html>
