@@ -18,7 +18,7 @@ Allen Downey
 
 [Click here to run this notebook on Colab](https://colab.research.google.com/github/AllenDowney/OvertonParadox/blob/main/notebooks/appendix.ipynb)
 
-This notebook shows the whole analysis behind the articles in this series, from the survey responses to the results: how the questions were selected, how conservatism is measured, and the models of age, period, and cohort. It's self-contained: every function it uses is defined here. It downloads a data excerpt (about 2.5 MB) and runs in about 15 minutes on Colab.
+This notebook shows the whole analysis behind the articles in this series, from the survey responses to the results: how the questions were selected, how conservatism is measured, and the models of age, period, and cohort. To run the same models with your own choice of questions, try [The Overtron](https://allendowney.github.io/OvertonParadox/overtron/), which runs them in your browser. It's self-contained: every function it uses is defined here. It downloads a data excerpt (about 2.5 MB) and runs in about 15 minutes on Colab.
 
 Where the production analysis did something the notebook can't (it started from the full GSS file, and ran longer MCMC samples), the notebook loads the saved results and checks that its own computations agree with them.
 
