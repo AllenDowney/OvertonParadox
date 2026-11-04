@@ -41,7 +41,8 @@ The overall plan, decided specification, and log are in `docs/plan.md`; the date
 - [x] Models (period, period–cohort, age), summaries, and relative position
 - [ ] Page: picker and figures done; diagnostics panel (including failed fits), decided values next to the reader's, `jb/` integration
 - [x] Regenerate for the `primary` pool and rename (`in_primary`, presets, fixtures, `run_primary.ts`; 16 tests pass)
-- [ ] Validation pass, then publish and link from the blog series
+- [x] Published with the jb site (`make -C jb deploy` builds it into `/overtron/`): https://allendowney.github.io/OvertonParadox/overtron/; linked from post 1 (2026-11-04)
+- [ ] Validation pass
 
 **Related:** `docs/plan.md`, `docs/blog_series.md`, `overtron/`, `overton/excerpt.py`
 

@@ -170,7 +170,7 @@ For example, you might think the questions I selected put too much weight on soc
 
 In future articles, I'll run the analysis with different bundles of variables. We'll see that the results are quite robust -- pretty much any bundle of questions that covers a mixture of topics leads to the same conclusions: people do not become more conservative with age.
 
-But if you don't want to wait, you can try it yourself. I have created an online calculator, called [The Overtron](), where you can select whatever bundle of questions you want and run the whole analysis in your browser.
+But if you don't want to wait, you can try it yourself. I have created an online calculator, called [The Overtron](https://allendowney.github.io/OvertonParadox/overtron/), where you can select whatever bundle of questions you want and run the whole analysis in your browser.
 Try it out, and let me know what you find!
 
 
