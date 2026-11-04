@@ -43,6 +43,7 @@
       .figure .label.small { font-size: 12px; fill: var(--muted); }
       .tooltip .swatch { display: inline-block; width: 12px; height: 3px; margin-right: 6px; vertical-align: middle; }
       .tooltip .muted { color: var(--muted); }
+      .figure-intro { margin: 0.4em 0 0.2em; }
       .waiting { color: var(--muted); font-size: 14px; padding: 1em 0; }
       h2 { font-size: 20px; margin: 1.2em 0 0.3em; }
       .picker-top { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin: 0.5em 0; font-size: 14px; }
@@ -80,7 +81,8 @@
   <body>
     <main>
       <h1>The Overtron</h1>
-      <p class="muted">Run the Overton pipeline in your browser for a preset question set.</p>
+      <p>This page runs the analysis from the article <span id="article">"Do People Get More Conservative as They Age?"</span> in your browser. The article measures conservatism with 53 questions from the General Social Survey, chosen by a set of rules, and asks how people's answers change as they get older. But what counts as conservative depends on which questions you ask. Here you can choose your own, run the same models, and see whether the results change.</p>
+      <p class="muted">The figures appear in the same order as in the article, each as soon as its fits finish. A full run takes a few minutes. Each figure has a sentence about what the article found with the primary questions, so you can compare.</p>
       <h2>Choose the questions</h2>
       <p class="muted">What counts as "getting more conservative" depends on which questions you ask. Start from a preset, then add or remove questions; hover over a question for its wording.</p>
       <div id="picker"></div>
@@ -90,7 +92,7 @@
       </div>
       <progress id="progress" max="1" value="0"></progress>
       <div id="error"></div>
-      <div id="position" class="muted">Not run yet.</div>
+      <div id="position" class="muted"></div>
       <div id="figures"></div>
       <details>
         <summary>Diagnostics</summary>

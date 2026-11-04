@@ -30,7 +30,7 @@ This time I replaced curation with a mostly automated section process that start
 
 To combine responses to 53 questions into a single measure, I use a Bayesian IRT (item response theory) model to estimate a latent factor of conservatism for each of 64,632 respondents from 1972 to 2024 who were asked and answered at least five questions.
 This model makes it possible to compare people who answered different sets of questions, even in cases where there is no overlap.
-More details about the process are in [this technical appendix](https://github.com/AllenDowney/OvertonParadox/blob/main/notebooks/appendix.ipynb).
+More details about the process are in [this technical appendix](https://allendowney.github.io/OvertonParadox/appendix).
 
 Finally, for each respondent, we express their estimated conservatism as a percentage, which you can think of as the number of conservative responses they would give to a hypothetical pool of 100 questions.
 
@@ -168,25 +168,30 @@ So if you think I chose badly, you might not be convinced by my conclusion.
 
 For example, you might think the questions I selected put too much weight on social issues and not enough on economic issues. You might not agree with my decision to exclude religious beliefs or confidence in institutions. Or you might think there should be more questions about crime.
 
-In future articles, I'll run the analysis with different bundles of variables. We'll see that the results are quite robust -- pretty much any bundle of questions that covers a mixture of topics leads to the same conclusions
+In future articles, I'll run the analysis with different bundles of variables. We'll see that the results are quite robust -- pretty much any bundle of questions that covers a mixture of topics leads to the same conclusions: people do not become more conservative with age.
+
+But if you don't want to wait, you can try it yourself. I have created an online calculator, called [The Overtron](), where you can select whatever bundle of questions you want and run the whole analysis in your browser.
+Try it out, and let me know what you find!
 
 
 ## Question selection
 
-1. **Start with everything.** The GSS cumulative file has 6,943 variables. I kept the ones that record responses to questions asked in at least 8 waves over a span of at least 15 years, with between 2 and 7 possible answers. That leaves 432.
+Here are the details of the selection process I used. In general, I tried to keep my judgement out of it, but you'll see that there are a couple of steps where I intervened.
 
-2. **Keep the opinions.** From those, I kept the questions that ask for an opinion about a public issue or a social norm. I left out demographics (like age and income), behavior (like smoking or owning a gun), personal circumstances (like happiness and health), and, as I did for the book, religious belief and practice (we'll revisit that one). I also left out questions about party and voting, which would make the measure circular. That leaves about 170 questions.
+1. **Start with everything.** The GSS cumulative file has 6,943 variables. I kept the ones that record responses to questions asked in at least 8 waves over a span of at least 15 years, with between 2 and 7 possible answers. That leaves 429.
+
+2. **Keep the opinions.** From those, I kept the questions that ask for an opinion about a public issue or a social norm. I left out demographics (like age and income), behavior (like smoking or owning a gun), personal circumstances (like happiness and health), and, as I did for the book, religious belief and practice (we'll revisit that one). I also left out questions about party and voting, which would make the measure circular. That eliminates 259 and leaves 170 questions.
 
 3. **Identify the conservative answers.** For each question, I split the answers into two groups at the point that best separates people who identify as conservative from people who identify as liberal. The answers conservatives choose more often are the conservative side. For example, if the question is "Do you favor or oppose the death penalty for persons convicted of murder?", the conservative answer is "Favor".
 
-4. **Measure how well each question separates them.** For each question, I estimated how strongly the conservative answer is associated with self-identified ideology, controlling for the year of the survey and the respondent's year of birth.
+4. **Measure how well each question separates them.** For each question, I estimated how strongly the conservative answer is associated with self-identified ideology, controlling for the year of the survey and the respondent's year of birth. Steps 3 and 4 don't eliminate any questions.
 
-5. **Coverage.** For the final list, a question had to be asked in at least half of the survey years (16 of 32). That's because the measure compares people surveyed decades apart, se we need long-running questions that overlap in time. If too many questions are short-lived, people surveyed in different years would be measured by different questions, and changes over time would mix real changes in beliefs with changes in the questions.
+5. **Coverage.** For the final list, a question had to be asked in at least half of the survey years (16 of 32). That's because the measure compares people surveyed decades apart, se we need long-running questions that overlap in time. If too many questions are short-lived, people surveyed in different years would be measured by different questions, and changes over time would mix real changes in beliefs with changes in the questions. This step eliminates 49 questions and leaves 121.
 
-6. **Stability.** The difference between conservatives and liberals couldn't reverse. If the same answer was given more often by conservatives in one decade and by liberals in another, the question is not a stable indicator a conservatism.
+6. **Stability.** The difference between conservatives and liberals couldn't reverse. If the same answer was given more often by conservatives in one decade and by liberals in another, the question is not a stable indicator a conservatism. This step eliminates 1 question and leaves 120.
    
-7. **No duplicates.** Some questions were asked with two different wordings, on different versions of the survey, so I kept one of each pair. And when several questions cover the same topic, I kept the one that best separates conservatives and liberals, from step 4.
+7. **No duplicates.** Some questions were asked with two different wordings, on different versions of the survey, so I kept one of each pair. And when several questions cover the same topic, I kept the one that best separates conservatives and liberals, from step 4. This step eliminates 53 questions (12 alternate wordings and 41 others on the same topic) and leaves 67.
 
-8. **No confidence questions.** I left out 13 questions about confidence in institutions -- like the press, organized religion, and the military -- because they evaluate institutions rather than take a position on an issue. I made this decision after seeing results that included them, so in a later article I'll show what difference they make.
+8. **No confidence questions.** I left out 13 questions about confidence in institutions -- like the press, organized religion, and the military -- because they evaluate institutions rather than take a position on an issue. I made this decision after seeing results that included them, so in a later article I'll show what difference they make. One of the 13 was already eliminated in step 6, so this step eliminates 12 and leaves 55.
 
-9. **Check for drift.** A question "drifts" if its connection to conservatism changes over time. This step ended up excluding only two questions, so it doesn't have much impact on the results. I'll skip the details.
+9. **Check for drift.** A question "drifts" if its connection to conservatism changes over time. This step ended up excluding only two questions, so it doesn't have much impact on the results. I'll skip the details. That leaves the 53 questions I used.

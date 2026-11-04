@@ -24,6 +24,11 @@ const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as 
 const run = $<HTMLButtonElement>("run");
 const status = $<HTMLSpanElement>("status");
 const progress = $<HTMLProgressElement>("progress");
+// the relative-position figure, moved below the post's figures on each run
+const position_el = $<HTMLDivElement>("position");
+
+// the article this page goes with; null until it's published on Probably Overthinking It
+const POST_URL: string | null = null;
 
 let excerpt: Excerpt;
 let table: PickerTable & { preset_settings: Record<string, PresetSettings> };
@@ -94,26 +99,32 @@ async function start() {
   const scored = score(excerpt, answers, answered(answers), d, settings.min_answered);
   const jobs = make_jobs(excerpt, scored, settings.name);
 
-  $("position").textContent = "Relative position: running (bootstrap, in its own worker)…";
+  position_el.textContent = "Relative position: running (bootstrap, in its own worker)…";
   const request: PositionRequest = { base: BASE, codes: settings.codes, difficulties: settings.difficulties,
     min_answered: settings.min_answered };
   const pos = in_worker<{ headline: Headline }>(
     () => new Worker(new URL("./position_worker.ts", import.meta.url), { type: "module" }), request, "relative position")
     .then(({ headline: h }) => {
-      $("position").classList.remove("muted");
-      conservatism_line($("position"), h);
+      position_el.classList.remove("muted");
+      conservatism_line(position_el, h);
     }).catch((error) => {
-      $("position").textContent = `Relative position not available: ${error.message}`;
+      position_el.textContent = `Relative position not available: ${error.message}`;
     });
 
   if (POSITION_ONLY) jobs.length = 0;
   const figures = $("figures");
   figures.replaceChildren();
   const containers: Record<string, HTMLElement> = {};
-  for (const { id } of FIGURES) {
+  for (const { id, section, intro } of FIGURES) {
+    if (section) figures.appendChild(element("h2", section));
+    figures.appendChild(element("p", intro, "figure-intro"));
     containers[id] = document.createElement("div");
     figures.appendChild(containers[id]);
   }
+  figures.appendChild(element("p", "Where would the median liberal of 1974 stand in 2024? The line shows " +
+    "the 2024 distribution of conservatism as percentiles, with the medians of 2024's liberals, moderates, and " +
+    "conservatives, and the 1974 liberal, each with a 90% interval.", "figure-intro"));
+  figures.appendChild(position_el);
   const done: Done = new Map();
   draw_figures(containers, jobs, done);
   const per_fit = SETTINGS.chains * (SETTINGS.tune + SETTINGS.draws);
@@ -144,7 +155,20 @@ async function start() {
   $("total").textContent = `Total time ${fmt(seconds, 1)} s, with ${navigator.hardwareConcurrency} logical cores.`;
 }
 
+function element(tag: string, text: string, className?: string) {
+  const el = document.createElement(tag);
+  el.textContent = text;
+  if (className) el.className = className;
+  return el;
+}
+
 async function init() {
+  if (POST_URL) {
+    const link = document.createElement("a");
+    link.href = POST_URL;
+    link.textContent = $("article").textContent;
+    $("article").replaceChildren(link);
+  }
   const loaded = await load(BASE);
   excerpt = loaded.excerpt;
   table = loaded.questions as unknown as typeof table;

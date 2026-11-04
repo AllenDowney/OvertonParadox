@@ -60,21 +60,23 @@ export function make_jobs(excerpt: Excerpt, scored: Scored, set = "primary"): Jo
       summarize: (d) => summarize_period_cohort(d as never, years, cohorts, people, cells) };
   }
 
+  // in the order of the figures (post 1's order), so they fill in from the top
   const jobs: (Job | null)[] = [];
-  for (const [g, lo, hi] of IDEOLOGY)
-    jobs.push(series_job(`period ${g}`, `period_${set}_polviews3-${g}`, "period",
-      (i) => excerpt.polviews[i] >= lo && excerpt.polviews[i] <= hi, excerpt.year));
-  // all respondents: the overall average in the by-decade figure (dotted)
-  jobs.push(series_job("period all", `period_${set}`, "period_all", () => true, excerpt.year));
   for (const [lo, hi] of SURVEY_DECADES)
     jobs.push(series_job(`age ${lo}-${hi}`, `age_${set}_window-${lo}-${hi}`, "age",
       (i) => excerpt.year[i] >= lo && excerpt.year[i] <= hi, excerpt.age));
+  const born = (d: number) => (i: number) => excerpt.cohort[i] >= d && excerpt.cohort[i] <= d + 9;
+  for (const d of BIRTH_DECADES)
+    jobs.push(series_job(`age born ${d}s`, `age_${set}_cohorts-${d}-${d + 9}`, "age_by_birth", born(d), excerpt.age));
   const main = period_cohort_job("period-cohort", `period_cohort_${set}`, "period_cohort", () => true);
   jobs.push(main && { ...main, target_accept: MAIN_PERIOD_COHORT_TARGET });
-  for (const d of BIRTH_DECADES) {
-    const born = (i: number) => excerpt.cohort[i] >= d && excerpt.cohort[i] <= d + 9;
-    jobs.push(series_job(`age born ${d}s`, `age_${set}_cohorts-${d}-${d + 9}`, "age_by_birth", born, excerpt.age));
-    jobs.push(period_cohort_job(`pc born ${d}s`, `period_cohort_${set}_cohorts-${d}-${d + 9}`, "period_cohort_by_birth", born));
-  }
+  for (const d of BIRTH_DECADES)
+    jobs.push(period_cohort_job(`pc born ${d}s`, `period_cohort_${set}_cohorts-${d}-${d + 9}`, "period_cohort_by_birth",
+      born(d)));
+  // all respondents: the overall average in the by-decade figure (dotted)
+  jobs.push(series_job("period all", `period_${set}`, "period_all", () => true, excerpt.year));
+  for (const [g, lo, hi] of IDEOLOGY)
+    jobs.push(series_job(`period ${g}`, `period_${set}_polviews3-${g}`, "period",
+      (i) => excerpt.polviews[i] >= lo && excerpt.polviews[i] <= hi, excerpt.year));
   return jobs.filter((j): j is Job => j !== null);
 }

@@ -11,16 +11,42 @@ type SeriesOut = ReturnType<typeof summarize_series>;
 type CohortOut = ReturnType<typeof summarize_period_cohort>;
 export type Done = Map<Job, SeriesOut | CohortOut>;
 
-/** The figures, in post 1's order, with the job groups each needs. */
-export const FIGURES = [
-  { id: "time_series", needs: ["period"] },
-  { id: "age_series", needs: ["age"] },
-  { id: "age_by_decade", needs: ["age_by_birth"] },
-  { id: "trajectories", needs: ["period_cohort"] },
-  { id: "cohort_component", needs: ["period_cohort"] },
-  { id: "period_component", needs: ["period_cohort"] },
-  { id: "pc_by_decade", needs: ["period_cohort_by_birth", "period_all"] },
-] as const;
+/**
+ * The figures, in post 1's order, with the job groups each needs, the section each starts (headings as in
+ * the post), and a sentence or two that explains it. The explanations say what the article found with the
+ * primary questions, so a reader can compare their own results.
+ */
+export const FIGURES: readonly {
+  id: string; needs: readonly Job["group"][]; section?: string; intro: string;
+}[] = [
+  { id: "age_series", needs: ["age"], section: "Older people are more conservative",
+    intro: "Percent conservative responses by age, with one line for each decade of surveys. With the primary " +
+      "questions, older people give more conservative answers in every decade." },
+  { id: "age_by_decade", needs: ["age_by_birth"], section: "People don't get more conservative",
+    intro: "The same respondents grouped by decade of birth and followed as they age. With the primary questions, " +
+      "the lines are flat or declining: as people get older, their answers don't become more conservative. " +
+      "Grouping by decade of birth pushes the lines up at older ages, where only a group's earliest birth years " +
+      "have been observed, so this bias works against that conclusion." },
+  { id: "trajectories", needs: ["period_cohort"], section: "Following each birth year",
+    intro: "The period–cohort model's trajectory for each birth year, over the years it was observed. In this model, " +
+      "the lines have the same shape by construction, shifted up or down for each birth year." },
+  { id: "cohort_component", needs: ["period_cohort"],
+    intro: "The cohort component: the average level of conservatism for each birth year, as if every birth year " +
+      "had been surveyed in every year. With the primary questions, later birth years are more liberal." },
+  { id: "period_component", needs: ["period_cohort"],
+    intro: "The period component: how everyone moves together, with the mix of birth years held constant. Its " +
+      "slope is the change within cohorts (in the diagnostics table below, the period–cohort fit's slope per " +
+      "decade). With the primary questions, it declines slowly: people become a little more liberal over time." },
+  { id: "pc_by_decade", needs: ["period_cohort_by_birth", "period_all"], section: "Every group moves left",
+    intro: "The same model fit separately within each decade of birth, with each group's mix of birth years held " +
+      "fixed. The dotted line is the overall average, which falls faster because it also includes generational " +
+      "replacement. With the primary questions, every group moves toward liberal or stays about the same." },
+  { id: "time_series", needs: ["period"], section: "Coming next: the Overton paradox",
+    intro: "Not in the first article, but in the next one: percent conservative responses for self-identified " +
+      "liberals, moderates, and conservatives. With the primary questions, all three groups move toward liberal; " +
+      "the dotted line marks the " +
+      "level of the 1974 liberal." },
+];
 
 const GRAY = "var(--series-gray)";
 
