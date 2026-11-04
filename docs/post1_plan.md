@@ -65,7 +65,7 @@ From `figs/apc/` (`jb/figs` links there), for the set `primary`:
 - [x] Selection section rewritten for the current process (2026-11-04).
 - [ ] Figures: fine-tune the label placement for `primary` (`overton/apc_figures.py`), then switch the figure references from `_p48` to `_primary`.
 - [ ] Numbers: refresh every number in the text, the alt text, and the `%` comments from the `primary` results (`figs/apc_results.csv`, `figs/apc_birth_groups.csv`, `figs/apc_age_slopes.csv`).
-- [ ] Link the technical appendix (Task 1) where the post says "More details about the process are in this technical appendix."
+- [x] Link the technical appendix (Task 1): https://allendowney.github.io/OvertonParadox/appendix/
 - [ ] Check the related-post links in the text.
 - [ ] Read-through and edit; build the page in jb.
 - [ ] Publish on Probably Overthinking It.

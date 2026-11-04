@@ -38,4 +38,6 @@
 - [x] Release `data-v1`: staged by `scripts/stage_release.sh` in `release/data-v1/` (gitignored): `manifest.json`, `respondents.bin.gz`, `questions.json` (the selection's saved results, for the checks), `primary_fixture.json` (sample scores, yearly means), `apc_summary.csv` (every production fit), `position_headline.csv`. Published 2026-11-04.
 - [x] Notebook drafted (`notebooks/appendix.md`/`.ipynb`, 2026-11-04): data; selection steps 1–9 (1–2 described, 3–9 run, each checked against the production results); connectivity; measurement (EM, scores, checked); the models (trend-form RW2); age by survey decade, period by self-identified ideology, and the period–cohort fit, run with 2 chains × 1,000 draws and compared with production; birth decades, sensitivity, and diagnostics loaded. Runs locally in about 8 minutes, all checks pass.
 - [x] Released `data-v1` (2026-11-04); ran on Colab (`colab-run`): all 56 code cells pass, every check agrees with production. Built in jb as `/appendix`. (Colab has no nutpie, so the first run used PyMC's sampler. The notebook now upgrades the sampling stack on Colab, `pymc>=6`, `arviz>=1.1`, `nutpie`, as in YWCN's appendices, matching the local environment: PyMC 6.0.1, ArviZ 1.2.)
-- [ ] Link from post 1 and post 3.
+- [x] jb site deployed (`make -C jb deploy`, 2026-11-04): https://allendowney.github.io/OvertonParadox/appendix/ (the whole site is public, including the post 1 draft and the RW2 memo; Allen chose to deploy everything).
+- [x] Linked from post 1.
+- [ ] Link from post 3.

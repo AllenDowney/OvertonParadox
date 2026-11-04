@@ -20,7 +20,8 @@ The overall plan, decided specification, and log are in `docs/plan.md`; the date
 - [x] Release `data-v1`
 - [x] Write the notebook (draft; runs locally, all checks pass)
 - [x] Run on Colab; build in jb
-- [ ] Link from posts 1 and 3
+- [x] Deployed with the jb site (https://allendowney.github.io/OvertonParadox/appendix/); linked from post 1
+- [ ] Link from post 3
 
 **Related:** `docs/plan.md` (Phase 6), `docs/blog_series.md`, `overton/excerpt.py`, `jb/`
 
@@ -57,7 +58,7 @@ The overall plan, decided specification, and log are in `docs/plan.md`; the date
 - [x] Selection section for the current process
 - [ ] Figures for `primary` (labels, references)
 - [ ] Numbers refreshed from the `primary` results
-- [ ] Link the technical appendix (Task 1)
+- [x] Link the technical appendix (Task 1)
 - [ ] Read-through, edit, build
 - [ ] Publish
 
