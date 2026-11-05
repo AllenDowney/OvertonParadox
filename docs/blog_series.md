@@ -16,7 +16,7 @@ Numbers below are from the decided specification (lab notebook, 2026-11-01, "Res
 
 ---
 
-## 1. Do people get more conservative as they age?
+## 1. Do people get more conservative with age?
 
 **Point:** In every decade of surveys, older people hold more conservative beliefs. But following the same people over time, their beliefs don't get more conservative; they get a little more liberal.
 

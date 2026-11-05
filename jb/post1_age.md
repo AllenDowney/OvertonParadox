@@ -18,15 +18,15 @@ But as people get older, their views don't become more conservative; on average,
 
 That analysis used data through 2021 and methods that were good enough for the chapter. Since then, the GSS has released data from 2022 and 2024, and while working on my next book, [*You Would Choose Now*](https://www.allendowney.com/blog/2026/06/16/you-would-choose-now/), I developed better methods for separating the effects of age, birth year, and current events. So it's time for an update.
 
-This is the first in a series of articles. In this one, we'll see whether people get more conservative as they get older? The answer is still no.
+This is the first in a series of articles. In this one, we'll see whether people get more conservative as they get older. The answer is still no.
 
 ## How to measure conservatism
 
-If someone says the people get more conservative with age, what do they mean? I assume that people have in mind some bundle of beliefs, attitudes, and behaviors they consider conservative. But different people might imagine a different bundle.
+If someone says people get more conservative with age, what do they mean? I assume that people have in mind some bundle of beliefs, attitudes, and behaviors they consider conservative. But different people might imagine a different bundle.
 
-For the book, I searched the General Social Survey (GSS) for the questions that most distinguish liberals and conservatives, and then I curated a list of 15 that cover a variety of topics and were asked often over the course of the survey. That worked well enough, but curating involves judgment calls, which is where researcher bias can sneak in.
+For the book, I searched the GSS for the questions that most distinguish liberals and conservatives, and then I curated a list of 15 that cover a variety of topics and were asked often over the course of the survey. That worked well enough, but curating involves judgment calls, which is where researcher bias can sneak in.
 
-This time I replaced curation with a mostly automated section process that starts with 6,943 variables in the GSS dataset and selects 53 questions that meet the requirements (described at the end of this article).
+This time I replaced curation with a mostly automated selection process that starts with 6,943 variables in the GSS dataset and selects 53 questions that meet the requirements (described at the end of this article).
 
 To combine responses to 53 questions into a single measure, I use a Bayesian IRT (item response theory) model to estimate a latent factor of conservatism for each of 64,632 respondents from 1972 to 2024 who were asked and answered at least five questions.
 This model makes it possible to compare people who answered different sets of questions, even in cases where there is no overlap.
@@ -84,8 +84,8 @@ I was aware of this problem when I was working on *Probably Overthinking It*. No
 The solution is to estimate a trajectory for each birth year and then aggregate the results, rather than aggregating before estimating.
 But with less data for each birth year, we need a model to smooth out the estimates.
 
-I developed a model that solves this problem, which I described in [this blog post](https://www.allendowney.com/blog/2026/03/19/young-adults-are-not-very-happy/)
-This model is also the kernel of the analysis I'm doing for my new book-in-progress, [*You Would Choose Now*](https://www.allendowney.com/blog/2026/06/16/you-would-choose-now/) 
+I developed a model that solves this problem, which I described in [this blog post](https://www.allendowney.com/blog/2026/03/19/young-adults-are-not-very-happy/).
+This model is also the kernel of the analysis I'm doing for my new book-in-progress, [*You Would Choose Now*](https://www.allendowney.com/blog/2026/06/16/you-would-choose-now/).
 
 The model estimates a component for each year of birth and a component for each year of the survey. Together, they describe a trajectory for each birth year over the years it was observed. The following figure shows those trajectories.
 
@@ -96,7 +96,7 @@ The model estimates a component for each year of birth and a component for each 
 Estimated percent conservative responses for each birth year, from the period–cohort model.
 ```
 
-Each line represents a single birth year. For example, the yellow-green line at the top left shows people born in 1900, who were 72 when the survey started in 1972 and 90 when they aged out in 1990. The purple line at the bottom right shows people born in 2006, who became eligible for the survey when they turned 18 in 2024.
+Each line represents a single birth year. For example, the yellow-green line at the top left shows people born in 1900, who were 72 when the survey started in 1972. The purple line at the bottom right shows people born in 2006, who became eligible for the survey when they turned 18 in 2024.
 
 Two patterns are clear:
 
@@ -115,7 +115,7 @@ The following figure shows the cohort component: the average level of conservati
 Cohort component: where each birth year starts.
 ```
 
-The decline is steepest between people born in the 1930s and 1950s, it pauses for people born in the 1950s and 1960s, and it continues after that.
+The decline is steepest between people born in the 1930s and 1950s; it pauses for people born in the 1950s and 1960s, and it continues after that.
 
 The following figure shows the period component: the average level of conservatism in each year of the survey, as if the population had the same mix of birth years throughout.
 
@@ -168,7 +168,7 @@ So if you think I chose badly, you might not be convinced by my conclusion.
 
 For example, you might think the questions I selected put too much weight on social issues and not enough on economic issues. You might not agree with my decision to exclude religious beliefs or confidence in institutions. Or you might think there should be more questions about crime.
 
-In future articles, I'll run the analysis with different bundles of variables. We'll see that the results are quite robust -- pretty much any bundle of questions that covers a mixture of topics leads to the same conclusions: people do not become more conservative with age.
+In future articles, I'll run the analysis with different bundles of variables. We'll see that the results are quite robust — pretty much any bundle of questions that covers a mixture of topics leads to the same conclusions: people do not become more conservative with age.
 
 But if you don't want to wait, you can try it yourself. I have created an online calculator, called [The Overtron](https://allendowney.github.io/OvertonParadox/overtron/), where you can select whatever bundle of questions you want and run the whole analysis in your browser.
 Try it out, and let me know what you find!
@@ -176,7 +176,7 @@ Try it out, and let me know what you find!
 
 ## Question selection
 
-Here are the details of the selection process I used. In general, I tried to keep my judgement out of it, but you'll see that there are a couple of steps where I intervened.
+Here are the details of the selection process I used. In general, I tried to keep my judgment out of it, but you'll see that there are a couple of steps where I intervened.
 
 1. **Start with everything.** The GSS cumulative file has 6,943 variables. I kept the ones that record responses to questions asked in at least 8 waves over a span of at least 15 years, with between 2 and 7 possible answers. That leaves 429.
 
@@ -186,12 +186,12 @@ Here are the details of the selection process I used. In general, I tried to kee
 
 4. **Measure how well each question separates them.** For each question, I estimated how strongly the conservative answer is associated with self-identified ideology, controlling for the year of the survey and the respondent's year of birth. Steps 3 and 4 don't eliminate any questions.
 
-5. **Coverage.** For the final list, a question had to be asked in at least half of the survey years (16 of 32). That's because the measure compares people surveyed decades apart, se we need long-running questions that overlap in time. If too many questions are short-lived, people surveyed in different years would be measured by different questions, and changes over time would mix real changes in beliefs with changes in the questions. This step eliminates 49 questions and leaves 121.
+5. **Coverage.** For the final list, a question had to be asked in at least half of the survey years (16 of 32). That's because the measure compares people surveyed decades apart, so we need long-running questions that overlap in time. If too many questions are short-lived, people surveyed in different years would be measured by different questions, and changes over time would mix real changes in beliefs with changes in the questions. This step eliminates 49 questions and leaves 121.
 
-6. **Stability.** The difference between conservatives and liberals couldn't reverse. If the same answer was given more often by conservatives in one decade and by liberals in another, the question is not a stable indicator a conservatism. This step eliminates 1 question and leaves 120.
+6. **Stability.** The difference between conservatives and liberals couldn't reverse. If the same answer was given more often by conservatives in one decade and by liberals in another, the question is not a stable indicator of conservatism. This step eliminates 1 question and leaves 120.
    
 7. **No duplicates.** Some questions were asked with two different wordings, on different versions of the survey, so I kept one of each pair. And when several questions cover the same topic, I kept the one that best separates conservatives and liberals, from step 4. This step eliminates 53 questions (12 alternate wordings and 41 others on the same topic) and leaves 67.
 
-8. **No confidence questions.** I left out 13 questions about confidence in institutions -- like the press, organized religion, and the military -- because they evaluate institutions rather than take a position on an issue. I made this decision after seeing results that included them, so in a later article I'll show what difference they make. One of the 13 was already eliminated in step 6, so this step eliminates 12 and leaves 55.
+8. **No confidence questions.** I left out 13 questions about confidence in institutions — like the press, organized religion, and the military — because they evaluate institutions rather than take a position on an issue. I made this decision after seeing results that included them, so in a later article I'll show what difference they make. One of the 13 was already eliminated in step 6, so this step eliminates 12 and leaves 55.
 
-9. **Check for drift.** A question "drifts" if its connection to conservatism changes over time. This step ended up excluding only two questions, so it doesn't have much impact on the results. I'll skip the details. That leaves the 53 questions I used.
+9. **Check for drift.** A question "drifts" if its connection to conservatism changes over time. This step ended up excluding only two questions, so it doesn't have much impact on the results. The details are in the [technical appendix](https://allendowney.github.io/OvertonParadox/appendix/). That leaves the 53 questions I used.

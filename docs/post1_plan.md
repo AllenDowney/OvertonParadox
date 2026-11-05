@@ -1,4 +1,4 @@
-# Post 1, "Do people get more conservative as they age?": plan
+# Post 1, "Do people get more conservative with age?": plan
 
 **Board:** Task 3 in `PROJECT_BOARD.md`. **Draft:** `jb/post1_age.md` (build with `make -C jb build-local`). **Series:** `docs/blog_series.md`.
 

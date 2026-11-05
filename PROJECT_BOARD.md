@@ -48,7 +48,7 @@ The overall plan, decided specification, and log are in `docs/plan.md`; the date
 
 ---
 
-## Task 3: Blog post 1, "Do people get more conservative as they age?"
+## Task 3: Blog post 1, "Do people get more conservative with age?"
 
 **Status:** In progress (draft written 2026-11-03)
 

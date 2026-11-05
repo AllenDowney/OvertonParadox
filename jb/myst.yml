@@ -8,7 +8,7 @@ project:
   toc:
     - file: index.md
     - file: post1_age.md
-      title: Do People Get More Conservative as They Age?
+      title: Do People Get More Conservative With Age?
     - file: ../notebooks/appendix.ipynb
       title: Technical Appendix
     - file: rw2_reparameterization.md
