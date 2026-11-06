@@ -4,7 +4,7 @@ Numbered tasks for tracking work. Each task has a permanent number; add new task
 
 **Status values:** `Pending`, `In progress`, `DONE`
 
-The overall plan, decided specification, and log are in `docs/plan.md`; the dated record of analyses is `docs/lab.md`. Earlier tasks for this work are on the ProbablyOverthinkingIt board (Tasks 9–11).
+The overall specification (Decisions table), ideas to consider later, and the log are in `docs/plan.md`; the phase history is in `docs/plan_history.md`; the dated record of analyses is `docs/lab.md`. Earlier tasks for this work are on the ProbablyOverthinkingIt board (Tasks 9–11).
 
 ---
 
@@ -57,10 +57,99 @@ The overall plan, decided specification, and log are in `docs/plan.md`; the date
 **Checklist:**
 - [x] Draft
 - [x] Selection section for the current process
-- [ ] Figures for `primary` (labels, references)
+- [ ] Figures for `primary` (labels, references); fine-tune label placement only after the question set is settled (Allen, 2026-10-31; moved from `docs/plan.md`)
+- [ ] Headline framing given the domain results (social questions: no within-cohort conservative shift; core economic: a conservative shift and polarization). Decide how the posts, appendix and paper present the split (Allen; moved from `docs/plan.md`, shared with Task 4)
 - [ ] Numbers refreshed from the `primary` results
 - [x] Link the technical appendix (Task 1)
 - [ ] Read-through, edit, build
 - [ ] Publish
 
 **Related:** `docs/blog_series.md`, `overton/apc_figures.py`, `overton/apc_report.py`, `jb/`
+
+---
+
+## Task 4: arXiv paper (possible)
+
+**Status:** In progress (literature review done 2026-11-06; development process proposed)
+
+**Context:** A more academic version of the Overton work for arXiv, with a focused related-work discussion (not a survey). Plan: `docs/paper_plan.md`. Literature review: `docs/literature_review.md`; papers and summaries in `papers/`.
+
+**Checklist:**
+- [x] Find candidate papers; archive and summarize the ones available (18 so far)
+- [ ] Get the rest (Kollman & Jackson 2026, Ellis & Stimson 2012) and summarize them
+- [ ] Confirm the development process (Markdown → pandoc → LaTeX in a self-contained `paper/` folder; `make arxiv` builds the zip)
+- [ ] Set up `paper/` (template, Makefile, figure manifest); one-page stub through `make arxiv`
+- [ ] Decide framing and which new analyses, if any (list in the plan)
+- [x] Decide whether to do the ANES replication: yes, as Task 5 (`docs/anes_plan.md`, 2026-11-06)
+- [ ] Outline; draft methods and results, then introduction and discussion
+- [ ] Read-through; build the zip from scratch; upload to arXiv
+
+**Related:** `docs/literature_review.md`, `papers/`, `docs/blog_series.md`
+
+---
+
+## Task 5: ANES replication
+
+**Status:** In progress (feasibility count done 2026-11-06)
+
+**Context:** Does the GSS result (older people more conservative in every decade, but a slight liberal drift within cohorts; self-identified ideology relative to a moving center) hold in the ANES? Reviewers of the paper (Task 4) will likely ask. Formerly Phase 5 (`docs/plan_history.md`). Plan: `docs/anes_plan.md`.
+
+**Checklist:**
+- [x] Feasibility: count ANES attitude items asked often enough to apply our selection rule (about 37 in the pool, about 16 after coverage and one per battery; 2026-11-06)
+- [ ] Rank the candidates by association with `VCF0803`, as in the GSS selection
+- [ ] Data: CDF (2022 release, through 2020) plus the 2024 time series, or a newer CDF if one exists
+- [ ] Decide the specification (years, weights, mode, item coding), recorded in the plan
+- [ ] Selection, EM difficulties, scores, period–cohort fit, relative position
+- [ ] Compare with the GSS; decide where it appears (paper, appendix, or both)
+
+**Related:** `docs/plan_history.md` (Phase 5), `docs/paper_plan.md`, `~/WorldviewANES/anes_overton.ipynb`
+
+---
+
+## Task 6: Apply the revised selection (`primary`)
+
+**Status:** In progress (carried over from `docs/plan.md` 2026-11-06; fits done 2026-11-03)
+
+**Context:** The revised selection rules (stability, item drift) produced the 53-question set `primary`. The 86 fits are done; what's left is regenerating everything downstream. Plan: `docs/stability_review.md`, section 8; history in `docs/plan_history.md` (Phase 4b). The open items were copied as recorded on 2026-11-03, so some may already be done; check before starting.
+
+**Checklist:**
+- [x] Thresholds, stability rule, selection rerun, item-drift diagnostic, names, connectivity table
+- [x] Recalibrate, re-prepare, and refit on Unity (86 fits, 2026-11-03)
+- [ ] Figures, report, and Overtron data (excerpt, fixtures, presets) from the new fits
+- [ ] Sensitivity: with the confidence questions; the previous 48-question selection. Reported neutrally, not used to choose
+- [ ] Revise post 1's selection steps for the new rules (the stability example, `fepres`, is no longer excluded)
+
+**Related:** `overton/stability.py`, `overton/item_drift.py`, `overton/apc.py`, `unity/overton_apc_revised_jobs.txt`, Task 3
+
+---
+
+## Task 7: Reproducible data build and cleanup
+
+**Status:** Pending (carried over from `docs/plan.md` 2026-11-06)
+
+**Context:** The repo should build its data from a fresh clone, and the scripts left over from the exploratory phase should be retired. Plan: `docs/repro_plan.md`.
+
+**Checklist:**
+- [ ] Run `scripts/build_data.sh` end to end from a fresh clone
+- [ ] Remove the dependence on `~/CultureWar` in `overton.candidates` and `overton.data`
+- [ ] Retire the scripts that still use resampling (comparisons from the exploratory phase)
+
+**Related:** `scripts/build_data.sh`, `overton/data.py`, `overton/candidates.py`
+
+---
+
+## Task 8: Difficulties follow-ups and variations
+
+**Status:** Pending (carried over from `docs/plan.md` 2026-11-06)
+
+**Context:** Follow-up analyses from the second difficulties review, and the planned variations (a few per step of the decided specification) that show how much each choice matters. Plans: `docs/difficulties_design.md` (future work) and the Decisions table in `docs/plan.md` (variations). The paper (Task 4) may add items here; any method change is discussed first.
+
+**Checklist:**
+- [ ] Redo the by-N results, the birth-group fits, and the figures with `--difficulties em`, including the mode sensitivity runs for the final set (may be superseded by Task 6; check)
+- [ ] Item trends for core vs broad economic questions: what makes broad economic flat?
+- [ ] Residual associations within domains (e.g., the four core economic questions after conditioning on conservatism)
+- [ ] Inspect the divergences in `period_s50-em`
+- [ ] Optional: bootstrap the EM calibration within survey replicates
+- [ ] Variations, a few per step (see Decisions in `docs/plan.md`)
+
+**Related:** `docs/difficulties_design.md`, `docs/plan.md` (Decisions), `docs/lab.md`

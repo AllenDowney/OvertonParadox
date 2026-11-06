@@ -26,3 +26,8 @@ jb/_build/
 
 # staging for GitHub release assets (scripts/stage_release.sh)
 release/
+
+# paper archive: local PDFs (summaries are tracked)
+papers/**/*.pdf
+papers/**/*.html
+papers/**/*.docx
