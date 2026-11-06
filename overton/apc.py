@@ -131,15 +131,24 @@ def question_sets():
     return sets
 
 
-def data_name(name, difficulties="em", sample="interviewer"):
+def default_sample(survey="gss"):
+    """The decided sample: interviewer-administered for the GSS, all modes for the ANES (Allen, 2026-11-06)."""
+    return "interviewer" if survey == "gss" else "all"
+
+
+def data_name(name, difficulties="em", sample=None, survey="gss"):
     """Name of a set's data and results.
 
-    The decided specification (EM difficulties, interviewer sample) has plain
-    names (e.g. p43); variations get suffixes (e.g. p43-heuristic-all).
-    Results from before 2026-11-01 used plain names for the heuristic and all
-    modes; they're in results/apc_exploratory.
+    The decided specification (EM difficulties, the survey's default sample)
+    has plain names (e.g. p43, anes); variations get suffixes (e.g.
+    p43-heuristic-all, anes-interviewer). ANES set names start with "anes", so
+    they can't collide with the GSS's. Results from before 2026-11-01 used
+    plain names for the heuristic and all modes; they're in
+    results/apc_exploratory.
     """
-    suffix = "".join(f"-{v}" for v, default in [(difficulties, "em"), (sample, "interviewer")] if v != default)
+    base = default_sample(survey)
+    sample = sample or base
+    suffix = "".join(f"-{v}" for v, default in [(difficulties, "em"), (sample, base)] if v != default)
     return name + suffix
 
 
@@ -163,17 +172,18 @@ def calibrate(gss, questions, min_answered, fixed=None):
     return em_difficulties(questions[keep], gss.loc[keep, "weight"], fixed)
 
 
-def reference_difficulties(gss, sets, difficulties):
+def reference_difficulties(gss, sets, difficulties, pool="primary"):
     """EM difficulties for every question in any set, on one reference calibration.
 
-    em: calibrated on the primary pool; em66: on all 66 candidates. Questions
-    used by some set but outside the calibration pool are then estimated with
-    the calibrated difficulties held fixed.
+    em: calibrated on the pool (the primary questions for the GSS, the set
+    "anes" for the ANES); em66: on all 66 GSS candidates. Questions used by
+    some set but outside the calibration pool are then estimated with the
+    calibrated difficulties held fixed.
     """
     from overton.irt import question_sets as irt_sets
     from overton.pipeline import make_questions
 
-    base = sets["primary"] if difficulties == "em" else irt_sets()["pool"]
+    base = sets[pool] if difficulties == "em" else irt_sets()["pool"]
     d = calibrate(gss, make_questions(gss, base), MIN_ANSWERED)
     used = {v: c for codes in sets.values() for v, c in codes.items()}
     if set(used) - set(d.index):
@@ -181,26 +191,41 @@ def reference_difficulties(gss, sets, difficulties):
     return d
 
 
-def prepare(names=None, difficulties="em", sample="interviewer"):
+def prepare(names=None, difficulties="em", sample=None, survey="gss"):
     """Weighted grid estimates for each question set, on the original (not resampled) data.
 
-    sample: "interviewer", the interviewer sample (overton/data.py), or "all",
-    every respondent with NORC's weights.
+    sample: "interviewer", the interviewer sample (overton/data.py; for the
+    ANES, every mode except internet), or "all", every respondent with the
+    survey's weights. Default: the survey's decided sample (default_sample).
+    survey: "gss", or "anes" (overton/anes_data.py: the pool "anes", EM
+    calibrated on it; em66 and m1pool are GSS-only).
     """
-    from overton.data import CANDIDATES, CANDIDATES_INTERVIEWER, WEIGHT_COL
     from overton.drift import estimate_with_difficulties
     from overton.pipeline import RECODE_POLVIEWS, estimate_conservatism, make_questions
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
-    gss = pd.read_hdf(CANDIDATES_INTERVIEWER if sample == "interviewer" else CANDIDATES, "gss")
+    sample = sample or default_sample(survey)
+    if survey == "anes":
+        from overton.anes_data import ANES, KEY, SETS, interviewer
+
+        if difficulties in ["em66", "m1pool"]:
+            raise ValueError(f"--difficulties {difficulties} is GSS-only")
+        gss = pd.read_hdf(ANES, KEY)
+        if sample == "interviewer":
+            gss = interviewer(gss)
+        sets, pool = SETS, "anes"
+    else:
+        from overton.data import CANDIDATES, CANDIDATES_INTERVIEWER, WEIGHT_COL
+
+        gss = pd.read_hdf(CANDIDATES_INTERVIEWER if sample == "interviewer" else CANDIDATES, "gss")
+        gss["weight"] = gss[WEIGHT_COL]
+        sets, pool = question_sets(), "primary"
     gss["year"] = gss["year"].astype(int)
-    gss["weight"] = gss[WEIGHT_COL]
-    sets = question_sets()
     d = None
     if difficulties == "m1pool":
         d = pool_difficulties()
     elif difficulties in ["em", "em66"]:
-        d = reference_difficulties(gss, sets, difficulties)
+        d = reference_difficulties(gss, sets, difficulties, pool)
     used = {}
     for name in names or sets:
         codes = sets[name]
@@ -220,10 +245,12 @@ def prepare(names=None, difficulties="em", sample="interviewer"):
         df["answered"] = answered
         df = df[(answered >= min_answered) & df["cohort"].notna() & df["age"].notna()]
         df["y"] = df["conservatism"] / df["n_questions"]
-        df.to_parquet(DATA_DIR / f"{data_name(name, difficulties, sample)}.parquet")
-        print(data_name(name, difficulties, sample), len(df), df.groupby("year")["y"].mean().iloc[[0, -1]].round(3).to_dict())
+        df.to_parquet(DATA_DIR / f"{data_name(name, difficulties, sample, survey)}.parquet")
+        print(data_name(name, difficulties, sample, survey), len(df),
+              df.groupby("year")["y"].mean().iloc[[0, -1]].round(3).to_dict())
     if used:
-        pd.DataFrame(used).to_csv(DATA_DIR / f"difficulties{data_name('', difficulties, sample)}.csv")
+        prefix = "_anes" if survey == "anes" else ""
+        pd.DataFrame(used).to_csv(DATA_DIR / f"difficulties{prefix}{data_name('', difficulties, sample, survey)}.csv")
 
 
 def weighted_cells(df, keys):
@@ -472,7 +499,7 @@ def fit_period_cohort(df, scale, stem, args):
 
 
 def fit(args):
-    set_name = data_name(args.set, args.difficulties, args.sample)
+    set_name = data_name(args.set, args.difficulties, args.sample, args.survey)
     df = pd.read_parquet(DATA_DIR / f"{set_name}.parquet")
     label = [args.model, set_name]
     if args.by:
@@ -508,7 +535,7 @@ def fit(args):
     else:
         trace, summary, names = fit_period_cohort(df, scale, stem, args)
 
-    summary.update(run=run, scale=scale, model=args.model, set=set_name, difficulties=args.difficulties, sample=args.sample, by=args.by, window=summary.get("window", args.window),
+    summary.update(run=run, scale=scale, model=args.model, set=set_name, difficulties=args.difficulties, sample=args.sample, survey=args.survey, by=args.by, window=summary.get("window", args.window),
                    cohorts=args.cohorts, age_range=f"{int(df['age'].min())}-{int(df['age'].max())}",
                    respondents=len(df), n_questions=n_questions, elapsed_seconds=round(time.time() - start, 1),
                    tune=args.tune, draws=args.draws, chains=args.chains, seed=args.seed,
@@ -571,10 +598,13 @@ def main():
                              "2026-11-03, samples several times faster; results before then used cumsum")
     parser.add_argument("--tag", default="")
     parser.add_argument("--difficulties", choices=DIFFICULTIES, default="em")
-    parser.add_argument("--sample", choices=["interviewer", "all"], default="interviewer")
+    parser.add_argument("--sample", choices=["interviewer", "all"], default=None,
+                        help="default: the survey's decided sample (GSS interviewer, ANES all)")
+    parser.add_argument("--survey", choices=["gss", "anes"], default="gss")
     args = parser.parse_args()
+    args.sample = args.sample or default_sample(args.survey)
     if args.step == "prepare":
-        prepare(args.sets, args.difficulties, args.sample)
+        prepare(args.sets, args.difficulties, args.sample, args.survey)
     elif args.step == "rescale":
         rescale()
     else:

@@ -194,6 +194,12 @@ For each of the 32 questions, the 2024 codes compared with the previous wave and
 - The other "unlabeled" codes are the interior points (2–6) of the 7-point scales, which the CDF doesn't label. That's normal.
 - Every other question uses the same codes in 2024 as in 2020.
 
+### Build decisions (Allen, 2026-11-06)
+
+- **Respondents:** keep everyone, including those without a self-placement on `VCF0803`. This is a stated departure from the GSS pipeline, which keeps only respondents who answered `polviews` (`overton/candidates.py`). The reason: in the ANES that group is 10–35% of respondents a year (about half in 2000), against few in the GSS. The Overton comparisons use the respondents who placed themselves.
+- **Mode:** all modes in the main analysis. A refit on face-to-face respondents only, where there are any, is a sensitivity check.
+- **Build:** `overton/anes_data.py` writes `data/anes_overton.hdf` with the pipeline's column names. A `--survey anes` option in `overton/em.py` and `overton/apc.py` switches only the input and output files; no method changes.
+
 ## Open questions
 
 - Is there a newer CDF than 2022-09 (through 2024)? Not checked.
