@@ -1,6 +1,6 @@
 # ANES replication: plan
 
-Board: Task 5. Planned 2026-11-06. Status: feasibility, ranking, and pool decisions done; rerun on the 1948–2024 CDF (2026-11-06). Next: the 2024 recode check and the limited-government battery choice.
+Board: Task 5. Planned 2026-11-06. Status: feasibility, ranking, and pool decisions done; rerun on the 1948–2024 CDF (2026-11-06). Pool settled (32 questions). Next: audit the 2024 codes, then the data build.
 
 ## Goal
 
@@ -143,6 +143,47 @@ The weakest questions in the pool are foreign aid (`VCF0892`, 0.14), science spe
   - moral traditionalism (`VCF0853`), egalitarianism (`VCF9017`), child-rearing (`VCF9249`), welfare (`VCF0894`) and aid to Blacks (`VCF0830`) are unchanged.
 
   The GSS breaks ties on span, but these aren't ties. The `VCF9133` flip trades coverage of 2020–2024 for a higher coefficient. **Decision for Allen.**
+
+### Pool with priority for questions asked in 2024 (Allen, 2026-11-06)
+
+**Rule:** within a topic or battery, take the highest-ranked question that was asked in 2024, as long as its coefficient is within 0.1 of the topic's best; otherwise take the best. The margin of 0.1 is a proposal, open to revision. It decides one case: limited government keeps `VCF9131` (0.47, through 2024) over `VCF9133` (0.55, last asked 2016). In every other topic, the best question was already asked in 2024. Questions that are their own topic stay in the pool whether or not they were asked in 2024, as in the GSS.
+
+**The pool: 32 questions, 23 asked in 2024** (1948–2024 CDF; coefficients from `scripts/anes_ranking.py`; "conservative" is the coded side):
+
+| Question | Domain | Topic | Coef | Conservative | Years | Span |
+|---|---|---|---|---|---|---|
+| `VCF0842` | econ |  | 0.85 | 4 5 6 7 | 5 | 1996–2024 |
+| `VCF0806` | econ |  | 0.65 | 4 5 6 7 | 15 | 1972–2024 |
+| `VCF9040` | race | racial resentment | 0.64 | 1 2 3 | 13 | 1986–2024 |
+| `VCF0853` | social | moral traditionalism | 0.62 | 1 2 | 14 | 1986–2024 |
+| `VCF0830` | race | government help for Black Americans | 0.61 | 4 5 6 7 | 21 | 1972–2024 |
+| `VCF0878` | social |  | 0.59 | 2 5 | 8 | 1992–2024 |
+| `VCF0838` | social |  | 0.58 | 1 2 3 | 17 | 1980–2024 |
+| `VCF0839` | econ |  | 0.58 | 1 2 3 4 | 16 | 1982–2024 |
+| `VCF0809` | econ |  | 0.57 | 5 6 7 | 21 | 1972–2024 |
+| `VCF9017` | other | egalitarianism | 0.55 | 1 2 3 | 14 | 1984–2024 |
+| `VCF0894` | econ | welfare and the poor | 0.54 | 3 | 11 | 1992–2024 |
+| `VCF9047` | econ |  | 0.53 | 2 3 7 | 14 | 1984–2024 |
+| `VCF0867` | race |  | 0.52 | 5 | 13 | 1986–2024 |
+| `VCF0843` | other |  | 0.51 | 4 5 6 7 | 15 | 1980–2024 |
+| `VCF0876` | social |  | 0.49 | 5 | 10 | 1988–2024 |
+| `VCF9131` | econ | limited government | 0.47 | 1 | 9 | 1990–2024 |
+| `VCF9274` | race |  | 0.47 | 1 2 | 4 | 1972–2000 |
+| `VCF9236` | social |  | 0.44 | 1 | 13 | 1988–2024 |
+| `VCF0877` | social |  | 0.44 | 5 | 6 | 1992–2012 |
+| `VCF0811` | race |  | 0.43 | 3 4 5 6 7 | 4 | 1972–1992 |
+| `VCF9249` | social | child-rearing | 0.42 | 2 3 | 8 | 1992–2024 |
+| `VCF0890` | econ |  | 0.42 | 2 3 | 14 | 1984–2024 |
+| `VCF0816` | race |  | 0.34 | 2 | 8 | 1972–2000 |
+| `VCF0879` | social |  | 0.33 | 4 5 | 10 | 1992–2024 |
+| `VCF0834` | social |  | 0.31 | 2 3 4 5 6 7 | 16 | 1972–2008 |
+| `VCF0814` | race |  | 0.31 | 3 | 9 | 1972–1992 |
+| `VCF9231` | econ |  | 0.28 | 1 | 11 | 1988–2024 |
+| `VCF9019` | social |  | 0.20 | 1 3 | 6 | 1972–1992 |
+| `VCF0888` | econ |  | 0.19 | 1 | 12 | 1984–2024 |
+| `VCF9049` | econ |  | 0.17 | 2 3 7 | 15 | 1984–2024 |
+| `VCF9048` | econ |  | 0.15 | 2 3 7 | 9 | 1984–2016 |
+| `VCF0892` | econ |  | 0.14 | 3 | 6 | 1990–2008 |
 
 ## Open questions
 
