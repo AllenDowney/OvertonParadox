@@ -1,0 +1,2 @@
+# Figures the paper uses, relative to ../figs/. `make figures` copies them into figures/.
+apc/age_by_decade_primary.pdf

@@ -1,6 +1,6 @@
 # arXiv paper: plan
 
-Board: Task 4. Started 2026-11-06. Status: literature review done; development process proposed (below); no decision yet on framing or new analyses.
+Board: Task 4. Started 2026-11-06. Status: literature review done; development process confirmed (Allen, 2026-11-06); `paper/` stub builds through `make arxiv`; no decision yet on framing or new analyses.
 
 ## Goal
 
@@ -10,7 +10,7 @@ A short academic paper on the Overton work, posted to arXiv: GSS 1972–2024, IR
 
 - Literature search, plus a cross-check against outside guidance (2026-11-06). Eighteen papers archived in `papers/` with summaries; review and citation recommendations in `docs/literature_review.md`.
 
-## Development process (proposed 2026-11-06, for Allen to confirm)
+## Development process (confirmed by Allen 2026-11-06)
 
 **Draft in Markdown, convert to LaTeX with pandoc.** Markdown keeps the drafting the same as the blog posts and the appendix, and pandoc gives full control of the LaTeX it produces. We'd write a small template rather than take what MyST's LaTeX export produces, and the `.tex` is what arXiv needs. Citations go in a BibTeX file and use pandoc's `[@key]` syntax, converted with `--natbib` so that LaTeX and BibTeX do the bibliography. MyST's LaTeX export (`myst build --tex`, with arXiv templates) is the alternative. It would let the paper live in the jb site, but its output is harder to control. I'd use it only if we want the paper on the site too.
 
@@ -39,7 +39,7 @@ paper/
 **Figures.** Use the PDFs in `figs/apc/` (vector, already made for post 1). The paper may need a style different from the blog figures: grayscale-safe, larger fonts at column width. Decide when drafting.
 
 **Order of work:**
-1. Set up `paper/` with the template and Makefile; get a one-page stub through `make arxiv`.
+1. ~~Set up `paper/` with the template and Makefile; get a one-page stub through `make arxiv`.~~ Done 2026-11-06: a placeholder title, two citations, one figure. `make arxiv` writes `build/arxiv.zip` (`main.tex`, `main.bbl`, `figures/`), which compiles from scratch with no warnings except that the placeholder figure is too tall. pandoc 3.1.3; the template defines `\pandocbounded` for newer pandoc versions.
 2. Outline: sections and which citations go where (from `docs/literature_review.md`, "Recommended citations").
 3. Draft the methods and results first, from the appendix and post 1; then the introduction and discussion.
 4. Decide on the new analyses (below) before the results section is final.

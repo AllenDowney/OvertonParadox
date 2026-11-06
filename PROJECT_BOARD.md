@@ -77,8 +77,8 @@ The overall specification (Decisions table), ideas to consider later, and the lo
 **Checklist:**
 - [x] Find candidate papers; archive and summarize the ones available (18 so far)
 - [ ] Get the rest (Kollman & Jackson 2026, Ellis & Stimson 2012) and summarize them
-- [ ] Confirm the development process (Markdown → pandoc → LaTeX in a self-contained `paper/` folder; `make arxiv` builds the zip)
-- [ ] Set up `paper/` (template, Makefile, figure manifest); one-page stub through `make arxiv`
+- [x] Confirm the development process (Markdown → pandoc → LaTeX in a self-contained `paper/` folder; `make arxiv` builds the zip)
+- [x] Set up `paper/` (template, Makefile, figure manifest); one-page stub through `make arxiv` (2026-11-06)
 - [ ] Decide framing and which new analyses, if any (list in the plan)
 - [x] Decide whether to do the ANES replication: yes, as Task 5 (`docs/anes_plan.md`, 2026-11-06)
 - [ ] Outline; draft methods and results, then introduction and discussion
@@ -96,8 +96,8 @@ The overall specification (Decisions table), ideas to consider later, and the lo
 
 **Checklist:**
 - [x] Feasibility: count ANES attitude items asked often enough to apply our selection rule (about 37 in the pool, about 16 after coverage and one per battery; 2026-11-06)
-- [ ] Rank the candidates by association with `VCF0803`, as in the GSS selection
-- [ ] Data: CDF (2022 release, through 2020) plus the 2024 time series, or a newer CDF if one exists
+- [x] Rank the candidates by association with `VCF0803`, as in the GSS selection; pool of 32 after one per topic (2026-11-06)
+- [ ] Data: download the 1948–2024 CDF (released 2026-02-05) and rerun coverage and ranking on it
 - [ ] Decide the specification (years, weights, mode, item coding), recorded in the plan
 - [ ] Selection, EM difficulties, scores, period–cohort fit, relative position
 - [ ] Compare with the GSS; decide where it appears (paper, appendix, or both)
@@ -115,7 +115,7 @@ The overall specification (Decisions table), ideas to consider later, and the lo
 **Checklist:**
 - [x] Thresholds, stability rule, selection rerun, item-drift diagnostic, names, connectivity table
 - [x] Recalibrate, re-prepare, and refit on Unity (86 fits, 2026-11-03)
-- [ ] Figures, report, and Overtron data (excerpt, fixtures, presets) from the new fits
+- [x] Figures, report, and Overtron data (excerpt, fixtures, presets) from the new fits (commit 58c4e79)
 - [ ] Sensitivity: with the confidence questions; the previous 48-question selection. Reported neutrally, not used to choose
 - [ ] Revise post 1's selection steps for the new rules (the stability example, `fepres`, is no longer excluded)
 
