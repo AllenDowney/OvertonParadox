@@ -68,7 +68,19 @@ ANES_CODES = {
     "VCF9048": [2, 3, 7],  # federal spending: science and technology
     "VCF0892": [3],  # federal spending: foreign aid
 }
-SETS = {"anes": {v: [float(c) for c in codes] for v, codes in ANES_CODES.items()}}
+POOL = {v: [float(c) for c in codes] for v, codes in ANES_CODES.items()}
+
+# domain subsets (docs/anes_question_domains.md, reviewed by Allen 2026-11-06), mirroring the GSS's
+# econA, econB, econC and social; immigration (VCF0879) is "neither"
+ANES_ECON_A = ["VCF0809", "VCF9131", "VCF0806", "VCF0839"]
+ANES_ECON_B = ANES_ECON_A + ["VCF0842", "VCF9017", "VCF0894", "VCF9047", "VCF0890", "VCF9049", "VCF9048", "VCF9231"]
+ANES_ECON_C = ANES_ECON_B + ["VCF0830", "VCF0888"]
+ANES_NOT_SOCIAL = ANES_ECON_C + ["VCF0843", "VCF0892", "VCF9019", "VCF0879"]
+ANES_SOCIAL = [v for v in ANES_CODES if v not in ANES_NOT_SOCIAL]
+SETS = {"anes": POOL, **{name: {v: POOL[v] for v in members} for name, members in [
+    ("anes_econA", ANES_ECON_A), ("anes_econB", ANES_ECON_B), ("anes_econC", ANES_ECON_C),
+    ("anes_social", ANES_SOCIAL)]}}
+DOMAIN_SETS = ["anes_econA", "anes_econB", "anes_econC", "anes_social"]
 
 CORE = {"VCF0004": "year", "VCF0006": "id", "VCF0101": "age", "VCF0803": "polviews",
         "VCF0009z": "weight", "VCF0017": "mode"}

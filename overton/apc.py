@@ -61,7 +61,8 @@ DATA_DIR = APC_DIR / "data"
 RESULTS_DIR = APC_DIR / "results"
 MIN_ANSWERED = 5
 # the domain sets are small (4 questions in econA), so they use a minimum of 2 (Allen, 2026-10-31)
-MIN_ANSWERED_BY_SET = {"econA": 2, "econB": 2, "econC": 2, "social": 2}
+MIN_ANSWERED_BY_SET = {"econA": 2, "econB": 2, "econC": 2, "social": 2,
+                       "anes_econA": 2, "anes_econB": 2, "anes_econC": 2, "anes_social": 2}
 
 ECON_A = ["helppoor", "helpnot", "helpsick", "eqwlth"]
 ECON_B = ECON_A + ["natenvir", "nateduc", "natmass", "natpark", "tax", "getahead", "natsoc", "natroad"]
