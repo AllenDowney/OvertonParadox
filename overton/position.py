@@ -70,17 +70,21 @@ def median(dist):
     return dist["mu"]
 
 
-def load(name, survey="gss"):
+def load(name, survey="gss", sample=None):
     """The prepared respondents, their 1/0/NaN answers, and the difficulties.
 
-    survey="anes": the ANES data (overton/anes_data.py; all modes, the decided
-    sample) and its EM difficulties (difficulties_anes.csv).
+    survey="anes": the ANES data (overton/anes_data.py) and its EM difficulties
+    (difficulties_anes.csv). sample: the ANES sample, all modes (decided) or
+    "interviewer" (sensitivity; its own prepared data and difficulties).
     """
-    df = pd.read_parquet(DATA_DIR / f"{name}.parquet")
+    from overton.apc import data_name
+
+    df = pd.read_parquet(DATA_DIR / f"{data_name(name, 'em', sample, survey)}.parquet")
     if survey == "anes":
         from overton.anes_data import ANES, KEY, SETS as ANES_SETS
 
-        d = pd.read_csv(DATA_DIR / "difficulties_anes.csv", index_col=0)[name].dropna()
+        path = DATA_DIR / f"difficulties_anes{data_name('', 'em', sample, survey)}.csv"
+        d = pd.read_csv(path, index_col=0)[name].dropna()
         gss = pd.read_hdf(ANES, KEY)
         sets = ANES_SETS
     else:
@@ -225,22 +229,31 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--survey", choices=["gss", "anes"], default="gss")
-    survey = parser.parse_args().survey
+    parser.add_argument("--sample", choices=["interviewer", "all"], default=None,
+                        help="ANES only: interviewer-administered sample as a sensitivity check")
+    args = parser.parse_args()
+    survey, sample = args.survey, args.sample
+    if survey == "gss" and sample is not None:
+        raise ValueError("--sample is for the ANES; the GSS uses its decided sample")
+    from overton.apc import data_name
+
     sets = SETS if survey == "gss" else ANES_POSITION_SETS
-    headline_path = FIG_DIR / ("position_headline.csv" if survey == "gss" else "position_headline_anes.csv")
+    suffix = "" if survey == "gss" else "_anes" + data_name("", "em", sample, survey)
+    headline_path = FIG_DIR / f"position_headline{suffix}.csv"
     rows = []
     for name in sets:
-        df, questions, d = load(name, survey)
+        df, questions, d = load(name, survey, sample)
+        out_name = data_name(name, "em", sample, survey)
         ref_year = int(df.loc[df["polviews3"] == "Liberal", "year"].min())
         ref_year = max(ref_year, 1974)
         table, ref, ref_observed = by_year(df, questions, d, ref_year)
-        table.to_csv(FIG_DIR / f"position_{name}.csv", index=False)
+        table.to_csv(FIG_DIR / f"position_{out_name}.csv", index=False)
         cohorts = by_cohort(df, questions, d)
-        cohorts.to_csv(FIG_DIR / f"position_cohorts_{name}.csv", index=False)
-        row = dict(set=name, **headline(df, questions, d, ref_year),
+        cohorts.to_csv(FIG_DIR / f"position_cohorts_{out_name}.csv", index=False)
+        row = dict(set=out_name, **headline(df, questions, d, ref_year),
                    ref_liberal_observed=table.set_index("year").loc[LAST_YEAR, "ref_liberal_observed"])
         rows.append(row)
-        figures(name, table, cohorts, ref_year)
+        figures(out_name, table, cohorts, ref_year)
         with pd.option_context("display.width", 250):
             print(name, f"reference: median {ref_year} liberal, {to_percent(ref, d):.1f}% "
                         f"(observed scores: {ref_observed:.1f}%)")

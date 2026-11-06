@@ -258,6 +258,57 @@ The decided minimum of 5 stands. The rerun 1946–1964 age fit is clean (no dive
 - **Birth decades:** each decade of birth stays at roughly the same percentile, or drifts up a little (the 1950s from about 30 to 59; the 1940s from 38–44 to 63). Older cohorts end up right of center, as in the GSS.
 - **2002 is unreliable** (median 5 questions answered): the 1974 liberal at the 0.4th percentile, and the 1960s decade at the 71st. Exclude or flag it in any figure.
 
+### Decisions after the first results (Allen, 2026-11-06)
+
+- **Mode:** all modes stays the decided sample. The investigation has two parts: relative position on the interviewer-administered sample (a sensitivity check, like the slope), and a descriptive comparison of web and face-to-face respondents in 2016–2024, by composition (age, education, self-placement) and by item. Reported neutrally.
+- **In the paper:** a replication section in the main text, saying what replicates (the decline, generational replacement, the within-cohort direction) and what doesn't (the 1974 liberal crossing the center), with the mode caveat.
+- **GSS respondents without `polviews`:** no sensitivity check. The GSS rule stands, and the paper notes the difference between the surveys.
+
+## Mode comparison, web vs interviewer-administered, 2012–2024 (2026-11-06)
+
+`scripts/anes_mode_compare.py` (descriptive; weights `VCF0009z`). "Web" is `VCF0017` = 4; "interviewer" is every other mode.
+
+**Composition is close after weighting:**
+
+| Year | Group | n | Age | College % | White % | Liberal / moderate / conservative % (of placed) | Score |
+|---|---|---|---|---|---|---|---|
+| 2012 | interviewer | 2,054 | 47.3 | 29.3 | 70.6 | 27 / 31 / 42 | 54.2 |
+| 2012 | web | 3,860 | 47.4 | 29.5 | 70.8 | 25 / 36 / 39 | 57.5 |
+| 2016 | interviewer | 1,180 | 47.7 | 32.6 | 68.8 | 30 / 26 / 44 | 50.9 |
+| 2016 | web | 3,090 | 47.2 | 30.4 | 68.7 | 32 / 27 / 41 | 52.0 |
+| 2020 | interviewer | 498 | 48.3 | 40.4 | 61.2 | 38 / 25 / 37 | 41.6 |
+| 2020 | web | 7,782 | 48.4 | 36.4 | 65.2 | 33 / 27 / 40 | 45.9 |
+| 2024 | interviewer | 1,287 | 48.9 | 33.3 | 65.4 | 31 / 27 / 43 | 44.5 |
+| 2024 | web | 4,234 | 48.4 | 35.1 | 62.4 | 34 / 26 / 40 | 46.9 |
+
+**But web respondents give more conservative answers.** Averaged over the questions, the web share of conservative answers is higher by 3.2, 1.0, 4.6 and 2.5 points in 2012–2024, and the score by 1–4 points. The item pattern looks like a mode (response) effect:
+
+- **Spending:** web respondents choose "increase" less often. The web is more conservative on science (+15), the environment (+14), schools (+11), Social Security (+6) and welfare (+6), and less conservative on crime spending (−9), where "increase" is the conservative answer.
+- **Socially undesirable answers are more common online:** immigration (+8), the death penalty (+7), gay rights (+5), racial resentment (+5).
+- **The other direction:** traditional values (−8) and child-rearing (−4).
+
+The same groups by composition, with the same self-placement mix, answer differently. That points to measurement, not selection, but the comparison is descriptive and can't rule out differences on unmeasured characteristics. It is consistent with Fufunan, Jin and Freese (2026) on the GSS, where differences come from the mode people answered in, not from the assigned sequence. In the ANES the web share rises from 65% (2012) to 94% (2020) and 77% (2024). So in the all-modes data, the late years are shifted conservative by a few points. That would flatten the within-cohort slope and hold back the 1974 liberal, which is the pattern in the all-modes results.
+
+
+## Domain sets and relative position by mode (2026-11-06)
+
+**The domain split replicates.** Period–cohort fits for the domain sets (`docs/anes_question_domains.md`):
+
+| | Within cohorts | Within-cohort slope per decade [90%] | Period change, liberals / moderates / conservatives |
+|---|---|---|---|
+| ANES social | −5.2 | −0.47 [−0.86, −0.08] | −22.4 / −20.0 / −6.7 |
+| GSS social | −6.3 | −1.16 [−1.34, −0.98] | −21.7 / −22.2 / −13.4 |
+| ANES core economic (A) | +4.6 | +0.91 [−0.03, +1.84] | −14.9 / −7.2 / +6.2 |
+| GSS core economic (A) | +3.7 | +1.61 [+1.16, +2.07] | −10.0 / −9.4 / +4.1 |
+| ANES broad economic (B) | +1.1 | −0.09 [−0.96, +0.76] | −17.6 / −10.2 / +3.3 |
+| ANES inclusive economic (C) | +2.2 | +0.19 [−0.45, +0.84] | −13.9 / −8.8 / +2.9 |
+
+In both surveys, social questions move liberal within cohorts, and the core economic questions move conservative within cohorts and polarize (liberals left, conservatives right). In the ANES the economic slope's interval just includes 0. As in the GSS, the broad and inclusive economic sets are flatter.
+
+**Relative position on the interviewer-administered sample:** the median 1974 liberal is at the **42nd percentile in 2024 [36, 49]** (all modes: 38th [32, 44]). The 2024 median is 42.4% conservative answers (all modes: 44.6%). Year by year, the two samples track each other closely through 2008. They separate from 2012 on (2012: 17.5 vs 14.9; 2020: 48.7 vs 40.7, with only 489 interviewer respondents). **So mode explains part of the gap with the GSS (61st percentile), but not most of it:** in both samples the 1974 liberal drifts down through the 1980s and 1990s and ends up left of center. A likely reason is the content of the ANES pool: it leans economic, and the economic questions don't move liberal.
+
+**Sampling after the retries:** the 1980–1989 and 1990–1999 birth-group fits are now acceptable (47 and 44 divergences in 24,000 draws, about 0.2%; R-hat ≤ 1.003). The moderate period–cohort fit is still marginal (R-hat 1.012, ESS 283), as are the period–cohort fits for broad and inclusive economic (R-hat 1.016 and 1.018, ESS 413 and 213). Other domain fits are clean.
+
 ## Open questions
 
 - Is there a newer CDF than 2022-09 (through 2024)? Not checked.
