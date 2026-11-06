@@ -151,5 +151,6 @@ The overall specification (Decisions table), ideas to consider later, and the lo
 - [ ] Inspect the divergences in `period_s50-em`
 - [ ] Optional: bootstrap the EM calibration within survey replicates
 - [ ] Variations, a few per step (see Decisions in `docs/plan.md`)
+  - [x] Minimum number of answered questions: 2 instead of 5, GSS and ANES main fits. No material difference (2026-11-06; `docs/anes_plan.md`, "First results")
 
 **Related:** `docs/difficulties_design.md`, `docs/plan.md` (Decisions), `docs/lab.md`

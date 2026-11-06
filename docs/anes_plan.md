@@ -1,6 +1,6 @@
 # ANES replication: plan
 
-Board: Task 5. Planned 2026-11-06. Status: feasibility, ranking, and pool decisions done; rerun on the 1948–2024 CDF (2026-11-06). Pool settled (32 questions). 2024 codes audited. Next: the data build.
+Board: Task 5. Planned 2026-11-06. Status: data built and first fits done (2026-11-06). Next: reruns for sampling, relative position, the mode difference.
 
 ## Goal
 
@@ -199,6 +199,45 @@ For each of the 32 questions, the 2024 codes compared with the previous wave and
 - **Respondents:** keep everyone, including those without a self-placement on `VCF0803`. This is a stated departure from the GSS pipeline, which keeps only respondents who answered `polviews` (`overton/candidates.py`). The reason: in the ANES that group is 10–35% of respondents a year (about half in 2000), against few in the GSS. The Overton comparisons use the respondents who placed themselves.
 - **Mode:** all modes in the main analysis. A refit on face-to-face respondents only, where there are any, is a sensitivity check.
 - **Build:** `overton/anes_data.py` writes `data/anes_overton.hdf` with the pipeline's column names. A `--survey anes` option in `overton/em.py` and `overton/apc.py` switches only the input and output files; no method changes.
+
+## First results (2026-11-06)
+
+All 74 fits ran on Unity. 73 completed. One, the 1946–1964 age fit, failed on a stale NFS file handle in numba's cache, which is transient, and is being rerun.
+
+**Headline, period–cohort model, 1972–2024 (points on the percent-conservative scale):**
+
+| | GSS (`primary`) | ANES, all modes (decided) | ANES, interviewer-administered |
+|---|---|---|---|
+| Total change | −16.4 | −13.1 | −16.5 |
+| Generational replacement | −11.8 | −10.5 | −10.5 |
+| Change within cohorts | −4.6 | −2.6 | −5.9 |
+| Within-cohort slope per decade [90%] | −0.82 [−0.97, −0.66] | −0.38 [−0.99, +0.20] | −1.07 [−1.71, −0.44] |
+| Period model: slope per decade | −3.02 | −2.33 | |
+
+- **The direction replicates.** Average conservatism falls, most of the decline is generational replacement (80% in the ANES, 72% in the GSS), and change within cohorts is toward liberal.
+- **On all modes, the within-cohort slope is not credibly negative:** the interval includes 0. On the interviewer-administered sample it is, and the total matches the GSS almost exactly. The difference between the two ANES samples is a mode effect in 2016–2024, when most ANES respondents were online. That is worth a closer look: how web respondents differ, and whether that is composition or response.
+- **Not yet computed:** relative position (`overton/position.py`) and the Overton comparisons by self-placement; figures.
+
+**Sampling.** Most fits are clean. To rerun with longer tuning or a higher target acceptance, as for the GSS:
+
+- the moderate-group period fits (`polviews3=Moderate`, `polviews=4`): R-hat 1.017, bulk ESS 304;
+- several birth-group period–cohort fits with divergences, up to 227 in 24,000 draws (about 1%): 1990–1999, 1997–2012, 1910–1919, 1900–1909;
+- the 1972–1979 age window (39 divergences).
+
+The GSS standard was R-hat ≤ 1.009, bulk ESS ≥ 810, and up to 0.6% divergences in birth-group fits at target acceptance 0.995.
+
+**Variation, minimum of 2 answered questions (Allen, 2026-11-06):** prepared for both surveys. The GSS `primary` goes from 64,632 to 66,075 respondents, and the ANES from 53,954 to 56,900. The first- and last-year means barely move. The main fits (8 per survey) are done, and **the minimum makes no material difference** in either survey:
+
+| | GSS min 5 | GSS min 2 | ANES min 5 | ANES min 2 |
+|---|---|---|---|---|
+| Replacement | −11.8 | −11.75 | −10.5 | −10.36 |
+| Within cohorts | −4.6 | −4.61 | −2.59 | −2.77 |
+| Within-cohort slope per decade | −0.82 [−0.97, −0.66] | −0.84 [−1.00, −0.68] | −0.38 [−0.99, +0.20] | −0.44 [−1.06, +0.19] |
+| Period change, liberals / moderates / conservatives | −18.7 / −18.5 / −10.2 | −18.7 / −18.5 / −10.2 | −18.6 / −16.3 / −3.0 | −18.8 / −16.0 / −2.4 |
+
+The decided minimum of 5 stands. The rerun 1946–1964 age fit is clean (no divergences, R-hat 1.001).
+
+**Note from the by-ideology fits:** ANES conservatives barely move (−3.0) while liberals move as much as in the GSS (−18.6). In the GSS conservatives move −10.2, so the ANES shows more divergence between the groups.
 
 ## Open questions
 
