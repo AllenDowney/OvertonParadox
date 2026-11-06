@@ -57,7 +57,7 @@ Things to settle before fitting: how many ANES attitude items are asked often en
 
 ## Next
 
-1. Allen: confirm the development process. (ANES replication: started as Task 5, `docs/anes_plan.md`, 2026-11-06.)
+1. ~~Allen: confirm the development process.~~ Confirmed 2026-11-06. ANES replication done as Task 5 (`docs/anes_plan.md`): the decline, generational replacement, and the social/economic split replicate; the 1974 liberal's crossing of the center doesn't (38th percentile in 2024, 42nd on the interviewer-administered sample, against the GSS's 61st).
 2. Get and summarize the papers still missing (`docs/literature_review.md`, "Still to get"): Kollman & Jackson and Ellis & Stimson.
 3. Decide on framing. The review suggests building the introduction on Peterson et al.'s (2020) open question about why self-labels move more than issue positions, and on Hout's (2021) puzzle of liberal opinion and conservative politics, and treating the symbolic/operational distinction (Ellis & Stimson) as known. It also suggests stating plainly what we add beyond Hout.
 4. Open questions for Allen: venue beyond arXiv; whether to add analyses the literature calls for. The candidates are a bound on differential mortality (Pabayo et al. 2015 gives the hazard ratios); comparison with the Fufunan–Jin–Freese mode weights (already suggested in `docs/mode_design.md`); a check for nonlinear age effects; the economic slope through 2018, to reconcile with Hout 2021; and a Fosse–Winship-style bound on the effect of the times (`docs/literature_review.md`, "Objections"). These would be method additions, so they're for discussion, not decided.

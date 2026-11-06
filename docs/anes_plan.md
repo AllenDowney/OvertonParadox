@@ -1,6 +1,6 @@
 # ANES replication: plan
 
-Board: Task 5. Planned 2026-11-06. Status: data built and first fits done (2026-11-06). Next: reruns for sampling, relative position, the mode difference.
+Board: Task 5. Planned 2026-11-06. Status (2026-11-06): data built; all fits, domain sets and relative position (both samples) done; web vs interviewer comparison done. Results are in the dated sections below. Open: whether to revisit the all-modes decision after the mode comparison; three marginal fits; figures for the paper.
 
 ## Goal
 
@@ -311,5 +311,7 @@ In both surveys, social questions move liberal within cohorts, and the core econ
 
 ## Open questions
 
-- Is there a newer CDF than 2022-09 (through 2024)? Not checked.
-- How to handle the move to web interviewing, given the smaller face-to-face samples after 2012.
+- ~~Is there a newer CDF than 2022-09?~~ Yes: the 1948–2024 release of 2026-02-05, now used ("Data").
+- ~~How to handle the move to web interviewing?~~ All modes decided, interviewer-administered as a check ("Build decisions"). Reopened by the mode comparison: web answers are more conservative at the same composition, the reason the GSS uses interviewer-administered respondents. Allen to decide whether to revisit.
+- The moderate period–cohort fit and the broad and inclusive economic period–cohort fits are still marginal (R-hat 1.012–1.018, ESS 213–413).
+- 2002 (median 5 questions answered) gives unreliable percentiles: flag or drop it in figures.

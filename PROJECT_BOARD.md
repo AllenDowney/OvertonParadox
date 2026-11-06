@@ -70,7 +70,7 @@ The overall specification (Decisions table), ideas to consider later, and the lo
 
 ## Task 4: arXiv paper (possible)
 
-**Status:** In progress (literature review done 2026-11-06; development process proposed)
+**Status:** In progress (literature review done; development process confirmed and `paper/` stub built; ANES replication in Task 5; 2026-11-06)
 
 **Context:** A more academic version of the Overton work for arXiv, with a focused related-work discussion (not a survey). Plan: `docs/paper_plan.md`. Literature review: `docs/literature_review.md`; papers and summaries in `papers/`.
 
@@ -90,7 +90,7 @@ The overall specification (Decisions table), ideas to consider later, and the lo
 
 ## Task 5: ANES replication
 
-**Status:** In progress (feasibility count done 2026-11-06)
+**Status:** In progress (data built, all fits and relative position done, results recorded; 2026-11-06)
 
 **Context:** Does the GSS result (older people more conservative in every decade, but a slight liberal drift within cohorts; self-identified ideology relative to a moving center) hold in the ANES? Reviewers of the paper (Task 4) will likely ask. Formerly Phase 5 (`docs/plan_history.md`). Plan: `docs/anes_plan.md`.
 
@@ -98,11 +98,15 @@ The overall specification (Decisions table), ideas to consider later, and the lo
 - [x] Feasibility: count ANES attitude items asked often enough to apply our selection rule (about 37 in the pool, about 16 after coverage and one per battery; 2026-11-06)
 - [x] Rank the candidates by association with `VCF0803`, as in the GSS selection; pool of 32 after one per topic (2026-11-06)
 - [x] Data: the 1948–2024 CDF (2026-02-05), copied from ~/ExtractANES to data/; coverage and ranking rerun (2026-11-06)
-- [ ] Decide the specification (years, weights, mode, item coding), recorded in the plan
-- [ ] Selection, EM difficulties, scores, period–cohort fit, relative position
-- [ ] Compare with the GSS; decide where it appears (paper, appendix, or both)
+- [x] Decide the specification (years, weights, mode, item coding), recorded in the plan: all years 1972–2024, weight `VCF0009z`, all modes (interviewer-administered as a check), everyone kept whether or not they placed themselves
+- [x] Selection, EM difficulties, scores, period–cohort fit, relative position: 74 fits plus reruns, the min-2 variation, domain sets (`docs/anes_question_domains.md`), relative position for both samples
+- [x] Compare with the GSS; decide where it appears: a replication section in the paper's main text (Allen)
+- [x] Web vs interviewer-administered comparison, 2012–2024: composition close after weighting, answers more conservative on the web (a mode effect)
+- [ ] Revisit the decided sample (all modes) in light of the mode comparison? The GSS uses interviewer-administered respondents for measurement continuity (Allen to decide)
+- [ ] Sampling: the moderate period–cohort fit and the broad and inclusive economic period–cohort fits are still marginal (R-hat 1.012–1.018)
+- [ ] Figures for the replication section (as post 1's, with 2002 flagged)
 
-**Related:** `docs/plan_history.md` (Phase 5), `docs/paper_plan.md`, `~/WorldviewANES/anes_overton.ipynb`
+**Related:** `docs/anes_question_domains.md`, `overton/anes_data.py`, `scripts/anes_*.py`, `docs/plan_history.md` (Phase 5), `docs/paper_plan.md`
 
 ---
 
