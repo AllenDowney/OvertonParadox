@@ -239,6 +239,25 @@ The decided minimum of 5 stands. The rerun 1946–1964 age fit is clean (no dive
 
 **Note from the by-ideology fits:** ANES conservatives barely move (−3.0) while liberals move as much as in the GSS (−18.6). In the GSS conservatives move −10.2, so the ANES shows more divergence between the groups.
 
+## Relative position (2026-11-06)
+
+`python -m overton.position --survey anes` (the pool "anes", all modes, EM difficulties; figures `figs/apc/position_anes`, tables `figs/position_anes.csv`, `figs/position_cohorts_anes.csv`, `figs/position_headline_anes.csv`). The reference is the median 1974 liberal, the same rule as the GSS. 8 minutes, 540 MB.
+
+**The Overton headline replicates only partly.**
+
+| | GSS (`primary`) | ANES |
+|---|---|---|
+| Median 1974 liberal, percentile in 1974 | 26 | 19.5 |
+| … in 2024 [90%] | 61 [56, 66] | 38 [32, 44] |
+| Median percent conservative, first year → 2024 | 56.5 → 40.9 (1974) | 60.8 → 44.6 (1972) |
+| Median liberal / moderate / conservative, percentile in 2024 | 17 / 46 / 79 | 14 / 48 / 81 |
+
+- **The center moves about as much as in the GSS:** the median falls by about 16 points in both surveys.
+- **But the 1974 liberal ends up still left of center in the ANES.** It drifts *down* to the 5th–18th percentile through 2012, then rises to 26 (2016), 41 (2020) and 38 (2024). Most of the rise comes when most ANES respondents were online. That ties this result to the mode question, which is now the main thing to understand.
+- **The ANES groups are further apart.** Liberals sit near the 14th–19th percentile throughout, and conservatives rise from the 67th to the 81st. The ANES questions discriminate more (ranking coefficients about 2.5 times the GSS's), so in percentile terms the 1974 liberal starts further from the center.
+- **Birth decades:** each decade of birth stays at roughly the same percentile, or drifts up a little (the 1950s from about 30 to 59; the 1940s from 38–44 to 63). Older cohorts end up right of center, as in the GSS.
+- **2002 is unreliable** (median 5 questions answered): the 1974 liberal at the 0.4th percentile, and the 1960s decade at the 71st. Exclude or flag it in any figure.
+
 ## Open questions
 
 - Is there a newer CDF than 2022-09 (through 2024)? Not checked.

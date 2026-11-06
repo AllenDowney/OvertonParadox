@@ -34,7 +34,10 @@ Writes figs/position_{set}.csv (by year), figs/position_cohorts_{set}.csv,
 figs/position_headline.csv, and the figures figs/apc/position_{set} and
 figs/apc/position_cohorts_{set}.
 
-Usage: python -m overton.position
+Usage: python -m overton.position [--survey anes]
+
+With --survey anes: the ANES pool "anes" (overton/anes_data.py); the
+headline goes to figs/position_headline_anes.csv.
 """
 
 import numpy as np
@@ -49,6 +52,7 @@ from overton.em import latent_normals
 from overton.pipeline import FIG_DIR, make_questions
 
 SETS = ["primary", "social", "econA"]
+ANES_POSITION_SETS = ["anes"]  # --survey anes (Task 5); domain subsets to come
 XS = np.linspace(-6, 6, 121)  # finer than the scoring grid
 LAST_YEAR = 2024
 MIN_CELL = 100  # respondents in a year x decade-of-birth cell
@@ -66,13 +70,25 @@ def median(dist):
     return dist["mu"]
 
 
-def load(name):
-    """The prepared respondents, their 1/0/NaN answers, and the difficulties."""
+def load(name, survey="gss"):
+    """The prepared respondents, their 1/0/NaN answers, and the difficulties.
+
+    survey="anes": the ANES data (overton/anes_data.py; all modes, the decided
+    sample) and its EM difficulties (difficulties_anes.csv).
+    """
     df = pd.read_parquet(DATA_DIR / f"{name}.parquet")
-    d = pd.read_csv(DATA_DIR / "difficulties.csv", index_col=0)[name].dropna()
-    gss = pd.read_hdf(CANDIDATES_INTERVIEWER, "gss")
+    if survey == "anes":
+        from overton.anes_data import ANES, KEY, SETS as ANES_SETS
+
+        d = pd.read_csv(DATA_DIR / "difficulties_anes.csv", index_col=0)[name].dropna()
+        gss = pd.read_hdf(ANES, KEY)
+        sets = ANES_SETS
+    else:
+        d = pd.read_csv(DATA_DIR / "difficulties.csv", index_col=0)[name].dropna()
+        gss = pd.read_hdf(CANDIDATES_INTERVIEWER, "gss")
+        sets = question_sets()
     gss = gss.assign(year=gss["year"].astype(int)).set_index(["year", "id"])
-    questions = make_questions(gss, question_sets()[name])[list(d.index)]
+    questions = make_questions(gss, sets[name])[list(d.index)]
     questions = questions.loc[list(zip(df["year"], df["id"]))]
     return df.reset_index(drop=True), questions.reset_index(drop=True), d
 
@@ -205,9 +221,16 @@ def figures(name, table, cohorts, ref_year):
 
 
 def main():
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--survey", choices=["gss", "anes"], default="gss")
+    survey = parser.parse_args().survey
+    sets = SETS if survey == "gss" else ANES_POSITION_SETS
+    headline_path = FIG_DIR / ("position_headline.csv" if survey == "gss" else "position_headline_anes.csv")
     rows = []
-    for name in SETS:
-        df, questions, d = load(name)
+    for name in sets:
+        df, questions, d = load(name, survey)
         ref_year = int(df.loc[df["polviews3"] == "Liberal", "year"].min())
         ref_year = max(ref_year, 1974)
         table, ref, ref_observed = by_year(df, questions, d, ref_year)
@@ -224,7 +247,7 @@ def main():
             print(table.round(1).to_string(index=False))
             print(cohorts.pivot(index="year", columns="decade", values="percentile").round(0).to_string())
     out = pd.DataFrame(rows)
-    out.to_csv(FIG_DIR / "position_headline.csv", index=False)
+    out.to_csv(headline_path, index=False)
     with pd.option_context("display.width", 250):
         print(out.round(1).T.to_string())
 

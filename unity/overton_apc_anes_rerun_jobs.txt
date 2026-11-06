@@ -1,0 +1,11 @@
+# ANES fits that missed the GSS standard in the first run (R-hat > 1.01, bulk ESS < 400, or > 20 divergences; 2026-11-06): longer tuning, higher target accept
+--model period --survey anes --set anes --by polviews3=Moderate --tune 8000 --draws 6000 --target-accept 0.995
+--model period --survey anes --set anes --by polviews=4 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --survey anes --set anes --by polviews3=Moderate --tune 8000 --draws 6000 --target-accept 0.995
+--model age --survey anes --set anes --window 1972-1979 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --survey anes --set anes --cohorts 1900-1909 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --survey anes --set anes --cohorts 1910-1919 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --survey anes --set anes --cohorts 1980-1989 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --survey anes --set anes --cohorts 1990-1999 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --survey anes --set anes --cohorts 1997-2012 --tune 8000 --draws 6000 --target-accept 0.995
+--model period_cohort --survey anes --set anes --cohorts 2000-2009 --tune 8000 --draws 6000 --target-accept 0.995
