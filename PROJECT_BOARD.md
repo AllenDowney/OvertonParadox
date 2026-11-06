@@ -97,7 +97,7 @@ The overall specification (Decisions table), ideas to consider later, and the lo
 **Checklist:**
 - [x] Feasibility: count ANES attitude items asked often enough to apply our selection rule (about 37 in the pool, about 16 after coverage and one per battery; 2026-11-06)
 - [x] Rank the candidates by association with `VCF0803`, as in the GSS selection; pool of 32 after one per topic (2026-11-06)
-- [ ] Data: download the 1948–2024 CDF (released 2026-02-05) and rerun coverage and ranking on it
+- [x] Data: the 1948–2024 CDF (2026-02-05), copied from ~/ExtractANES to data/; coverage and ranking rerun (2026-11-06)
 - [ ] Decide the specification (years, weights, mode, item coding), recorded in the plan
 - [ ] Selection, EM difficulties, scores, period–cohort fit, relative position
 - [ ] Compare with the GSS; decide where it appears (paper, appendix, or both)
