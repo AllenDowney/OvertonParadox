@@ -69,3 +69,4 @@ From `figs/apc/` (`jb/figs` links there), for the set `primary`:
 - [ ] Check the related-post links in the text.
 - [ ] Read-through and edit; build the page in jb.
 - [ ] Publish on Probably Overthinking It.
+- [ ] Social posts: drafts in `jb/social/post1_age.md`; fill in the blog URL, then post (LinkedIn, X, Bluesky, Fosstodon).
