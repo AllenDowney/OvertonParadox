@@ -1,6 +1,6 @@
 # ANES replication: plan
 
-Board: Task 5. Planned 2026-11-06. Status: feasibility, ranking, and pool decisions done; rerun on the 1948–2024 CDF (2026-11-06). Pool settled (32 questions). Next: audit the 2024 codes, then the data build.
+Board: Task 5. Planned 2026-11-06. Status: feasibility, ranking, and pool decisions done; rerun on the 1948–2024 CDF (2026-11-06). Pool settled (32 questions). 2024 codes audited. Next: the data build.
 
 ## Goal
 
@@ -184,6 +184,15 @@ The weakest questions in the pool are foreign aid (`VCF0892`, 0.14), science spe
 | `VCF9049` | econ |  | 0.17 | 2 3 7 | 15 | 1984–2024 |
 | `VCF9048` | econ |  | 0.15 | 2 3 7 | 9 | 1984–2016 |
 | `VCF0892` | econ |  | 0.14 | 3 | 6 | 1990–2008 |
+
+### Audit of 2024 codes (2026-11-06)
+
+For each of the 32 questions, the 2024 codes compared with the previous wave and with the value labels:
+
+- **`VCF0878` (gay adoption): recode 2 → 5 in 2024.** That's the only real change. 2024 uses 2 for "No" (1,130 cases), where earlier years and the label use 5.
+- **Code −1, unlabeled, 245 cases in 2024** on `VCF0806`, `VCF0809`, `VCF0842`, `VCF0843`, `VCF9040` and `VCF9236`. The count is the same on each, so it's one group of respondents who weren't asked, probably a subsample. It's treated as missing, like the other codes ≤ 0.
+- The other "unlabeled" codes are the interior points (2–6) of the 7-point scales, which the CDF doesn't label. That's normal.
+- Every other question uses the same codes in 2024 as in 2020.
 
 ## Open questions
 
