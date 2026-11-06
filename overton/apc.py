@@ -136,19 +136,21 @@ def default_sample(survey="gss"):
     return "interviewer" if survey == "gss" else "all"
 
 
-def data_name(name, difficulties="em", sample=None, survey="gss"):
+def data_name(name, difficulties="em", sample=None, survey="gss", min_answered=None):
     """Name of a set's data and results.
 
-    The decided specification (EM difficulties, the survey's default sample)
-    has plain names (e.g. p43, anes); variations get suffixes (e.g.
-    p43-heuristic-all, anes-interviewer). ANES set names start with "anes", so
-    they can't collide with the GSS's. Results from before 2026-11-01 used
-    plain names for the heuristic and all modes; they're in
-    results/apc_exploratory.
+    The decided specification (EM difficulties, the survey's default sample,
+    the set's minimum number of answers) has plain names (e.g. p43, anes);
+    variations get suffixes (e.g. p43-heuristic-all, anes-interviewer,
+    primary-min2). ANES set names start with "anes", so they can't collide
+    with the GSS's. Results from before 2026-11-01 used plain names for the
+    heuristic and all modes; they're in results/apc_exploratory.
     """
     base = default_sample(survey)
     sample = sample or base
     suffix = "".join(f"-{v}" for v, default in [(difficulties, "em"), (sample, base)] if v != default)
+    if min_answered is not None:
+        suffix += f"-min{min_answered}"
     return name + suffix
 
 
@@ -191,7 +193,7 @@ def reference_difficulties(gss, sets, difficulties, pool="primary"):
     return d
 
 
-def prepare(names=None, difficulties="em", sample=None, survey="gss"):
+def prepare(names=None, difficulties="em", sample=None, survey="gss", min_answered=None):
     """Weighted grid estimates for each question set, on the original (not resampled) data.
 
     sample: "interviewer", the interviewer sample (overton/data.py; for the
@@ -199,6 +201,10 @@ def prepare(names=None, difficulties="em", sample=None, survey="gss"):
     survey's weights. Default: the survey's decided sample (default_sample).
     survey: "gss", or "anes" (overton/anes_data.py: the pool "anes", EM
     calibrated on it; em66 and m1pool are GSS-only).
+    min_answered: a variation (Allen, 2026-11-06): keep respondents who
+    answered at least this many questions, instead of the set's decided
+    minimum (MIN_ANSWERED_BY_SET, else MIN_ANSWERED). The difficulties are
+    calibrated as decided, so only who is included changes.
     """
     from overton.drift import estimate_with_difficulties
     from overton.pipeline import RECODE_POLVIEWS, estimate_conservatism, make_questions
@@ -230,11 +236,12 @@ def prepare(names=None, difficulties="em", sample=None, survey="gss"):
     for name in names or sets:
         codes = sets[name]
         questions = make_questions(gss, codes)
-        min_answered = MIN_ANSWERED_BY_SET.get(name, MIN_ANSWERED)
+        decided_min = MIN_ANSWERED_BY_SET.get(name, MIN_ANSWERED)
+        keep_min = decided_min if min_answered is None else min_answered
         if difficulties == "heuristic":
             con, _, _ = estimate_conservatism(questions, weights=gss["weight"])
         else:
-            d_set = calibrate(gss, questions, min_answered) if difficulties == "emset" else d[questions.columns]
+            d_set = calibrate(gss, questions, decided_min) if difficulties == "emset" else d[questions.columns]
             used[name] = d_set
             con = estimate_with_difficulties(questions, d_set.values)
         answered = questions.notna().sum(axis=1)
@@ -243,12 +250,12 @@ def prepare(names=None, difficulties="em", sample=None, survey="gss"):
         df["n_questions"] = questions.shape[1]
         df["conservatism"] = con
         df["answered"] = answered
-        df = df[(answered >= min_answered) & df["cohort"].notna() & df["age"].notna()]
+        df = df[(answered >= keep_min) & df["cohort"].notna() & df["age"].notna()]
         df["y"] = df["conservatism"] / df["n_questions"]
-        df.to_parquet(DATA_DIR / f"{data_name(name, difficulties, sample, survey)}.parquet")
-        print(data_name(name, difficulties, sample, survey), len(df),
-              df.groupby("year")["y"].mean().iloc[[0, -1]].round(3).to_dict())
-    if used:
+        out = data_name(name, difficulties, sample, survey, min_answered)
+        df.to_parquet(DATA_DIR / f"{out}.parquet")
+        print(out, len(df), df.groupby("year")["y"].mean().iloc[[0, -1]].round(3).to_dict())
+    if used and min_answered is None:
         prefix = "_anes" if survey == "anes" else ""
         pd.DataFrame(used).to_csv(DATA_DIR / f"difficulties{prefix}{data_name('', difficulties, sample, survey)}.csv")
 
@@ -499,7 +506,7 @@ def fit_period_cohort(df, scale, stem, args):
 
 
 def fit(args):
-    set_name = data_name(args.set, args.difficulties, args.sample, args.survey)
+    set_name = data_name(args.set, args.difficulties, args.sample, args.survey, args.min_answered)
     df = pd.read_parquet(DATA_DIR / f"{set_name}.parquet")
     label = [args.model, set_name]
     if args.by:
@@ -535,7 +542,7 @@ def fit(args):
     else:
         trace, summary, names = fit_period_cohort(df, scale, stem, args)
 
-    summary.update(run=run, scale=scale, model=args.model, set=set_name, difficulties=args.difficulties, sample=args.sample, survey=args.survey, by=args.by, window=summary.get("window", args.window),
+    summary.update(run=run, scale=scale, model=args.model, set=set_name, difficulties=args.difficulties, sample=args.sample, survey=args.survey, min_answered=args.min_answered, by=args.by, window=summary.get("window", args.window),
                    cohorts=args.cohorts, age_range=f"{int(df['age'].min())}-{int(df['age'].max())}",
                    respondents=len(df), n_questions=n_questions, elapsed_seconds=round(time.time() - start, 1),
                    tune=args.tune, draws=args.draws, chains=args.chains, seed=args.seed,
@@ -601,10 +608,12 @@ def main():
     parser.add_argument("--sample", choices=["interviewer", "all"], default=None,
                         help="default: the survey's decided sample (GSS interviewer, ANES all)")
     parser.add_argument("--survey", choices=["gss", "anes"], default="gss")
+    parser.add_argument("--min-answered", type=int, default=None,
+                        help="variation: minimum number of answered questions (default: the set's decided minimum)")
     args = parser.parse_args()
     args.sample = args.sample or default_sample(args.survey)
     if args.step == "prepare":
-        prepare(args.sets, args.difficulties, args.sample, args.survey)
+        prepare(args.sets, args.difficulties, args.sample, args.survey, args.min_answered)
     elif args.step == "rescale":
         rescale()
     else:

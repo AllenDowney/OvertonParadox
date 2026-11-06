@@ -1,0 +1,19 @@
+# Rerun: the 1946-1964 age fit failed on a stale NFS handle in the numba cache (transient)
+--model age --survey anes --set anes --cohorts 1946-1964 --tune 4000 --draws 6000 --target-accept 0.99
+# Variation: minimum of 2 answered questions (Allen, 2026-11-06), main fits for both surveys
+--model period --set primary --min-answered 2 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --min-answered 2 --by polviews3=Liberal --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --min-answered 2 --by polviews3=Moderate --tune 4000 --draws 6000 --target-accept 0.99
+--model period --set primary --min-answered 2 --by polviews3=Conservative --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set primary --min-answered 2 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set primary --min-answered 2 --by polviews3=Liberal --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set primary --min-answered 2 --by polviews3=Moderate --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --set primary --min-answered 2 --by polviews3=Conservative --tune 4000 --draws 6000 --target-accept 0.99
+--model period --survey anes --set anes --min-answered 2 --tune 4000 --draws 6000 --target-accept 0.99
+--model period --survey anes --set anes --min-answered 2 --by polviews3=Liberal --tune 4000 --draws 6000 --target-accept 0.99
+--model period --survey anes --set anes --min-answered 2 --by polviews3=Moderate --tune 4000 --draws 6000 --target-accept 0.99
+--model period --survey anes --set anes --min-answered 2 --by polviews3=Conservative --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --survey anes --set anes --min-answered 2 --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --survey anes --set anes --min-answered 2 --by polviews3=Liberal --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --survey anes --set anes --min-answered 2 --by polviews3=Moderate --tune 4000 --draws 6000 --target-accept 0.99
+--model period_cohort --survey anes --set anes --min-answered 2 --by polviews3=Conservative --tune 4000 --draws 6000 --target-accept 0.99
